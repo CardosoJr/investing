@@ -1,0 +1,484 @@
+Ticker,Currency Name,Ranking
+BTC,Bitcoin,1
+ETH,Ethereum,2
+USDT,Tether,3
+ADA,Cardano,4
+XRP,XRP,5
+NOT_FOUND,Polkadot,6
+BNB,Binance Coin,7
+LTC,Litecoin,8
+LINK,ChainLink,9
+DOGE,Dogecoin,10
+XLM,Stellar,11
+BCH,Bitcoin Cash,12
+NOT_FOUND,Aave,13
+USDC,USD Coin,14
+NOT_FOUND,Uniswap,15
+WBTC,Wrapped Bitcoin,16
+BSV,Bitcoin SV,17
+EOS,EOS,18
+ATOM*,Cosmos,19
+XMR,Monero,20
+TRX,TRON,21
+XTZ,Tezos,22
+MKR,Maker,23
+NOT_FOUND,Synthetix Network Token,24
+NOT_FOUND,Theta Token,25
+NOT_FOUND,Elrond,26
+NOT_FOUND,Compound,27
+VEST,VestChain,28
+HT,Huobi Token,29
+NOT_FOUND,Sola Token,30
+NEO,NEO,31
+NOT_FOUND,Avalanche,32
+NOT_FOUND,HEX,33
+NOT_FOUND,SushiSwap,34
+UMK,UMKA,35
+DAI,Dai,36
+IOT,IOTA,37
+NOT_FOUND,Crypto.com Coin,38
+NOT_FOUND,LUNA,39
+NOT_FOUND,UNUS SED LEO,40
+NOT_FOUND,FTX Token,41
+NOT_FOUND,Celsius,42
+NOT_FOUND,DeFiChain,43
+DASH,Dash,44
+NOT_FOUND,G,45
+NOT_FOUND,Global Rental Token,46
+FIL,FileCoin,47
+DCR,Decred,48
+NOT_FOUND,Algorand,49
+NOT_FOUND,Zcash,50
+R,Revain,51
+ETC,Ethereum Classic,52
+NOT_FOUND,Kusama,53
+NOT_FOUND,yearn.finance,54
+NEXXO,Nexxo,55
+WAVES,Waves,56
+NOT_FOUND,NEAR Protocol,57
+ZIL,Zilliqa,58
+CHSB,SwissBorg,59
+LRC,Loopring,60
+NOT_FOUND,Celo,61
+NOT_FOUND,Ren,62
+NOT_FOUND,Hedera Hashgraph,63
+OMG,OmiseGo,64
+NOT_FOUND,R,65
+NOT_FOUND,renBTC,66
+NOT_FOUND,Curve DAO Token,67
+NOT_FOUND,THORChain,68
+BAT,Basic Attention Token,69
+ONT,Ontology,70
+BTT,BitTorrent,71
+DGB,DigiByte,72
+NOT_FOUND,ICON,73
+NANO,Nano,74
+CCOIN,Creditcoin,75
+QNT,Quant,76
+HEDG,HedgeTrade,77
+NOT_FOUND,Qtum,78
+TUSD,True USD,79
+NOT_FOUND,OKB,80
+NOT_FOUND,Alpha Finance Lab,81
+SC,Siacoin,82
+MANA,Decentraland,83
+HZ,Horizon,84
+NOT_FOUND,Blockstack,85
+NOT_FOUND,Reserve Rights,86
+KNC,Kyber Network,87
+FTM,Fantom,88
+ENJ,Enjin Coin,89
+IOST,IOS token,90
+MZX,Mosaic Network,91
+ZP,Zen Protocol,92
+NOT_FOUND,B,93
+NOT_FOUND,Bridge Oracle,94
+XVG,Verge,95
+NOT_FOUND,Bitcoin BEP2,96
+NOT_FOUND,B,97
+NOT_FOUND,BigBang Core,98
+RVN,Ravencoin,99
+FUN,FunFair,100
+NOT_FOUND,Balancer,101
+NOT_FOUND,TerraUSD,102
+NOT_FOUND,Bancor,103
+NOT_FOUND,Paxos Standard Token,104
+NOT_FOUND,B,105
+BCH,Bitcoin Cash,106
+REP,Augur,107
+IQ,Everipedia,108
+HLM,Helium,109
+NOT_FOUND,B,110
+NOT_FOUND,Bitcoin Vault,111
+NOT_FOUND,Band Protocol,112
+NOT_FOUND,Status,113
+BTG,Bitcoin Gold,114
+GNO,Gnosis,115
+ANT,Aragon,116
+VNS,Venus,117
+LSK,Lisk,118
+NOT_FOUND,Kava,119
+NOT_FOUND,Theta Fuel,120
+NOT_FOUND,Bitpanda Ecosystem Token,121
+NPXS,Pundi X,122
+NOT_FOUND,Golem,123
+MAID,MaidSafe Coin,124
+NOT_FOUND,Arweave,125
+NOT_FOUND,Nervos Network,126
+NOT_FOUND,Swipe,127
+NOT_FOUND,Injective Protocol,128
+MFT,Mainframe,129
+MRPH,Morpheus Network,130
+NMR,Numeraire,131
+RIF,RIF Token,132
+CVC,Civic,133
+NOT_FOUND,Orchid,134
+NOT_FOUND,K,135
+NOT_FOUND,Keep Network,136
+SUSD,sUSD,137
+NOT_FOUND,Serum,138
+XWC,WhiteCoin,139
+BCD,Bitcoin Diamond,140
+NOT_FOUND,ABBC Coin,141
+TOMO,TomoChain,142
+NOT_FOUND,IoTeX,143
+VITE,VITE,144
+NOT_FOUND,Fetch.ai,145
+NOT_FOUND,UTRUST,146
+NOT_FOUND,F,147
+NOT_FOUND,Harvest Finance,148
+NOT_FOUND,Sologenic,149
+NOT_FOUND,Chiliz,150
+BTS,Bitshares,151
+TEL,Telcoin,152
+UBT,UniBright,153
+NOT_FOUND,iExec RLC,154
+NOT_FOUND,Neutrino USD,155
+NOT_FOUND,Ankr,156
+NOT_FOUND,X,157
+NOT_FOUND,XinFin Network,158
+MONA,MonaCoin,159
+NOT_FOUND,Amp,160
+STORJ,Storj,161
+NOT_FOUND,PAX Gold,162
+NOT_FOUND,R,163
+NOT_FOUND,Oasis Network,164
+BTM,BitMark,165
+NOT_FOUND,M,166
+NOT_FOUND,Metacoin,167
+KMD,Komodo,168
+NOT_FOUND,BigONE Token,169
+ARDR,Ardor,170
+NOT_FOUND,Akropolis,171
+ELF,aelf,172
+ADK,Aidos Kuneen,173
+STEEM,Steem,174
+NOT_FOUND,S,175
+NOT_FOUND,SKALE Network,176
+NOT_FOUND,Velas,177
+NOT_FOUND,The Sandbox,178
+PPT,Populous,179
+NOT_FOUND,JUST,180
+NOT_FOUND,Secret,181
+CVT,CyberVein,182
+NOT_FOUND,IRISnet,183
+NOT_FOUND,R,184
+NOT_FOUND,Reef,185
+NOT_FOUND,Travala.com,186
+VITAE,Vitae,187
+RDD,Reddcoin,188
+WAN,Wanchain,189
+NOT_FOUND,DFI.Money,190
+BCN,ByteCoin,191
+NOT_FOUND,S,192
+STRAT,Stratis,193
+NOT_FOUND,Orion Protocol,194
+STORM,Storm,195
+NRG,Energi,196
+TRAC,OriginTrail,197
+KIN,Kin,198
+NOT_FOUND,Ark,199
+XHV,Haven Protocol,200
+ATCC,ATC Coin,201
+LPT,Livepeer,202
+QKC,QuarkChain,203
+DAT,Datum,204
+SKY,Skycoin,205
+NOT_FOUND,Polymath,206
+NOT_FOUND,TrustSwap,207
+LOOM,Loom Network,208
+AWAX,AWAX,209
+NOT_FOUND,H,210
+NOT_FOUND,Hard Protocol,211
+LTO,LTO Network,212
+NOT_FOUND,Hive Blockchain,213
+MLN,Melon,214
+NOT_FOUND,bZx Protocol,215
+LBC,LBRY Credits,216
+ADX,AdEx,217
+NOT_FOUND,Hxro,218
+NOT_FOUND,Handshake,219
+NOT_FOUND,Tellor,220
+NOT_FOUND,DIA,221
+NOT_FOUND,SUN,222
+POWR,Power Ledger,223
+NOT_FOUND,Celer Network,224
+ETN,Electroneum,225
+NOT_FOUND,Flamingo,226
+UQC,Uquid Coin,227
+NOT_FOUND,MINDOL,228
+BTU,BTU Protocol,229
+NOT_FOUND,F,230
+NOT_FOUND,Firo,231
+NOT_FOUND,U,232
+NOT_FOUND,Unifi Protocol DAO,233
+NOT_FOUND,Ultra,234
+NOT_FOUND,TROY,235
+NOT_FOUND,KardiaChain,236
+NOT_FOUND,Origin Protocol,237
+REQ,Request Network,238
+ELA,Elastos,239
+NOT_FOUND,S,240
+NOT_FOUND,ShareToken,241
+NOT_FOUND,WaykiChain,242
+NOT_FOUND,Kleros,243
+NOT_FOUND,T,244
+NOT_FOUND,TrueFi,245
+COTI,COTI,246
+NOT_FOUND,Centrality,247
+DNA,EncrypGen,248
+NOT_FOUND,B,249
+NOT_FOUND,Bounce Token,250
+NOT_FOUND,Gatechain Token,251
+NOT_FOUND,A,252
+NOT_FOUND,Axie Infinity,253
+MTL,Metal,254
+NOT_FOUND,TerraKRW,255
+NOT_FOUND,X,256
+XSN,Stakenet,257
+NOT_FOUND,Klever,258
+NIM,Nimiq,259
+NOT_FOUND,SOLVE,260
+AION,Aion,261
+NULS,Nuls,262
+NOT_FOUND,Chromia,263
+DENT,Dent,264
+DGD,Digix DAO,265
+ORBS,Orbis,266
+BLZ,Bluzelle,267
+NOT_FOUND,A,268
+NOT_FOUND,Audius,269
+NOT_FOUND,V Systems,270
+BNK,Bankera,271
+NOT_FOUND,PIVX,272
+NOT_FOUND,Ripio Credit Network,273
+GRS,Groestlcoin,274
+NOT_FOUND,IDEX,275
+CTXC,Cortex,276
+BEAM,Beam,277
+NXS,Nexus,278
+DRGN,Dragonchain,279
+NOT_FOUND,Bella Protocol,280
+IGNIS,Ignis,281
+AST,AirSwap,282
+NOT_FOUND,C,283
+NOT_FOUND,CertiK,284
+NOT_FOUND,BOSAGORA,285
+WTC,Waltonchain,286
+NOT_FOUND,Celo Dollar,287
+PRE*,Presearch,288
+ONGAS,Ontology Gas,289
+DUSK,Dusk Network,290
+NOT_FOUND,SALT,291
+GXS,GXChain,292
+GRIN,Grin,293
+QSP,Quantstamp,294
+NOT_FOUND,A,295
+NOT_FOUND,Pirate Chain,296
+NOT_FOUND,Prometeus,297
+NOT_FOUND,H,298
+NOT_FOUND,Hermez Network,299
+CND,Cindicator,300
+NOT_FOUND,VIDT Datalink,301
+NOT_FOUND,ARPA Chain,302
+MET*,Metronome,303
+NOT_FOUND,WazirX,304
+NOT_FOUND,Lambda,305
+ZAP,Zap,306
+NOT_FOUND,SUKU,307
+EDG,Edgeless,308
+QRL,Quantum Resistant Ledger,309
+NOT_FOUND,BORA,310
+NOT_FOUND,Perlin,311
+NOT_FOUND,Ducato Protocol Token,312
+NAS,Nebulas,313
+NOT_FOUND,True Seigniorage Dollar,314
+NOT_FOUND,Y,315
+NOT_FOUND,YF Link,316
+NKN,NKN,317
+NOT_FOUND,R,318
+NOT_FOUND,KeeperDAO,319
+NOT_FOUND,Gleec,320
+MDT*,Measurable Data Token,321
+COS,Contentos,322
+NOT_FOUND,Byteball Bytes,323
+NOT_FOUND,Function X,324
+GAS,Gas,325
+NOT_FOUND,STPT,326
+VTC,Vertcoin,327
+NOT_FOUND,NAV Coin,328
+NOT_FOUND,Wing,329
+NOT_FOUND,DREP,330
+NEBL,Neblio,331
+NOT_FOUND,Steem Dollars,332
+DTR,Dynamic Trading Rights,333
+NOT_FOUND,FIO Protocol,334
+RBTC,Smart Bitcoin,335
+CRPT,Crypterium,336
+NOT_FOUND,F,337
+NOT_FOUND,Frontier,338
+EMC2,Einsteinium,339
+NOT_FOUND,Phoenix Global,340
+NXT,Nxt,341
+NOT_FOUND,Dock,342
+RFR,Refereum,343
+MED*,MediBloc,344
+NOT_FOUND,Aergo,345
+NOT_FOUND,QASH,346
+SKY,Skycoin,347
+NOT_FOUND,Morpheus Labs,348
+NOT_FOUND,Gifto,349
+PROTON,Proton,350
+NOT_FOUND,Newscrypto,351
+GO,GoChain,352
+NOT_FOUND,Kadena,353
+APPC,AppCoins,354
+NOT_FOUND,suterusu,355
+NOT_FOUND,Cartesi,356
+NOT_FOUND,Endor Protocol,357
+DAG,Constellation,358
+NOT_FOUND,Factom,359
+NOT_FOUND,The Force Protocol,360
+NOT_FOUND,SIRIN LABS Token,361
+NOT_FOUND,Moeda Loyalty Points,362
+KEY,SelfKey,363
+TRUE,True Chain,364
+NOT_FOUND,Swingby,365
+NOT_FOUND,King DAG,366
+NOT_FOUND,BnkToTheFuture,367
+NOT_FOUND,Raiden Network Token,368
+NOT_FOUND,OST,369
+MOF,Molecular Future,370
+SC,Siacoin,371
+DMT,DMarket,372
+NOT_FOUND,Beowulf,373
+TKN,TokenCard,374
+NOT_FOUND,Emirex Token,375
+NOT_FOUND,N,376
+NOT_FOUND,NerveNetwork,377
+MITH,Mithril,378
+GVT,Genesis Vision,379
+UPP,Sentinel Protocol,380
+PLC*,PlatinCoin,381
+BOS,BOScoin,382
+NOT_FOUND,OAX,383
+NCASH,Nucleus Vision,384
+LN,LINK,385
+MC,Mass Coin,386
+WABI,WaBi,387
+NOT_FOUND,I,388
+IQN,IQeon,389
+VID,VideoCoin,390
+SPC*,SpaceChain,391
+NOT_FOUND,A,392
+NOT_FOUND,Atari Token,393
+PAY,TenX,394
+NOT_FOUND,Metaverse ETP,395
+NOT_FOUND,Bread,396
+PPC,PeerCoin,397
+META,Metadium,398
+NOT_FOUND,J,399
+NOT_FOUND,Juventus Fan Token,400
+NOT_FOUND,Santiment Network Token,401
+LOC*,LockTrip,402
+NOT_FOUND,LiquidApps,403
+NOT_FOUND,P,404
+NOT_FOUND,Paris Saint-Germain Fan Token,405
+EVX,Everex,406
+UBQ,Ubiq,407
+NOT_FOUND,Tap,408
+NOT_FOUND,Aryacoin,409
+MAN*,Matrix AI Network,410
+PMA,PumaPay,411
+NOT_FOUND,Maro,412
+CDT,Blox,413
+AMB,Ambrosus,414
+NOT_FOUND,Levolution,415
+PAI,PCHAIN,416
+BLOCK,BlockNet,417
+SENT,Sentinel,418
+PART,Particl,419
+NOT_FOUND,Tachyon Protocol,420
+NOT_FOUND,Dawn Protocol,421
+TCT,TokenClub,422
+NLG,Gulden,423
+MHC,MetaHash,424
+AUC,Auctus,425
+WPR,WePower,426
+NOT_FOUND,Elamachain,427
+NOT_FOUND,DATA,428
+NOT_FOUND,PIXEL,429
+TNB,Time New Bank,430
+SMART,SmartCash,431
+NOT_FOUND,Agrello,432
+DGTX,Digitex Futures,433
+NOT_FOUND,Hedget,434
+NOT_FOUND,YOYOW,435
+GEO,GeoCoin,436
+PLU,Pluton,437
+NOT_FOUND,LCX,438
+NOT_FOUND,FOAM,439
+MTH,Monetha,440
+SWFTC,SwftCoin,441
+MYST,Mysterium,442
+XDN,DigitalNote,443
+GAME,Gamecredits,444
+ACT*,Achain,445
+NOT_FOUND,BTSE,446
+GEN*,DAOstack,447
+NOT_FOUND,SIX,448
+SMT*,SmartMesh,449
+FTC,FeatherCoin,450
+VEE,BLOCKv,451
+NOT_FOUND,Myriad,452
+NOT_FOUND,Burst,453
+NOT_FOUND,Lamden,454
+KRL,Kryll,455
+NOT_FOUND,ROOBEE,456
+NOT_FOUND,FNB Protocol,457
+NOT_FOUND,A,458
+NOT_FOUND,Atletico De Madrid Fan Token,459
+VIB,Viberate,460
+NOT_FOUND,BIZZCOIN,461
+NEU,Neumark,462
+NOT_FOUND,Ravencoin Classic,463
+XMC,Monero Classic,464
+PLR,Pillar,465
+NOIA,NOIA Network,466
+NLC2,NoLimitCoin,467
+NOT_FOUND,apM Coin,468
+NOT_FOUND,Seele-N,469
+NOT_FOUND,PTON,470
+NOT_FOUND,Jibrel Network,471
+NOT_FOUND,DMM: Governance,472
+SNM,SONM,473
+SNC,SunContract,474
+EMC,Emercoin,475
+PLAI,Plair,476
+POT,PotCoin,477
+SNGLS,SingularDTV,478
+NOT_FOUND,O,479
+NOT_FOUND,OG Fan Token,480
+NOT_FOUND,RING X PLATFORM,481
+NOT_FOUND,A,482
+NOT_FOUND,AS Roma Fan Token,483
