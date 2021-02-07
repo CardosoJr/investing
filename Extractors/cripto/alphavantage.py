@@ -29,6 +29,7 @@ class Getter:
         query = "https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol={}&market={}&apikey={}".format(
             symbol, market, self.Key
         )
+        print(query)
         data = requests.get(query).json()
         result = pd.DataFrame.from_dict(data["Time Series (Digital Currency Daily)"], orient = 'index')
         return result
