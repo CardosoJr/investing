@@ -100,56 +100,211 @@ def todecimal(string):
   else:
     return Decimal(string)
 
-if __name__ == '__main__':
-    from waitingbar import WaitingBar
-    
-    progress_bar = WaitingBar('[*] Downloading...')
-    result = get_data()
-    progress_bar.stop()
 
-    result_format = '{0:<7} {1:<7} {2:<10} {3:<7} {4:<10} {5:<7} {6:<10} {7:<10} {8:<10} {9:<11} {10:<11} {11:<7} {12:<11} {13:<11} {14:<7} {15:<11} {16:<5} {17:<7}'
-    print(result_format.format('Papel',
-                               'Cotacao',
-                               'P/L',
-                               'P/VP',
-                               'PSR',
-                               'DY',
-                               'P/Ativo',
-                               'P/Cap.Giro',
-                               'P/EBIT',
-                               'P/ACL',
-                               'EV/EBIT',
-                               'EV/EBITDA',
-                               'Mrg.Ebit',
-                               'Mrg.Liq.',
-                               'Liq.Corr.',
-                               'ROIC',
-                               'ROE',
-                               'Liq.2meses',
-                               'Pat.Liq',
-                               'Div.Brut/Pat.',
-                               'Cresc.5anos'))
+import requests
+import xlrd
+import pandas as pd
+import io
+import os
+import string
+import random
+from zipfile import ZipFile
+from utils import convert_type, DataNotFound
 
-    print('-' * 190)
-    for key, value in result.items():
-        print(result_format.format(key,
-                                   value['Cotacao'],
-                                   value['P/L'],
-                                   value['P/VP'],
-                                   value['PSR'],
-                                   value['DY'],
-                                   value['P/Ativo'],
-                                   value['P/Cap.Giro'],
-                                   value['P/EBIT'],
-                                   value['P/ACL'],
-                                   value['EV/EBIT'],
-                                   value['EV/EBITDA'],
-                                   value['Mrg.Ebit'],
-                                   value['Mrg.Liq.'],
-                                   value['Liq.Corr.'],
-                                   value['ROIC'],
-                                   value['ROE'],
-                                   value['Liq.2meses'],
-                                   value['Pat.Liq'],
-                                   value['Div.Brut/Pat.'],
-                                   value['Cresc.5anos']))
+
+def get_tickers():
+    '''Downloads tickers' codes from fundamentus website
+    :Returns:
+    A pandas DataFrame with three columns:
+    Papel (Ticker),
+    Nome Comercial (Trade Name),
+    Razão Social (Corporate Name)
+    '''
+    headers = {
+        'User-Agent': ''.join(
+            random.choices(string.ascii_letters, k=10)
+        )
+    }
+    html_src = requests.get(
+        'http://fundamentus.com.br/detalhes.php', headers=headers).text
+    return pd.read_html(html_src)[0]
+
+
+def _get_sheets(ticker, quarterly, ascending):
+    '''Downloads sheets from fundamentus website.
+    available sheets:
+        \'Bal. Patrim.\' for balance sheet
+        \'Dem. Result.\' for income statement
+    '''
+
+    ticker = ticker.upper()
+
+    # Apparently fundamentus is blocking requests library's standard user-agent
+    # To solve this problem, I'm generating random user-agents
+
+    headers = {
+        'User-Agent': ''.join(
+            random.choices(string.ascii_letters, k=10)
+        )
+    }
+
+    r = requests.get('https://www.fundamentus.com.br/balancos.php',
+                     params={'papel': ticker},
+                     headers=headers)
+
+    SID = r.cookies.values()[0]
+
+    response_sheet = requests.get(
+        'https://www.fundamentus.com.br/planilhas.php',
+        params={'SID': SID}, headers=headers)
+
+    if response_sheet.text.startswith('Ativo nao encontrado'):
+        raise DataNotFound(
+            f'Couldn\'t find any data for {ticker}')
+
+    with io.BytesIO(response_sheet.content) as zip_bytes:
+        with ZipFile(zip_bytes) as z:
+            xls_bytes = z.read('balanco.xls')
+
+    # Supress warnings
+    wb = xlrd.open_workbook(file_contents=xls_bytes,
+                            logfile=open(os.devnull, 'w'))
+
+    dfs = {
+        'Bal. Patrim.': pd.read_excel(wb, engine='xlrd',
+                                      index_col=0,
+                                      sheet_name='Bal. Patrim.'),
+        'Dem. Result.': pd.read_excel(wb, engine='xlrd',
+                                      index_col=0,
+                                      sheet_name='Dem. Result.')
+    }
+
+    for sheet, df in dfs.items():
+
+        # Cleaning the DataFrame
+        df.columns = df.iloc[0, :]
+        df = df.iloc[1:].T.applymap(convert_type)
+        df.index.name = 'Data'
+        df.columns.name = ticker
+        df = df.loc[df.index.notnull()]
+        df.index = pd.to_datetime(
+            df.index, format='%d/%m/%Y')
+
+        if not quarterly:
+            rows_to_drop = [x for x in df.index.year
+                            if list(df.index.year).count(x) != 4]
+            df = df.groupby(df.index.year).sum()
+            df.drop(rows_to_drop, inplace=True)
+            df.index = [str(x) for x in df.index]
+
+        dfs[sheet] = df.sort_index(ascending=ascending).astype(int)
+
+    return dfs
+
+
+def get_balanco(ticker, quarterly=False, ascending=True, separated=True):
+    '''Get the balance sheet for one brazilian stock listed on fundamentus website.
+    NOTE: Values are in thousands!
+    :Arguments:
+    ticker[str]:
+        Ticker to download data from
+    quarterly[bool]:
+        Whether to download quarterly or annualy data.
+        Default is False.
+    ascending[bool]:
+        Whether the date index should be sorted ascendingly on the DataFrame
+        Default is True
+    separated[bool]:
+        If True, the DataFrame will be hierarchically divided by super columns:
+            \'Ativo Total\' (Total Assets),
+            \'Ativo Circulante\' (Current Assets),
+            \'Ativo Não Circulante\' (Non-current Assets),
+            \'Passivo Total\' (Total Liabilities),
+            \'Passivo Circulante\' (Current Liabilities),
+            \'Passivo Não Circulante\' (Non-current Liabilities),
+            \'Patrimônio Líquido\' (Net Worth)
+        Default is True (highly recommended, as some infra columns are
+        duplicated which could lead to confusion).
+    :Raises:
+    DataNotFound(IndexError) if there's no data available for that ticker
+    :Returns:
+    A pandas DataFrame
+    '''
+
+    df = _get_sheets(ticker, quarterly=quarterly,
+                     ascending=ascending)['Bal. Patrim.']
+
+    if separated:
+        super_cols = [
+            'Ativo Total',
+            'Ativo Circulante',
+            'Ativo Não Circulante',
+            'Ativo Realizável a Longo Prazo',
+            'Passivo Total',
+            'Passivo Circulante',
+            'Passivo Não Circulante',
+            'Passivo Exigível a Longo Prazo',
+            'Patrimônio Líquido'
+        ]
+
+        cols = list(df.columns)
+
+        # Handling different balance sheets for banks and other companies
+        if 'Ativo Não Circulante' in cols:
+            super_cols.remove('Ativo Realizável a Longo Prazo')
+        else:
+            super_cols.remove('Ativo Não Circulante')
+
+        if 'Passivo Não Circulante' in cols:
+            super_cols.remove('Passivo Exigível a Longo Prazo')
+        else:
+            super_cols.remove('Passivo Não Circulante')
+
+        idxs = [cols.index(x) for x in cols if x in super_cols]
+
+        slices = [slice(idxs[i], idxs[i + 1])
+                  if i < (len(idxs) - 1)
+                  else slice(idxs[i], None)
+                  for i, _ in enumerate(idxs)]
+
+        tuples = []
+
+        for s in slices:
+            sup = super_cols.pop(0)
+
+            # Renaming columns to standardize different companies' DataFrames
+            if sup == 'Ativo Realizável a Longo Prazo':
+                sup = 'Ativo Não Circulante'
+            if sup == 'Passivo Exigível a Longo Prazo':
+                sup = 'Passivo Não Circulante'
+
+            for col in cols[s]:
+                tuples.append((sup, col))
+
+        df.columns = pd.MultiIndex.from_tuples(tuples)
+
+    return df
+
+
+def get_dre(ticker, quarterly=False, ascending=True):
+    '''Get the income statement for one brazilian stock listed on fundamentus website.
+    NOTE: Values are in thousands!
+    :Arguments:
+    ticker[str]:
+        Ticker to download data from
+    quarterly[bool]:
+        Whether to download quarterly or annualy data.
+        Default is False.
+    ascending[bool]:
+        Whether the date index should be sorted ascendingly on the DataFrame
+        Default is True
+    :Raises:
+    DataNotFound(IndexError) if there's no data available for that ticker
+    :Returns:
+    A pandas DataFrame
+    '''
+
+    df = _get_sheets(ticker, quarterly=quarterly,
+                     ascending=ascending)['Dem. Result.']
+
+    return df
