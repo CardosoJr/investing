@@ -1,0 +1,4 @@
+yahooquery
+pandas 
+numpy 
+pydrive
