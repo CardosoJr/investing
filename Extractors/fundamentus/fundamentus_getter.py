@@ -1,4 +1,4 @@
-import fundamentus 
+import .fundamentus 
 import pandas as pd
 
 class Getter:

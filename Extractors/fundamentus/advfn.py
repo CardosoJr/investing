@@ -1,6 +1,6 @@
 import requests
 import pandas as pd
-from utils import convert_type, DataNotFound
+from .utils import convert_type, DataNotFound
 from concurrent import futures
 from datetime import date
 from calendar import monthrange

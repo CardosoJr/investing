@@ -109,7 +109,7 @@ import os
 import string
 import random
 from zipfile import ZipFile
-from utils import convert_type, DataNotFound
+from .utils import convert_type, DataNotFound
 
 
 def get_tickers():

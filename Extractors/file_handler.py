@@ -2,8 +2,8 @@ import os
 import pandas as pd
 import numpy as np
 
-# import pyarrow as pa
-# import pyarrow.parquet as pq
+import pyarrow as pa
+import pyarrow.parquet as pq
 
 class file_handler:
     '''
@@ -20,8 +20,9 @@ class file_handler:
             |__> __create_timestamp_str : private fn to create timestamp str
 
     '''
-    def __init__(self, project_dir):
+    def __init__(self, project_dir, mode):
         self.project_dir = project_dir
+        self.mode = mode
 
     def __check_exists_or_create(self, _dir):
         """fn: to check if file/path exists"""
@@ -34,7 +35,7 @@ class file_handler:
 
     def _create_dir(self):
         """fn: create daily directory if not already created"""
-        _dir = self.project_dir+'/Yahoo_Options_Data/'+str(pd.to_datetime('now').date())+'/'
+        _dir = self.project_dir+'/' + self.mode + '/' + str(pd.to_datetime('now').date())+'/'
 
         self.__check_exists_or_create(_dir)
         return _dir
@@ -68,9 +69,9 @@ class file_handler:
             _timestamp = self.__create_date_str()
 
         if errors:
-            _fp = _dir + f'yahoo_options_scraper_errors_{_timestamp}.{format}'
+            _fp = _dir + f'{self.mode}_errors_{_timestamp}.{format}'
         else:
-            _fp = _dir + f'yahoo_options_data_{_timestamp}.{format}'
+            _fp = _dir + f'{self.mode}_data_{_timestamp}.{format}'
 
         if format=='parquet':
             _table = pa.Table.from_pandas(data)
