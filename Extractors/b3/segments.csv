@@ -1,0 +1,443 @@
+Setor,Subsetor,Nome,Codigo,Tipo
+"Petróleo, Gás e Biocombustíveis","Petróleo, Gás e Biocombustíveis",3R PETROLEUM,RRRP,NM             
+"Petróleo, Gás e Biocombustíveis","Petróleo, Gás e Biocombustíveis",COSAN       ,CSAN,NM             
+"Petróleo, Gás e Biocombustíveis","Petróleo, Gás e Biocombustíveis",DOMMO,DMMO,NM             
+"Petróleo, Gás e Biocombustíveis","Petróleo, Gás e Biocombustíveis",ENAUTA PART,ENAT,NM             
+"Petróleo, Gás e Biocombustíveis","Petróleo, Gás e Biocombustíveis",PET MANGUINH,RPMG,NM             
+"Petróleo, Gás e Biocombustíveis","Petróleo, Gás e Biocombustíveis",PETROBRAS   ,PETR,N2
+"Petróleo, Gás e Biocombustíveis","Petróleo, Gás e Biocombustíveis",PETROBRAS BR,BRDT,NM             
+"Petróleo, Gás e Biocombustíveis","Petróleo, Gás e Biocombustíveis",PETRORIO,PRIO,NM             
+"Petróleo, Gás e Biocombustíveis","Petróleo, Gás e Biocombustíveis",ULTRAPAR    ,UGPA,NM             
+"Petróleo, Gás e Biocombustíveis","Petróleo, Gás e Biocombustíveis",LUPATECH    ,LUPA,NM             
+"Petróleo, Gás e Biocombustíveis","Petróleo, Gás e Biocombustíveis",OSX BRASIL  ,OSXB,NM             
+Materiais Básicos,Mineração,BRADESPAR   ,BRAP,N1             
+Materiais Básicos,Mineração,LITEL       ,LTEL,MB             
+Materiais Básicos,Mineração,LITELA,LTLA,MB             
+Materiais Básicos,Mineração,MMX MINER   ,MMXM,NM             
+Materiais Básicos,Mineração,VALE        ,VALE,NM             
+Materiais Básicos,Siderurgia e Metalurgia,FERBASA     ,FESA,N1             
+Materiais Básicos,Siderurgia e Metalurgia,GERDAU      ,GGBR,N1             
+Materiais Básicos,Siderurgia e Metalurgia,GERDAU MET  ,GOAU,N1             
+Materiais Básicos,Siderurgia e Metalurgia,SID NACIONAL,CSNA,N1             
+Materiais Básicos,Siderurgia e Metalurgia,USIMINAS    ,USIM,N1             
+Materiais Básicos,Siderurgia e Metalurgia,MANGELS INDL,MGEL,N1             
+Materiais Básicos,Siderurgia e Metalurgia,PANATLANTICA,PATI,N1             
+Materiais Básicos,Siderurgia e Metalurgia,TEKNO       ,TKNO,N1             
+Materiais Básicos,Siderurgia e Metalurgia,PARANAPANEMA,PMAM,NM             
+Materiais Básicos,Químicos,BRASKEM     ,BRKM,N1             
+Materiais Básicos,Químicos,GPC PART    ,GPCP,N1             
+Materiais Básicos,Químicos,FER HERINGER,FHER,NM             
+Materiais Básicos,Químicos,NUTRIPLANT  ,NUTR,MA             
+Materiais Básicos,Químicos,CRISTAL,CRPG,MA             
+Materiais Básicos,Químicos,UNIPAR      ,UNIP,MA             
+Materiais Básicos,Madeira e Papel,DURATEX     ,DTEX,NM             
+Materiais Básicos,Madeira e Papel,EUCATEX     ,EUCA,N1             
+Materiais Básicos,Madeira e Papel,IRANI ,RANI,N1             
+Materiais Básicos,Madeira e Papel,KLABIN S/A  ,KLBN,N2
+Materiais Básicos,Madeira e Papel,MELHOR SP   ,MSPA,N2
+Materiais Básicos,Madeira e Papel,SUZANO HOLD ,NEMO,N2
+Materiais Básicos,Madeira e Papel,SUZANO S.A.,SUZB,NM             
+Materiais Básicos,Embalagens,METAL IGUACU,MTIG,NM             
+Materiais Básicos,Materiais Diversos,SANSUY      ,SNSY,NM             
+Materiais Básicos,Materiais Diversos,SANSUY      ,SNSY,NM             
+Bens Industriais,Construção e Engenharia,ETERNIT     ,ETER,NM             
+Bens Industriais,Construção e Engenharia,HAGA S/A    ,HAGA,NM             
+Bens Industriais,Construção e Engenharia,PORTOBELLO  ,PTBL,NM             
+Bens Industriais,Construção e Engenharia,AZEVEDO     ,AZEV,NM             
+Bens Industriais,Construção e Engenharia,SONDOTECNICA,SOND,NM             
+Bens Industriais,Construção e Engenharia,TECNOSOLO   ,TCNO,NM             
+Bens Industriais,Construção e Engenharia,MILLS       ,MILS,NM             
+Bens Industriais,Material de Transporte,EMBRAER     ,EMBR,NM             
+Bens Industriais,Material de Transporte,FRAS-LE     ,FRAS,N1             
+Bens Industriais,Material de Transporte,MARCOPOLO   ,POMO,N2             
+Bens Industriais,Material de Transporte,RANDON PART ,RAPT,N1             
+Bens Industriais,Material de Transporte,RECRUSUL    ,RCSL,N1             
+Bens Industriais,Material de Transporte,RIOSULENSE  ,RSUL,N1             
+Bens Industriais,Material de Transporte,TUPY        ,TUPY,NM             
+Bens Industriais,Material de Transporte,WETZEL S/A  ,MWET,NM             
+Bens Industriais,Máquinas e Equipamentos,SCHULZ      ,SHUL,NM             
+Bens Industriais,Máquinas e Equipamentos,WEG         ,WEGE,NM             
+Bens Industriais,Máquinas e Equipamentos,ACO ALTONA  ,EALT,NM             
+Bens Industriais,Máquinas e Equipamentos,AERIS,AERI,NM             
+Bens Industriais,Máquinas e Equipamentos,BARDELLA    ,BDLL,NM             
+Bens Industriais,Máquinas e Equipamentos,INDS ROMI   ,ROMI,NM             
+Bens Industriais,Máquinas e Equipamentos,INEPAR      ,INEP,NM             
+Bens Industriais,Máquinas e Equipamentos,KEPLER WEBER,KEPL,NM             
+Bens Industriais,Máquinas e Equipamentos,METALFRIO   ,FRIO,NM             
+Bens Industriais,Máquinas e Equipamentos,NORDON MET  ,NORD,NM             
+Bens Industriais,Máquinas e Equipamentos,PRATICA,PTCA,M2
+Bens Industriais,Máquinas e Equipamentos,METISA      ,MTSA,M2
+Bens Industriais,Máquinas e Equipamentos,STARA,STTR,MA
+Bens Industriais,Máquinas e Equipamentos,TAURUS ARMAS,TASA,N2             
+Bens Industriais,Transporte,AZUL,AZUL,N2             
+Bens Industriais,Transporte,GOL         ,GOLL,N2             
+Bens Industriais,Transporte,ALL NORTE   ,FRRN,MB             
+Bens Industriais,Transporte,ALL PAULISTA,GASC,MB             
+Bens Industriais,Transporte,COSAN LOG,RLOG,NM             
+Bens Industriais,Transporte,FER C ATLANT,VSPT,NM             
+Bens Industriais,Transporte,MRS LOGIST  ,MRSA,MB             
+Bens Industriais,Transporte,RUMO S.A.,RAIL,NM             
+Bens Industriais,Transporte,HIDROVIAS,HBSA,NM             
+Bens Industriais,Transporte,LOG-IN      ,LOGN,NM             
+Bens Industriais,Transporte,TREVISA     ,LUXM,NM             
+Bens Industriais,Transporte,JSL         ,JSLG,NM             
+Bens Industriais,Transporte,TEGMA       ,TGMA,NM             
+Bens Industriais,Transporte,AUTOBAN     ,ANHB,NM             
+Bens Industriais,Transporte,CCR SA      ,CCRO,NM             
+Bens Industriais,Transporte,CONC RAPOSO ,RPTA,NM             
+Bens Industriais,Transporte,CONC RIO TER,CRTE,MB             
+Bens Industriais,Transporte,ECON        ,ERDV,MB             
+Bens Industriais,Transporte,ECOPISTAS   ,ASCP,MB             
+Bens Industriais,Transporte,ECORODOVIAS ,ECOR,NM             
+Bens Industriais,Transporte,ECOVIAS     ,ECOV,NM             
+Bens Industriais,Transporte,ROD COLINAS ,COLN,NM             
+Bens Industriais,Transporte,ROD TIETE   ,RDVT,NM             
+Bens Industriais,Transporte,RT BANDEIRAS,CRBD,NM             
+Bens Industriais,Transporte,TRIANGULOSOL,TRIA,NM             
+Bens Industriais,Transporte,TRIUNFO PART,TPIS,NM             
+Bens Industriais,Transporte,VIAOESTE    ,VOES,NM             
+Bens Industriais,Transporte,GRUAIRPORT,AGRU,MB             
+Bens Industriais,Transporte,PORTO VM,PSVM,MB             
+Bens Industriais,Transporte,INVEPAR     ,IVPR,MB             
+Bens Industriais,Transporte,SALUS INFRA,SAIP,MB             
+Bens Industriais,Transporte,SANTOS BRP  ,STBP,N2             
+Bens Industriais,Transporte,WILSON SONS ,WSON,DR3
+Bens Industriais,Serviços Diversos,ATMASA,ATMP,NM             
+Bens Industriais,Serviços Diversos,AMBIPAR,AMBP,NM             
+Bens Industriais,Serviços Diversos,BBMLOGISTICA,BBML,MA
+Bens Industriais,Serviços Diversos,CSU CARDSYST,CARD,NM             
+Bens Industriais,Serviços Diversos,DTCOM-DIRECT,DTCY,NM             
+Bens Industriais,Serviços Diversos,ESTAPAR,ALPK,NM             
+Bens Industriais,Serviços Diversos,FLEX S/A,FLEX,MA
+Bens Industriais,Serviços Diversos,PRINER,PRNR,MA
+Bens Industriais,Serviços Diversos,SEQUOIA LOG,SEQL,NM             
+Bens Industriais,Serviços Diversos,VALID       ,VLID,NM             
+Bens Industriais,Comércio,BATTISTELLA ,BTTL,NM             
+Bens Industriais,Comércio,MINASMAQUINA,MMAQ,NM             
+Bens Industriais,Comércio,WLM IND COM ,WLMM,NM             
+Bens Industriais,Comércio,WLM IND COM ,WLMM,NM             
+Consumo não Cíclico,Agropecuária,BRASILAGRO  ,AGRO,NM             
+Consumo não Cíclico,Agropecuária,POMIFRUTAS,FRTA,NM             
+Consumo não Cíclico,Agropecuária,SLC AGRICOLA,SLCE,NM             
+Consumo não Cíclico,Agropecuária,TERRA SANTA,TESA,NM             
+Consumo não Cíclico,Alimentos Processados,BIOSEV,BSEV,NM             
+Consumo não Cíclico,Alimentos Processados,JALLESMACHAD,JALL,NM             
+Consumo não Cíclico,Alimentos Processados,RAIZEN ENERG,RESA,NM             
+Consumo não Cíclico,Alimentos Processados,SAO MARTINHO,SMTO,NM             
+Consumo não Cíclico,Alimentos Processados,BRF SA   ,BRFS,NM             
+Consumo não Cíclico,Alimentos Processados,EXCELSIOR   ,BAUH,NM             
+Consumo não Cíclico,Alimentos Processados,JBS         ,JBSS,NM             
+Consumo não Cíclico,Alimentos Processados,MARFRIG     ,MRFG,NM             
+Consumo não Cíclico,Alimentos Processados,MINERVA     ,BEEF,NM             
+Consumo não Cíclico,Alimentos Processados,MINUPAR     ,MNPR,NM             
+Consumo não Cíclico,Alimentos Processados,CAMIL,CAML,NM             
+Consumo não Cíclico,Alimentos Processados,J.MACEDO    ,JMCD,NM             
+Consumo não Cíclico,Alimentos Processados,JOSAPAR     ,JOPA,NM             
+Consumo não Cíclico,Alimentos Processados,M.DIASBRANCO,MDIA,NM             
+Consumo não Cíclico,Alimentos Processados,ODERICH     ,ODER,NM             
+Consumo não Cíclico,Bebidas,AMBEV S/A,ABEV,NM             
+Consumo não Cíclico,Produtos de Uso Pessoal e de Limpeza,GRUPO NATURA      ,NTCO,NM             
+Consumo não Cíclico,Produtos de Uso Pessoal e de Limpeza,BOMBRIL     ,BOBR,NM             
+Consumo não Cíclico,Comércio e Distribuição,CARREFOUR BR,CRFB,NM             
+Consumo não Cíclico,Comércio e Distribuição,GRUPO MATEUS,GMAT,NM             
+Consumo não Cíclico,Comércio e Distribuição,P.ACUCAR-CBD,PCAR,N1             
+Consumo não Cíclico,Comércio e Distribuição,P.ACUCAR-CBD,PCAR,N1             
+Consumo Cíclico,Construção Civil,ALPHAVILLE,AVLL,NM             
+Consumo Cíclico,Construção Civil,CONST A LIND,CALI,NM             
+Consumo Cíclico,Construção Civil,CR2         ,CRDE,NM             
+Consumo Cíclico,Construção Civil,CURY S/A,CURY,NM             
+Consumo Cíclico,Construção Civil,CYRELA REALT,CYRE,NM             
+Consumo Cíclico,Construção Civil,DIRECIONAL  ,DIRR,NM             
+Consumo Cíclico,Construção Civil,EVEN        ,EVEN,NM             
+Consumo Cíclico,Construção Civil,EZTEC       ,EZTC,NM             
+Consumo Cíclico,Construção Civil,GAFISA      ,GFSA,NM             
+Consumo Cíclico,Construção Civil,HELBOR      ,HBOR,NM             
+Consumo Cíclico,Construção Civil,INTER SA ,INNT,MA
+Consumo Cíclico,Construção Civil,JHSF PART   ,JHSF,NM             
+Consumo Cíclico,Construção Civil,JOAO FORTES ,JFEN,NM             
+Consumo Cíclico,Construção Civil,LAVVI,LAVV,NM             
+Consumo Cíclico,Construção Civil,MELNICK,MELK,NM             
+Consumo Cíclico,Construção Civil,MITRE REALTY,MTRE,NM             
+Consumo Cíclico,Construção Civil,MOURA DUBEUX,MDNE,NM             
+Consumo Cíclico,Construção Civil,MRV         ,MRVE,NM             
+Consumo Cíclico,Construção Civil,PDG REALT   ,PDGR,NM             
+Consumo Cíclico,Construção Civil,PLANOEPLANO,PLPL,NM             
+Consumo Cíclico,Construção Civil,RNI,RDNI,NM             
+Consumo Cíclico,Construção Civil,ROSSI RESID ,RSID,NM             
+Consumo Cíclico,Construção Civil,TECNISA     ,TCSA,NM             
+Consumo Cíclico,Construção Civil,TENDA,TEND,NM             
+Consumo Cíclico,Construção Civil,TRISUL      ,TRIS,NM             
+Consumo Cíclico,Construção Civil,VIVER       ,VIVR,NM             
+Consumo Cíclico,"Tecidos, Vestuário e Calçados",CEDRO       ,CEDO,N1             
+Consumo Cíclico,"Tecidos, Vestuário e Calçados",COTEMINAS   ,CTNM,N1             
+Consumo Cíclico,"Tecidos, Vestuário e Calçados",DOHLER      ,DOHL,N1             
+Consumo Cíclico,"Tecidos, Vestuário e Calçados",ENCORPAR    ,ECPR,N1             
+Consumo Cíclico,"Tecidos, Vestuário e Calçados",IND CATAGUAS,CATA,N1             
+Consumo Cíclico,"Tecidos, Vestuário e Calçados",KARSTEN     ,CTKA,N1             
+Consumo Cíclico,"Tecidos, Vestuário e Calçados",PETTENATI   ,PTNT,N1             
+Consumo Cíclico,"Tecidos, Vestuário e Calçados",SANTANENSE  ,CTSA,N1             
+Consumo Cíclico,"Tecidos, Vestuário e Calçados",SPRINGS     ,SGPS,NM             
+Consumo Cíclico,"Tecidos, Vestuário e Calçados",TEKA        ,TEKA,NM             
+Consumo Cíclico,"Tecidos, Vestuário e Calçados",TEX RENAUX  ,TXRX,NM             
+Consumo Cíclico,"Tecidos, Vestuário e Calçados",CIA HERING  ,HGTX,NM             
+Consumo Cíclico,"Tecidos, Vestuário e Calçados",TRACK FIELD,TFCO,N2
+Consumo Cíclico,"Tecidos, Vestuário e Calçados",ALPARGATAS  ,ALPA,N1             
+Consumo Cíclico,"Tecidos, Vestuário e Calçados",CAMBUCI     ,CAMB,N1             
+Consumo Cíclico,"Tecidos, Vestuário e Calçados",GRENDENE    ,GRND,NM             
+Consumo Cíclico,"Tecidos, Vestuário e Calçados",VULCABRAS   ,VULC,NM             
+Consumo Cíclico,"Tecidos, Vestuário e Calçados",MUNDIAL     ,MNDL,NM             
+Consumo Cíclico,"Tecidos, Vestuário e Calçados",TECHNOS     ,TECN,NM             
+Consumo Cíclico,"Tecidos, Vestuário e Calçados",VIVARA S.A.,VIVA,NM             
+Consumo Cíclico,"Tecidos, Vestuário e Calçados",VIVARA S.A.,VIVA,NM             
+Consumo Cíclico,Utilidades Domésticas,UNICASA,UCAS,NM             
+Consumo Cíclico,Utilidades Domésticas,HERCULES    ,HETA,NM             
+Consumo Cíclico,Automóveis e Motocicletas,IOCHP-MAXION,MYPK,NM             
+Consumo Cíclico,Automóveis e Motocicletas,METAL LEVE  ,LEVE,NM             
+Consumo Cíclico,Automóveis e Motocicletas,PLASCAR PART,PLAS,NM             
+Consumo Cíclico,Hoteis e Restaurantes,HOTEIS OTHON,HOOT,NM             
+Consumo Cíclico,Hoteis e Restaurantes,BK BRASIL,BKBR,NM             
+Consumo Cíclico,Hoteis e Restaurantes,IMC S/A,MEAL,NM             
+Consumo Cíclico,Viagens e Lazer,BIC MONARK  ,BMKS,NM             
+Consumo Cíclico,Viagens e Lazer,ESTRELA     ,ESTR,NM             
+Consumo Cíclico,Viagens e Lazer,SPTURIS     ,AHEB,NM             
+Consumo Cíclico,Viagens e Lazer,TIME FOR FUN,SHOW,NM             
+Consumo Cíclico,Viagens e Lazer,CVC BRASIL,CVCB,NM             
+Consumo Cíclico,Viagens e Lazer,SMART FIT,SMFT,M2
+Consumo Cíclico,Diversos,ANIMA,ANIM,NM             
+Consumo Cíclico,Diversos,BAHEMA      ,BAHI,MA
+Consumo Cíclico,Diversos,COGNA ON,COGN,NM             
+Consumo Cíclico,Diversos,SER EDUCA,SEER,NM             
+Consumo Cíclico,Diversos,YDUQS PART,YDUQ,NM             
+Consumo Cíclico,Diversos,LOCALIZA    ,RENT,NM             
+Consumo Cíclico,Diversos,LOCAMERICA,LCAM,NM             
+Consumo Cíclico,Diversos,MAESTROLOC,MSRO,M2
+Consumo Cíclico,Diversos,MOVIDA,MOVI,NM             
+Consumo Cíclico,Diversos,UNIDAS      ,UNID,NM             
+Consumo Cíclico,Diversos,VAMOS,VAMO,NM             
+Consumo Cíclico,Diversos,SMILES,SMLS,NM             
+Consumo Cíclico,Comércio,AREZZO CO   ,ARZZ,NM             
+Consumo Cíclico,Comércio,CEA MODAS,CEAB,NM             
+Consumo Cíclico,Comércio,GRAZZIOTIN  ,CGRA,NM             
+Consumo Cíclico,Comércio,GRUPO SOMA,SOMA,NM             
+Consumo Cíclico,Comércio,GUARARAPES  ,GUAR,NM             
+Consumo Cíclico,Comércio,LE LIS BLANC,LLIS,NM             
+Consumo Cíclico,Comércio,LOJAS MARISA,AMAR,NM             
+Consumo Cíclico,Comércio,LOJAS RENNER,LREN,NM             
+Consumo Cíclico,Comércio,MAGAZ LUIZA ,MGLU,NM             
+Consumo Cíclico,Comércio,VIAVAREJO,VVAR,NM             
+Consumo Cíclico,Comércio,B2W DIGITAL,BTOW,NM             
+Consumo Cíclico,Comércio,CENTAURO,CNTO,NM             
+Consumo Cíclico,Comércio,ESPACOLASER,ESPA,NM             
+Consumo Cíclico,Comércio,LOJAS AMERIC,LAME,N1             
+Consumo Cíclico,Comércio,PETZ,PETZ,NM             
+Consumo Cíclico,Comércio,QUERO-QUERO,LJQQ,NM             
+Consumo Cíclico,Comércio,SARAIVA LIVR,SLED,N2             
+Consumo Cíclico,Comércio,SARAIVA LIVR,SLED,N2             
+Saúde,Medicamentos e Outros Produtos,BIOMM       ,BIOM,MA
+Saúde,Medicamentos e Outros Produtos,NORTCQUIMICA,NRTQ,MA
+Saúde,Medicamentos e Outros Produtos,OUROFINO S/A,OFSA,NM             
+Saúde,Análises e Diagnósticos,ALLIAR,AALR,NM             
+Saúde,Análises e Diagnósticos,DASA        ,DASA,NM             
+Saúde,Análises e Diagnósticos,FLEURY      ,FLRY,NM             
+Saúde,Análises e Diagnósticos,HAPVIDA,HAPV,NM             
+Saúde,Análises e Diagnósticos,IHPARDINI,PARD,NM             
+Saúde,Análises e Diagnósticos,INTERMEDICA,GNDI,NM             
+Saúde,Análises e Diagnósticos,ODONTOPREV  ,ODPV,NM             
+Saúde,Análises e Diagnósticos,QUALICORP   ,QUAL,NM             
+Saúde,Análises e Diagnósticos,REDE D OR,RDOR,NM             
+Saúde,Equipamentos,BAUMER      ,BALM,NM             
+Saúde,Equipamentos,LIFEMED,LMED,MA
+Saúde,Comércio e Distribuição,DIMED       ,PNVL,MA
+Saúde,Comércio e Distribuição,D1000VFARMA,DMVF,NM             
+Saúde,Comércio e Distribuição,HYPERA,HYPE,NM             
+Saúde,Comércio e Distribuição,PAGUE MENOS,PGMN,NM             
+Saúde,Comércio e Distribuição,PROFARMA    ,PFRM,NM             
+Saúde,Comércio e Distribuição,RAIADROGASIL    ,RADL,NM             
+Saúde,Comércio e Distribuição,RAIADROGASIL    ,RADL,NM             
+Tecnologia da Informação,Computadores e Equipamentos,POSITIVO TEC,POSI,NM             
+Tecnologia da Informação,Programas e Serviços,BRQ,BRQB,MA
+Tecnologia da Informação,Programas e Serviços,ENJOEI,ENJU,NM             
+Tecnologia da Informação,Programas e Serviços,LINX,LINX,NM             
+Tecnologia da Informação,Programas e Serviços,LOCAWEB,LWSA,NM             
+Tecnologia da Informação,Programas e Serviços,MELIUZ,CASH,NM             
+Tecnologia da Informação,Programas e Serviços,MOBLY,MBLY,NM             
+Tecnologia da Informação,Programas e Serviços,MOSAICO,MOSI,NM             
+Tecnologia da Informação,Programas e Serviços,NEOGRID,NGRD,NM             
+Tecnologia da Informação,Programas e Serviços,QUALITY SOFT,QUSW,MA
+Tecnologia da Informação,Programas e Serviços,SINQIA,SQIA,NM             
+Tecnologia da Informação,Programas e Serviços,TOTVS       ,TOTS,NM             
+Tecnologia da Informação,Programas e Serviços,TOTVS       ,TOTS,NM             
+Comunicações,Telecomunicações,INTELBRAS,INTB,NM             
+Comunicações,Telecomunicações,OI,OIBR,N1
+Comunicações,Telecomunicações,TELEBRAS    ,TELB,N1
+Comunicações,Telecomunicações,TELEF BRASIL,VIVT,N1
+Comunicações,Telecomunicações,TIM,TIMS,NM             
+Comunicações,Mídia,CINESYSTEM,CNSY,MA
+Comunicações,Mídia,CINESYSTEM,CNSY,MA
+Utilidade Pública,Energia Elétrica,AES TIETE E,TIET,N2             
+Utilidade Pública,Energia Elétrica,AFLUENTE T  ,AFLT,N2             
+Utilidade Pública,Energia Elétrica,ALUPAR,ALUP,N2             
+Utilidade Pública,Energia Elétrica,AMPLA ENERG ,CBEE,N2             
+Utilidade Pública,Energia Elétrica,CACHOEIRA,CPTE,MB             
+Utilidade Pública,Energia Elétrica,CEB         ,CEBR,MB             
+Utilidade Pública,Energia Elétrica,CEEE-D      ,CEED,N1             
+Utilidade Pública,Energia Elétrica,CEEE-GT     ,EEEL,N1             
+Utilidade Pública,Energia Elétrica,CELESC      ,CLSC,N2             
+Utilidade Pública,Energia Elétrica,CELGPAR     ,GPAR,N2             
+Utilidade Pública,Energia Elétrica,CELPE       ,CEPE,N2             
+Utilidade Pública,Energia Elétrica,CEMIG       ,CMIG,N1             
+Utilidade Pública,Energia Elétrica,CEMIG DIST  ,CMGD,N1             
+Utilidade Pública,Energia Elétrica,CEMIG GT    ,CMGT,N1             
+Utilidade Pública,Energia Elétrica,CESP        ,CESP,N1             
+Utilidade Pública,Energia Elétrica,COELBA      ,CEEB,N1             
+Utilidade Pública,Energia Elétrica,COELCE      ,COCE,N1             
+Utilidade Pública,Energia Elétrica,COPEL       ,CPLE,N1             
+Utilidade Pública,Energia Elétrica,COSERN      ,CSRN,N1             
+Utilidade Pública,Energia Elétrica,CPFL ENERGIA,CPFE,NM             
+Utilidade Pública,Energia Elétrica,CPFL GERACAO,CPFG,NM             
+Utilidade Pública,Energia Elétrica,CPFL PIRATIN,CPFP,NM             
+Utilidade Pública,Energia Elétrica,CPFL RENOVAV,CPRE,NM             
+Utilidade Pública,Energia Elétrica,EBE         ,EBEN,NM             
+Utilidade Pública,Energia Elétrica,ELEKTRO     ,EKTR,NM             
+Utilidade Pública,Energia Elétrica,ELETROBRAS  ,ELET,N1             
+Utilidade Pública,Energia Elétrica,ELETROPAR   ,LIPR,N1             
+Utilidade Pública,Energia Elétrica,EMAE        ,EMAE,N1             
+Utilidade Pública,Energia Elétrica,ENERGIAS BR ,ENBR,NM             
+Utilidade Pública,Energia Elétrica,ENERGISA    ,ENGI,N2             
+Utilidade Pública,Energia Elétrica,ENERGISA MT,ENMT,N2             
+Utilidade Pública,Energia Elétrica,ENERSUL     ,ENER,N2             
+Utilidade Pública,Energia Elétrica,ENEVA,ENEV,NM             
+Utilidade Pública,Energia Elétrica,ENGIE BRASIL,EGIE,NM             
+Utilidade Pública,Energia Elétrica,EQTL PARA,EQPA,NM             
+Utilidade Pública,Energia Elétrica,EQTLMARANHAO,EQMA,MB             
+Utilidade Pública,Energia Elétrica,EQUATORIAL  ,EQTL,NM             
+Utilidade Pública,Energia Elétrica,ESCELSA     ,ESCE,NM             
+Utilidade Pública,Energia Elétrica,FGENERGIA,FGEN,NM             
+Utilidade Pública,Energia Elétrica,FOCUS ON,POWE,NM             
+Utilidade Pública,Energia Elétrica,GER PARANAP ,GEPA,NM             
+Utilidade Pública,Energia Elétrica,ITAPEBI     ,ITPB,NM             
+Utilidade Pública,Energia Elétrica,LIGHT       ,LIGH,NM             
+Utilidade Pública,Energia Elétrica,LIGHT S/A   ,LIGT,NM             
+Utilidade Pública,Energia Elétrica,NEOENERGIA  ,NEOE,NM             
+Utilidade Pública,Energia Elétrica,OMEGA GER,OMGE,NM             
+Utilidade Pública,Energia Elétrica,PAUL F LUZ  ,PALF,NM             
+Utilidade Pública,Energia Elétrica,PROMAN      ,PRMN,MB             
+Utilidade Pública,Energia Elétrica,REDE ENERGIA,REDE,MB             
+Utilidade Pública,Energia Elétrica,RENOVA      ,RNEW,N2             
+Utilidade Pública,Energia Elétrica,STATKRAFT,STKF,N2             
+Utilidade Pública,Energia Elétrica,STO ANTONIO,STEN,N2             
+Utilidade Pública,Energia Elétrica,TAESA       ,TAEE,N2             
+Utilidade Pública,Energia Elétrica,TERMOPE     ,TMPE,N2             
+Utilidade Pública,Energia Elétrica,TERM. PE III,TEPE,N2             
+Utilidade Pública,Energia Elétrica,TRAN PAULIST,TRPL,N1             
+Utilidade Pública,Energia Elétrica,UPTICK      ,UPKP,MB             
+Utilidade Pública,Água e Saneamento,CASAN       ,CASN,MB             
+Utilidade Pública,Água e Saneamento,COPASA      ,CSMG,NM             
+Utilidade Pública,Água e Saneamento,IGUA SA  ,IGSN,MA
+Utilidade Pública,Água e Saneamento,SABESP      ,SBSP,NM             
+Utilidade Pública,Água e Saneamento,SANEPAR     ,SAPR,N2             
+Utilidade Pública,Água e Saneamento,SANESALTO   ,SNST,N2             
+Utilidade Pública,Gás,CEG         ,CEGR,N2             
+Utilidade Pública,Gás,COMGAS      ,CGAS,N2             
+Utilidade Pública,Gás,COMGAS      ,CGAS,N2             
+Financeiro,Intermediários Financeiros,ABC BRASIL  ,ABCB,N2             
+Financeiro,Intermediários Financeiros,ALFA HOLDING,RPAD,N2             
+Financeiro,Intermediários Financeiros,ALFA INVEST ,BRIV,N2             
+Financeiro,Intermediários Financeiros,AMAZONIA    ,BAZA,N2             
+Financeiro,Intermediários Financeiros,BANCO BMG,BMGB,N1             
+Financeiro,Intermediários Financeiros,BANCO INTER,BIDI,N2             
+Financeiro,Intermediários Financeiros,BANCO PAN,BPAN,N1             
+Financeiro,Intermediários Financeiros,BANESE      ,BGIP,N1             
+Financeiro,Intermediários Financeiros,BANESTES    ,BEES,N1             
+Financeiro,Intermediários Financeiros,BANPARA     ,BPAR,N1             
+Financeiro,Intermediários Financeiros,BANRISUL    ,BRSR,N1             
+Financeiro,Intermediários Financeiros,BRADESCO    ,BBDC,N1             
+Financeiro,Intermediários Financeiros,BRASIL      ,BBAS,NM             
+Financeiro,Intermediários Financeiros,BRB BANCO   ,BSLI,NM             
+Financeiro,Intermediários Financeiros,BTGP BANCO,BPAC,NM             
+Financeiro,Intermediários Financeiros,INDUSVAL    ,IDVL,NM             
+Financeiro,Intermediários Financeiros,ITAUSA      ,ITSA,N1             
+Financeiro,Intermediários Financeiros,ITAUUNIBANCO,ITUB,N1             
+Financeiro,Intermediários Financeiros,MERC BRASIL ,BMEB,N1             
+Financeiro,Intermediários Financeiros,MERC INVEST ,BMIN,N1             
+Financeiro,Intermediários Financeiros,NORD BRASIL ,BNBR,N1             
+Financeiro,Intermediários Financeiros,PARANA      ,PRBC,N1             
+Financeiro,Intermediários Financeiros,PINE        ,PINE,N2             
+Financeiro,Intermediários Financeiros,SANTANDER BR,SANB,N2             
+Financeiro,Intermediários Financeiros,ALFA FINANC ,CRIV,N2             
+Financeiro,Intermediários Financeiros,FINANSINOS  ,FNCN,N2             
+Financeiro,Intermediários Financeiros,MERC FINANC ,MERC,N2             
+Financeiro,Intermediários Financeiros,BRADESCO LSG,BDLS,N2             
+Financeiro,Intermediários Financeiros,DIBENS LSG  ,DBEN,N2             
+Financeiro,Securitizadoras de Recebíveis,BRAZIL REALT,BZRS,N2             
+Financeiro,Securitizadoras de Recebíveis,BRAZILIAN SC,BSCS,N2             
+Financeiro,Securitizadoras de Recebíveis,BRPR 56 SEC,WTVR,N2             
+Financeiro,Securitizadoras de Recebíveis,CIBRASEC,CBSC,N2             
+Financeiro,Securitizadoras de Recebíveis,ECO SEC AGRO,ECOA,MB             
+Financeiro,Securitizadoras de Recebíveis,GAIA AGRO   ,GAFL,MB             
+Financeiro,Securitizadoras de Recebíveis,GAIA SECURIT,GAIA,MB             
+Financeiro,Securitizadoras de Recebíveis,OCTANTE SEC,OCTS,MB             
+Financeiro,Securitizadoras de Recebíveis,PDG SECURIT ,PDGS,MB             
+Financeiro,Securitizadoras de Recebíveis,POLO CAP SEC,PLSC,MB             
+Financeiro,Securitizadoras de Recebíveis,RBCAPITALRES,RBRA,MB             
+Financeiro,Securitizadoras de Recebíveis,TRUESEC,APCS,MB             
+Financeiro,Securitizadoras de Recebíveis,VERTCIASEC,VERT,MB             
+Financeiro,Securitizadoras de Recebíveis,WTORRE PIC  ,WTPI,MB             
+Financeiro,Serviços Financeiros Diversos,BNDESPAR    ,BNDP,MB             
+Financeiro,Serviços Financeiros Diversos,BRAZILIAN FR,BFRE,MB             
+Financeiro,Serviços Financeiros Diversos,GP INVEST   ,GPIV,DR3
+Financeiro,Serviços Financeiros Diversos,PADTEC,PDTC,DR3
+Financeiro,Serviços Financeiros Diversos,PPLA,PPLA,DR3
+Financeiro,Serviços Financeiros Diversos,B3 ,B3SA,NM             
+Financeiro,Serviços Financeiros Diversos,BOA VISTA,BOAS,NM             
+Financeiro,Serviços Financeiros Diversos,CIELO       ,CIEL,NM             
+Financeiro,Previdência e Seguros,ALFA CONSORC,BRGE,NM             
+Financeiro,Previdência e Seguros,BBSEGURIDADE,BBSE,NM             
+Financeiro,Previdência e Seguros,IRBBRASIL RE,IRBR,NM             
+Financeiro,Previdência e Seguros,PORTO SEGURO,PSSA,NM             
+Financeiro,Previdência e Seguros,SEG AL BAHIA,CSAB,NM             
+Financeiro,Previdência e Seguros,SUL AMERICA ,SULA,N2             
+Financeiro,Previdência e Seguros,ALPER S.A.,APER,NM             
+Financeiro,Previdência e Seguros,WIZ S.A.,WIZS,NM             
+Financeiro,Previdência e Seguros,WIZ S.A.,WIZS,NM             
+Financeiro,Exploração de Imóveis,ALIANSCSONAE,ALSO,NM             
+Financeiro,Exploração de Imóveis,BR MALLS PAR,BRML,NM             
+Financeiro,Exploração de Imóveis,BR PROPERT  ,BRPR,NM             
+Financeiro,Exploração de Imóveis,COR RIBEIRO ,CORR,NM             
+Financeiro,Exploração de Imóveis,CYRE COM-CCP,CCPR,NM             
+Financeiro,Exploração de Imóveis,GENERALSHOPP,GSHP,NM             
+Financeiro,Exploração de Imóveis,HABITASUL   ,HBTS,NM             
+Financeiro,Exploração de Imóveis,HBR REALTY,HBRE,NM             
+Financeiro,Exploração de Imóveis,IGB S/A     ,IGBR,NM             
+Financeiro,Exploração de Imóveis,IGUATEMI    ,IGTA,NM             
+Financeiro,Exploração de Imóveis,JEREISSATI  ,JPSA,NM             
+Financeiro,Exploração de Imóveis,LOG COM PROP,LOGG,NM             
+Financeiro,Exploração de Imóveis,MENEZES CORT,MNZC,MB             
+Financeiro,Exploração de Imóveis,MULTIPLAN   ,MULT,N2             
+Financeiro,Exploração de Imóveis,SAO CARLOS  ,SCAR,NM             
+Financeiro,Exploração de Imóveis,BR BROKERS  ,BBRK,NM             
+Financeiro,Exploração de Imóveis,LOPES BRASIL,LPSB,NM             
+Financeiro,Holdings Diversificadas,MONT ARANHA ,MOAR,NM             
+Financeiro,Holdings Diversificadas,PAR AL BAHIA,PEAB,NM             
+Financeiro,Holdings Diversificadas,SIMPAR,SIMH,NM             
+Financeiro,Outros Títulos,CEPAC - CTBA,CTBA,MB             
+Financeiro,Outros Títulos,CEPAC - MCRJ,MCRJ,MB             
+Financeiro,Outros Títulos,CEPAC - PMSP,PMSP,MB             
+Financeiro,Outros Títulos,CEPAC - PMSP,PMSP,MB             
+Outros,Outros,524 PARTICIP,QVQP,MB             
+Outros,Outros,ALEF S/A    ,ALEF,MB             
+Outros,Outros,ATOMPAR,ATOM,MB             
+Outros,Outros,BETAPART    ,BETP,MB             
+Outros,Outros,CABINDA PART,CABI,MB             
+Outros,Outros,CACONDE PART,CACO,MB             
+Outros,Outros,CEMEPE      ,MAPT,MB             
+Outros,Outros,CIMS        ,CMSA,MB             
+Outros,Outros,GAMA PART   ,OPGM,MB             
+Outros,Outros,INVEST BEMGE,FIGE,MB             
+Outros,Outros,J B DUARTE  ,JBDU,MB             
+Outros,Outros,MGI PARTICIP,MGIP,MB             
+Outros,Outros,OPPORT ENERG,OPHE,MB             
+Outros,Outros,POLPAR      ,PPAR,MB             
+Outros,Outros,PROMPT PART ,PRPT,MB             
+Outros,Outros,SUDESTE S/A ,OPSE,MB             
+Outros,Outros,SUL 116 PART,OPTS,MB             
