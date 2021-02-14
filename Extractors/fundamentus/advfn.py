@@ -203,6 +203,12 @@ def get_fundamentos(ticker, year=None, quarter=None,
             'Liquidez e Solvência', 'Fluxo de Caixa', 'Investimentos',
             'Dividendos',
         ]
-        return pd.concat(_dfs, axis=1, keys=super_cols)
+        result = pd.concat(_dfs, axis=1, keys=super_cols)
+        result['Ticker'] = [ticker] * len(result)
+        result = result.reset_index()
+        return result
 
-    return pd.concat(_dfs, axis=1)
+    result = pd.concat(_dfs, axis=1)
+    result['Ticker'] = [ticker] * len(result)
+    result = result.reset_index()
+    return result 

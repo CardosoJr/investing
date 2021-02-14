@@ -2,6 +2,9 @@ import pandas as pd
 import numpy as np
 from tqdm import tqdm
 from .file_handler import *
+from .fundamentus import fundamentus, advfn
+from .b3 import b3
+from .cripto import binance_api
 
 class Manager: 
     def __init__(self, dataset_dir):
