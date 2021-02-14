@@ -1,4 +1,3 @@
-from re import S
 from time import sleep
 import pandas as pd 
 import yaml
@@ -8,6 +7,8 @@ from .Extractors.fundamentus import fundamentus, advfn
 from .Extractors.b3 import b3
 from .Extractors.cripto import binance_api
 from .Extractors.DSManager import Manager
+
+from pathlib import Path
 from tqdm import tqdm
 
 def build_fundamentos(path_dir):
@@ -16,7 +17,7 @@ def build_fundamentos(path_dir):
 
     fundamentos = pd.DataFrame([])
     ticker_errors = []
-    for ticker in tickers['Ticker'].unique().ravel():
+    for ticker in tqdm(tickers['Ticker'].unique().ravel()):
         try:
             df = advfn.get_fundamentos(ticker)
             sleep_time = random_wait()
@@ -28,9 +29,9 @@ def build_fundamentos(path_dir):
         
 
     fundamentos = pd.merge(right = tickers, left = fundamentos, on = "Ticker", how = 'left')
-    fundamentos.to_csv(path_dir + "/fundamentos.csv", index = False)
+    fundamentos.to_csv(path_dir / "fundamentos.csv", index = False)
 
-    with open("log.txt", 'w') as f:
+    with open(path_dir / "log.txt", 'w') as f:
         f.writelines(ticker_errors)
 
     return fundamentos
@@ -43,17 +44,16 @@ def random_wait():
 
 
 if __name__ == "__main__":
-    config_path = sys.argv[1]
+    config_path = Path(sys.argv[1])
     method = sys.argv[2]
-    path = sys.argv[3]
+    path = Path(sys.argv[3])
 
     print('Reading Config in', config_path)
-    with open(config_path, 'r') as f:
-        config = yaml.load(f)
+    # with open(config_path, 'r') as f:
+    #     config = yaml.load(f)
 
     if method == 'build_initial_dataset':
-        portfolio = sys.argv[4] 
-        port_df = pd.read_csv(portfolio)
+        portfolio_path = Path(sys.argv[4]) 
         segments = pd.read_csv('./Extractors/b3/segments.csv')
         segments = segments[['Setor', 'Subsetor', 'Codigo']]
         
@@ -61,4 +61,6 @@ if __name__ == "__main__":
         fundamentos['Codigo'] = fundamentos['Ticker'].str[:4]
 
         asset_df = pd.merge(left = segments, right = fundamentos, on = "Codigo", how = 'left')
-        asset_df.to_csv(path + '/asset_df', index = False)
+        asset_df.to_csv(path / 'asset_df', index = False)
+        # port_df = pd.read_csv(portfolio_path)
+
