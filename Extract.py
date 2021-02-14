@@ -53,6 +53,7 @@ if __name__ == "__main__":
     #     config = yaml.load(f)
 
     if method == 'build_initial_dataset':
+        print('Building initial dataset')
         portfolio_path = Path(sys.argv[4]) 
         segments = pd.read_csv('./Extractors/b3/segments.csv')
         segments = segments[['Setor', 'Subsetor', 'Codigo']]

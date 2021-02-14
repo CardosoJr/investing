@@ -2,3 +2,5 @@ yahooquery
 pandas 
 numpy 
 pydrive
+tqdm
+yaml
