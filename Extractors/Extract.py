@@ -84,7 +84,7 @@ def build_fundamentos(path_dir):
     return build_fundamentos_tickers(path_dir, tickers['Ticker'].unique().ravel())
 
 def random_wait():
-    wait_times = [0.2, 0.5, 1, 2]
-    probs = [0.3, 0.4, 0.2, 0.1 ]
+    wait_times = [0.2, 0.5, 1, 2, 4]
+    probs = [0.3, 0.4, 0.2, 0.08, 0.02]
     choice = np.random.choice(wait_times, size=1, p=probs)
     return choice[0]
