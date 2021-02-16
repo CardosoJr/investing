@@ -35,6 +35,15 @@ def build_price_history(path_dir, tickers):
 
     return history
 
+
+def build_cripto_history(path_dir, tickers):
+    path = Path(path_dir)
+
+    ranking = pd.read_csv(path / Path('Extractors/cripto/digital_currency_list.csv')).sort_values(by = 'Ranking').head(100)['currency code']
+
+
+    pass
+
 def build_full_assets(path_dir, fundamentos):
     path = Path(path_dir)
     segments = pd.read_csv(Path('./Extractors/b3/segments.csv'), encoding = "ISO-8859-1")
@@ -82,6 +91,10 @@ def build_fundamentos(path_dir):
     tickers = fundamentus.get_tickers()
     tickers.rename(columns = {"Papel":"Ticker"}, inplace = True)
     return build_fundamentos_tickers(path_dir, tickers['Ticker'].unique().ravel())
+
+def update_daily_data(path_dir):
+    path = Path(path_dir)
+
 
 def random_wait():
     wait_times = [0.2, 0.5, 1, 2, 4]

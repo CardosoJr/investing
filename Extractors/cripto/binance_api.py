@@ -5,7 +5,7 @@ import time
 from binance.client import Client
 from datetime import timedelta, datetime
 from dateutil import parser
-from tqdm import tqdm_notebook #(Optional, used for progress-bars)
+from tqdm import tqdm
 import yaml
 
 class Binance:
@@ -19,12 +19,20 @@ class Binance:
         self.batch_size = 750
         self.binance_client = Client(api_key = self.binance_api_key, api_secret = self.binance_api_secret)
 
-
     def minutes_of_new_data(self, symbol, kline_size, data, source):
         if len(data) > 0:  old = parser.parse(data["timestamp"].iloc[-1])
         elif source == "binance": old = datetime.strptime('1 Jan 2017', '%d %b %Y')
         if source == "binance": new = pd.to_datetime(self.binance_client.get_klines(symbol = symbol, interval=kline_size)[-1][0], unit='ms')
         return old, new
+
+    def get_binance_data(self, symbol, kline_size, start, end):
+        klines = self.binance_client.get_historical_klines(symbol, kline_size,
+                                                            start, 
+                                                            end)
+        data = pd.DataFrame(klines, columns = ['timestamp', 'open', 'high', 'low', 'close', 'volume', 'close_time', 'quote_av', 'trades', 'tb_base_av', 'tb_quote_av', 'ignore' ])
+        data['timestamp'] = pd.to_datetime(data['timestamp'], unit='ms')
+
+        return data
 
     def get_all_binance(self, symbol, kline_size, save = False):
         filename = '%s-%s-data.csv' % (symbol, kline_size)
