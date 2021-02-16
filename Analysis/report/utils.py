@@ -1,6 +1,6 @@
 import dash_html_components as html
 import dash_core_components as dcc
-
+import dash_table
 
 def Header(app):
     return html.Div([get_header(app), html.Br([]), get_menu()])
@@ -94,3 +94,74 @@ def make_dash_table(df):
             html_row.append(html.Td([row[i]]))
         table.append(html.Tr(html_row))
     return table
+
+
+def discrete_background_color_bins(df, n_bins=5, columns='all'):
+    import colorlover
+    bounds = [i * (1.0 / n_bins) for i in range(n_bins + 1)]
+    if columns == 'all':
+        if 'id' in df:
+            df_numeric_columns = df.select_dtypes('number').drop(['id'], axis=1)
+        else:
+            df_numeric_columns = df.select_dtypes('number')
+    else:
+        df_numeric_columns = df[columns]
+    df_max = df_numeric_columns.max().max()
+    df_min = df_numeric_columns.min().min()
+    ranges = [
+        ((df_max - 0.0) * i) + 0.0
+        for i in bounds
+    ]
+    ranges_negative = [
+        ((0.0 - df_min) * i) + df_min
+        for i in bounds
+    ]
+
+    styles = []
+    legend = []
+    for i in range(1, len(bounds)):
+        min_bound = ranges[i - 1]
+        max_bound = ranges[i]
+        backgroundColor = colorlover.scales[str(n_bins)]['seq']['Greens'][i - 1]
+        backgroundColorNegative = colorlover.scales[str(n_bins)]['seq']['Reds'][i - 1]
+        color = 'white' if i > len(bounds) / 2. else 'inherit'
+
+        for column in df_numeric_columns:
+            styles.append({
+                'if': {
+                    'filter_query': (
+                        '{{{column}}} >= {min_bound}' +
+                        (' && {{{column}}} < {max_bound}' if (i < len(bounds) - 1) else '')
+                    ).format(column=column, min_bound=min_bound, max_bound=max_bound),
+                    'column_id': column
+                },
+                'backgroundColor': backgroundColor,
+                'color': color
+            })
+        legend.append(
+            html.Div(style={'display': 'inline-block', 'width': '60px'}, children=[
+                html.Div(
+                    style={
+                        'backgroundColor': backgroundColor,
+                        'borderLeft': '1px rgb(50, 50, 50) solid',
+                        'height': '10px'
+                    }
+                ),
+                html.Small(round(min_bound, 2), style={'paddingLeft': '2px'})
+            ])
+        )
+
+    return (styles, html.Div(legend, style={'padding': '5px 0 5px 0'}))
+
+def make_formatted_table(df):
+    (styles, legend) = discrete_background_color_bins(df)
+
+    return html.Div([
+        html.Div(legend, style={'float': 'right'}),
+        dash_table.DataTable(
+            data=df.to_dict('records'),
+            sort_action='native',
+            columns=[{'name': i, 'id': i} for i in df.columns],
+            style_data_conditional=styles
+        ),
+    ])
