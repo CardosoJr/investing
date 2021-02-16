@@ -7,7 +7,7 @@ class B3:
         data = ticker.history(period='2d', interval = interval)
         return data
 
-    def Extract_History(self, asset_id, start, end):
+    def Extract_History(self, asset_id):
         ticker = Ticker(asset_id)   
         data = ticker.history(period = 'max')
         return data

@@ -11,6 +11,30 @@ from .DSManager import Manager
 from pathlib import Path
 from tqdm import tqdm
 
+def build_price_history(path_dir, tickers):
+    path = Path(path_dir)
+    api = b3.B3()
+    history = pd.DataFrame([])
+    ticker_errors = []
+    for ticker in tqdm(tickers):
+        try:
+            df = api.Extract_History(ticker + ".SA")
+            df = df.reset_index()
+            sleep_time = random_wait()
+            sleep(sleep_time)
+            history = history.append(df)
+
+        except:
+            ticker_errors.append(ticker)
+            print("Could not read history from", ticker, "\n")
+
+    history.to_csv(path / "history.csv", index = False)
+
+    with open(path / "log_b3.txt", 'w') as f:
+        f.writelines('\n'.join(ticker_errors))
+
+    return history
+
 def build_full_assets(path_dir, fundamentos):
     path = Path(path_dir)
     segments = pd.read_csv(Path('./Extractors/b3/segments.csv'), encoding = "ISO-8859-1")
