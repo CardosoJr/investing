@@ -31,18 +31,34 @@ def build_price_history(path_dir, tickers):
     history.to_csv(path / "history.csv", index = False)
 
     with open(path / "log_b3.txt", 'w') as f:
-        f.writelines('\n'.join(ticker_errors))
+        f.write('\n'.join(ticker_errors))
 
     return history
 
 
 def build_cripto_history(path_dir, tickers):
     path = Path(path_dir)
+    api = b3.B3()
+    history = pd.DataFrame([])
+    ticker_errors = []
+    for ticker in tqdm(tickers):
+        try:
+            df = api.Extract_History(ticker + "-USD")
+            df = df.reset_index()
+            sleep_time = random_wait()
+            sleep(sleep_time)
+            history = history.append(df)
 
-    ranking = pd.read_csv(path / Path('Extractors/cripto/digital_currency_list.csv')).sort_values(by = 'Ranking').head(100)['currency code']
+        except:
+            ticker_errors.append(ticker)
+            print("Could not read history from", ticker, "\n")
 
+    history.to_csv(path / "cripto_history.csv", index = False)
 
-    pass
+    with open(path / "log_cripto.txt", 'w') as f:
+        f.write('\n'.join(ticker_errors))
+
+    return history
 
 def build_full_assets(path_dir, fundamentos):
     path = Path(path_dir)
