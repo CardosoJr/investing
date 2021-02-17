@@ -1,9 +1,12 @@
 import os
 import pandas as pd
 import numpy as np
+from datetime import datetime
+from pathlib import Path
 
 import pyarrow as pa
 import pyarrow.parquet as pq
+
 
 class file_handler:
     '''
@@ -26,52 +29,27 @@ class file_handler:
 
     def __check_exists_or_create(self, _dir):
         """fn: to check if file/path exists"""
-        if not os.path.exists(_dir):
+        if not Path(_dir).exists():
             try:
-                os.mkdir(_dir)
+                Path(_dir).mkdir(parents = True)
             except Exception as e:
                 print(e)
         return
 
-    def _create_dir(self):
+    def _create_dir(self, grouping):
         """fn: create daily directory if not already created"""
-        _dir = self.project_dir+'/' + self.mode + '/' + str(pd.to_datetime('now').date())+'/'
-
+        _dir = self.project_dir+'/' + self.mode + '/' + grouping +'/'
         self.__check_exists_or_create(_dir)
         return _dir
 
-    def __create_timestamp_str(self):
-        """fn: to create time stamp str"""
-        return str(pd.to_datetime('now').tz_localize('utc').tz_convert('US/Eastern')).replace(' ', '_').replace(':','.')
-
-    def __create_date_str(self):
-        """fn: to create date str"""
-        return str(pd.to_datetime('now').date())
-
-    def save_data(self, data, format='parquet', resolution='time', errors=False):
-        """fn: to save data to directory
-
-        Args
-            data : pd.DataFrame
-            format : str, ('parquet', 'h5', 'csv', 'feather')
-            resolution : str, date or time
-                if date uses default str format,
-                if time will use YYYY-MM-DD_HH.MM.SS
-            errors : bool,
-                if True change filepath name
-                if False use options data filepath name
-        """
-        _dir = self._create_dir()
-
-        if resolution=='time':
-            _timestamp = self.__create_timestamp_str()
-        elif resolution=='date':
-            _timestamp = self.__create_date_str()
+    def save_data(self, data, timestamp, group, format='parquet', errors=False):
+        _dir = Path(self._create_dir(group))
+        _timestamp = timestamp
 
         if errors:
-            _fp = _dir + f'{self.mode}_errors_{_timestamp}.{format}'
+            _fp = _dir / f'{self.mode}_errors_{_timestamp}.{format}'
         else:
-            _fp = _dir + f'{self.mode}_data_{_timestamp}.{format}'
+            _fp = _dir / f'{self.mode}_data_{_timestamp}.{format}'
 
         if format=='parquet':
             _table = pa.Table.from_pandas(data)
