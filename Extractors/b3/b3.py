@@ -20,3 +20,6 @@ class B3:
         data = data.iloc[2:,:-1]      
         data = data.iloc[:, ::-1]     
         return data
+
+    def Get_Summary(self, asset_id):
+        return Ticker(asset_id).summary_detail[asset_id]

@@ -7,6 +7,8 @@ from datetime import datetime
 from tqdm import tqdm
 
 from pandas.core import base
+from yahooquery import ticker
+from pathlib import Path
 
 def get_info_cadastral():
   #http://dados.cvm.gov.br/dataset/fi-cad
@@ -14,6 +16,19 @@ def get_info_cadastral():
   base_url = "http://dados.cvm.gov.br/dados/FI/CAD/DADOS/cad_fi.csv"
   df = pd.read_csv(base_url, sep = ';', encoding = "ISO-8859-1")
   return df
+
+def get_b3_fundos_tickers():
+  fiis = pd.read_csv(Path(__file__).parent / "fiis.csv", sep = ";", header = None)
+  etfs = pd.read_csv(Path(__file__).parent / "etfs.csv", sep = ";", header = None)
+  bdrs = pd.read_csv(Path(__file__).parent / "bdrs.csv", sep = ",", encoding = "ISO-8859-1")
+
+  tickers = []
+
+  tickers.extend((fiis[3] + "11").ravel())
+  tickers.extend((etfs[3] + "11").ravel())
+  tickers.extend(bdrs['CODIGO'].ravel())
+
+  return tickers
 
 
 def get_data(start_date, end_date, filter = None, min_cot = None):

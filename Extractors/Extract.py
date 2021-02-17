@@ -47,6 +47,42 @@ def build_fundos_history(path_dir):
     result.to_csv(path / "fundos_history.csv", index = False)
     return result
 
+def build_fundos_b3_history(path_dir):
+    path = Path(path_dir)
+    api = b3.B3()
+    history = pd.DataFrame([])
+    assets = pd.DataFrame([])
+    ticker_errors = []
+    tickers = fundos.get_b3_fundos_tickers()
+    for ticker in tqdm(tickers):
+        try:
+            df = api.Extract_History(ticker + ".SA")
+            df = df.reset_index()
+            sleep_time = random_wait()
+            sleep(sleep_time)
+            history = history.append(df)
+        except:
+            ticker_errors.append(ticker)
+            print("Could not read history from", ticker, "\n")
+
+        try:
+            df = pd.DataFrame([api.Get_Summary(ticker + ".SA")])
+            df['Ticker'] = [ticker] * len(df)
+            sleep_time = random_wait()
+            sleep(sleep_time)
+            assets = assets.append(df)
+        except:
+            ticker_errors.append(ticker)
+            print("Could not read summary from", ticker, "\n")
+
+    history.to_csv(path / "fundos_b3_history.csv", index = False)
+    assets.to_csv(path / "assets_fundos_b3.csv", index = False)
+
+    with open(path / "log_fundos_b3.txt", 'w') as f:
+        f.write('\n'.join(ticker_errors))
+
+    return history
+
 def build_cripto_history(path_dir, tickers):
     path = Path(path_dir)
     api = b3.B3()
