@@ -5,8 +5,12 @@ import sys
 import numpy as np
 from .fundamentus import fundamentus, advfn
 from .b3 import b3
+from .fundos import fundos
 from .cripto import binance_api
 from .DSManager import Manager
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
+
 
 from pathlib import Path
 from tqdm import tqdm
@@ -35,6 +39,13 @@ def build_price_history(path_dir, tickers):
 
     return history
 
+def build_fundos_history(path_dir):
+    path = Path(path_dir)
+    end = datetime.now()
+    start = end + relativedelta(years = -2)
+    result = fundos.get_data(start.strftime("%Y-%m-%d"), end.strftime("%Y-%m-%d"), min_cot = 100)
+    result.to_csv(path / "fundos_history.csv", index = False)
+    return result
 
 def build_cripto_history(path_dir, tickers):
     path = Path(path_dir)

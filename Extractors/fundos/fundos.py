@@ -30,14 +30,23 @@ def get_data(start_date, end_date, filter = None, min_cot = None):
   result = pd.DataFrame([])
   for am in tqdm(anomes):
     url = base_url.replace("[ANOMES]", am)
-    df = pd.read_csv(url, sep = ';')
-    
-    if filter is not None:
-      df = df[df['CNPJ_FUNDO'].isin(filter)]
+    try:
+      df = pd.read_csv(url, sep = ';')
+      
+      if filter is not None:
+        df = df[df['CNPJ_FUNDO'].isin(filter)]
 
-    if min_cot is not None:
-      df = df[df["NR_COTST"] >= min_cot]
+      if min_cot is not None:
+        df = df[df["NR_COTST"] >= min_cot]
 
-    result = result.append(df)
+      result = result.append(df)
+    except:
+      print('Could not get data for', am, "\n")
+
+  info = get_info_cadastral()
+  info = info[['CNPJ_FUNDO', 'DENOM_SOCIAL', 'SIT', "CLASSE", "FUNDO_EXCLUSIVO", "TAXA_PERFM", "TAXA_ADM", "INF_TAXA_PERFM", "INVEST_QUALIF"]]
+  result = pd.merge(left = result, right = info, how = 'left', on = "CNPJ_FUNDO")
+  result = result[result['SIT'] == "EM FUNCIONAMENTO NORMAL"]
+  result = result[result['FUNDO_EXCLUSIVO'] == "N"]
 
   return result
