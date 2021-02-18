@@ -1,3 +1,4 @@
+from datetime import date
 import pandas as pd 
 import numpy as np
 from pandas._libs.tslibs import Timestamp
@@ -33,6 +34,33 @@ class Manager:
         elif self.resolution == "week":
             timestamp = df[date_col].dt.strftime("%Y%W")
         return timestamp
+
+    def __get_latest_folder(self, type):
+        p = Path(self.dir) / "type"
+        folders = [x.name for x in p.glob('*') if x.is_dir()]
+        dates = [datetime.strptime(x, "%Y%m") for x in folders]
+        latest = Path(self.dir) / "type" / max(dates).strptime("%Y%m")
+        return latest
+
+    def __get_latest_file(self, file_path):
+        p = Path(file_path)
+        files = [x.name for x in p.glob('*') if x.is_file()]
+        extension = files[0].split(".")[-1]
+        files = [x.split(".")[0] for x in files]
+        dates = [datetime.strptime(x, "%Y%W") for x in files]
+        latest = p.parent / max(dates).strptime("%Y%W") + "." + extension
+        return latest
+
+
+    def get_latest_files(self):
+        paths = {
+            "cripto" : None,
+            "b3"  : None,
+            "b3_funds" : None,
+            "fundamentus" : None
+        }
+
+        return paths
 
     def append_data(self, df, type, date_col):
         df["__custom_timestamp"] = self.__create_timestamp(df, date_col)
