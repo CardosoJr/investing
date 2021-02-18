@@ -42,6 +42,19 @@ class file_handler:
         self.__check_exists_or_create(_dir)
         return _dir
 
+    def __append_data(self, data, file_path, format):
+        if format == "parquet":
+            old_data = pq.read_table(file_path).to_pandas()
+        elif format == "h5":
+            old_data = pd.read_hdf(file_path, key="data")
+        elif format == "csv":
+            old_data = pd.read_csv(file_path)
+        elif format == "feather":
+            old_data = pd.read_feather(file_path)
+        else:
+            raise Exception("Format not found")
+        return data.append(old_data)
+
     def save_data(self, data, timestamp, group, format='parquet', errors=False):
         _dir = Path(self._create_dir(group))
         _timestamp = timestamp
@@ -51,6 +64,9 @@ class file_handler:
         else:
             _fp = _dir / f'{self.mode}_data_{_timestamp}.{format}'
 
+        if _fp.exists:
+            data = self.__append_data(data, _fp, format)
+
         if format=='parquet':
             _table = pa.Table.from_pandas(data)
             pq.write_table(_table, _fp)
@@ -58,4 +74,5 @@ class file_handler:
         elif format == 'h5': data.to_hdf(_fp, key='data')
         elif format == 'csv': data.to_csv(_fp, index=False)
         elif format == 'feather': data.to_feather(_fp)
+        else: raise Exception("Format not found")
         return
