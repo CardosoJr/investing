@@ -20,7 +20,7 @@ class Manager:
             "cripto" : file_handler(dataset_dir, "cripto"),
             "b3"  : file_handler(dataset_dir, "b3"),
             "b3_funds" : file_handler(dataset_dir, "b3_funds"),
-            "fundamentus" : file_handler(dataset_dir, "fundamentus")
+            "funds" : file_handler(dataset_dir, "funds")
         }
         self.modes = self.handlers.keys()
 
