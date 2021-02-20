@@ -21,6 +21,8 @@ class Manager:
             "b3_funds" : file_handler(dataset_dir, "b3_funds"),
             "fundamentus" : file_handler(dataset_dir, "fundamentus")
         }
+        self.modes = self.handlers.keys()
+
 
     def __get_group(self, min_date):
         if self.grouping == "month":
@@ -51,16 +53,31 @@ class Manager:
         latest = p.parent / max(dates).strptime("%Y%W") + "." + extension
         return latest
 
-
     def get_latest_files(self):
-        paths = {
-            "cripto" : None,
-            "b3"  : None,
-            "b3_funds" : None,
-            "fundamentus" : None
-        }
+        paths = {}
+        for mod in self.modes:
+            latest = self.__get_latest_folder(mod)
+            latest_file = self.__get_latest_file(latest)
+            paths[mod] = latest_file
 
         return paths
+
+    def get_baseline_date(self, paths):
+        baselines = {}
+        for mod in self.modes:
+            file = paths[mod]
+
+            if file.extension == "parquet":
+                pass
+            elif file.extension == "csv":
+                pass
+            elif file.extension == "h5":
+                pass
+            else:
+                raise Exception("Extension not supported")
+
+            baselines[mod] = None
+        return None
 
     def append_data(self, df, type, date_col):
         df["__custom_timestamp"] = self.__create_timestamp(df, date_col)
