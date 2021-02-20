@@ -9,12 +9,13 @@ from .b3 import b3
 from .cripto import binance_api
 
 class Manager: 
-    def __init__(self, dataset_dir, format = "parquet", resolution = "week", grouping = "month"):
+    def __init__(self, dataset_dir, date_col = 'Date', format = "parquet", resolution = "week", grouping = "month"):
         self.dir = dataset_dir 
         self.latest_date = None
         self.format = format
         self.resolution = resolution
         self.grouping = grouping
+        self.date_col = date_col
         self.handlers = {
             "cripto" : file_handler(dataset_dir, "cripto"),
             "b3"  : file_handler(dataset_dir, "b3"),
@@ -22,7 +23,6 @@ class Manager:
             "fundamentus" : file_handler(dataset_dir, "fundamentus")
         }
         self.modes = self.handlers.keys()
-
 
     def __get_group(self, min_date):
         if self.grouping == "month":
@@ -62,36 +62,27 @@ class Manager:
 
         return paths
 
-    def get_baseline_date(self, paths):
-        baselines = {}
-        for mod in self.modes:
-            file = paths[mod]
+    def get_latest_dates(self):
+        dates = {}
+        files = self.get_latest_files()
+        for mod, file in files.items():
+            dates[mod] = self.get_baseline_date(mod, file)
+        
+        return dates
 
-            if file.extension == "parquet":
-                pass
-            elif file.extension == "csv":
-                pass
-            elif file.extension == "h5":
-                pass
-            else:
-                raise Exception("Extension not supported")
+    def get_baseline_date(self, asset, file):
+        data = self.handlers[asset].read_data(file)
+        latest_date = pd.to_datetime(data[self.date_col]).max()
+        return latest_date
 
-            baselines[mod] = None
-        return None
-
-    def append_data(self, df, type, date_col):
-        df["__custom_timestamp"] = self.__create_timestamp(df, date_col)
+    def append_data(self, df, asset):
+        df["__custom_timestamp"] = self.__create_timestamp(df, self.date_col)
 
         for ts, df_ts in df.groupby("__custom_timestamp"):
             df_ts = df_ts.drop(columns = "__custom_timestamp")
-            folder_group = self.__get_group(df_ts[date_col].min())
-            self.handlers[type].save_data(df_ts, timestamp = ts, group = folder_group, format = self.format, errors = False)
+            folder_group = self.__get_group(df_ts[self.date_col].min())
+            self.handlers[asset].save_data(df_ts, timestamp = ts, group = folder_group, format = self.format, errors = False)
 
     def append_errors(self, df):
         pass
 
-    def random_wait(self):
-        wait_times = [0.2, 0.5, 1, 2]
-        probs = [0.3, 0.4, 0.2, 0.1 ]
-        choice = np.random.choice(wait_times, size=1, p=probs)
-        return choice

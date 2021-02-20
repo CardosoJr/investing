@@ -10,7 +10,8 @@ from .cripto import binance_api
 from .DSManager import Manager
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-
+import pyarrow as pa
+import pyarrow.parquet as pq
 
 from pathlib import Path
 from tqdm import tqdm
@@ -154,10 +155,6 @@ def build_fundamentos(path_dir):
     tickers = fundamentus.get_tickers()
     tickers.rename(columns = {"Papel":"Ticker"}, inplace = True)
     return build_fundamentos_tickers(path_dir, tickers['Ticker'].unique().ravel())
-
-def update_daily_data(path_dir):
-    path = Path(path_dir)
-
 
 def random_wait():
     wait_times = [0.2, 0.5, 1, 2, 4]

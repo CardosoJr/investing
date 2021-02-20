@@ -43,6 +43,12 @@ class file_handler:
         return _dir
 
     def __append_data(self, data, file_path, format):
+        old_data = self.read_data(file_path)
+        return data.append(old_data)
+
+    def read_data(self, file_path):
+        format = Path(file_path).extension
+
         if format == "parquet":
             old_data = pq.read_table(file_path).to_pandas()
         elif format == "h5":
@@ -53,7 +59,8 @@ class file_handler:
             old_data = pd.read_feather(file_path)
         else:
             raise Exception("Format not found")
-        return data.append(old_data)
+
+        return old_data
 
     def save_data(self, data, timestamp, group, format='parquet', errors=False):
         _dir = Path(self._create_dir(group))
