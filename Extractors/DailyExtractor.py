@@ -89,7 +89,7 @@ class DailyExtractor:
         elif asset == "b3_funds":
             data = self.__extract_intraday(asset, self.__get_tickers(asset), date, self.interval)
         elif asset == "funds":
-            pass
+            return data
         else:
             raise Exception(f"Asset {asset} not supported")
 
@@ -108,6 +108,7 @@ class DailyExtractor:
         return result
 
     def __extract_intraday(self, asset, tickers, date, interval):
+        tickers = tickers[:5]
         delta = (datetime.now() - date).days
         if  delta > 30 and interval != "1d" and interval != "1h":
             date = datetime.now() + relativedelta(days = -30)
@@ -124,7 +125,7 @@ class DailyExtractor:
                     final = now
                 intervals.append((current, final))
                 current = current + relativedelta(days = 8)
-
+        
         all_data = pd.DataFrame([])
         errors = []
         for ticker in tqdm(tickers):
@@ -137,10 +138,10 @@ class DailyExtractor:
                     print("Could not load data from", ticker, "\n")
                     print(e)
                     errors.append(ticker)
-                    break
                 self.random_wait()
 
-        with open(self.dir / asset / datetime.now().stftime("%Y%m%d") +"_log.txt", 'w') as f:
+        log_file = datetime.now().strftime("%Y%m%d") +"_log.txt"
+        with open(self.dir / asset / log_file, 'w') as f:
             f.write('\n'.join(errors))
 
         return all_data

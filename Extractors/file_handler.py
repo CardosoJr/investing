@@ -49,15 +49,17 @@ class file_handler:
     def read_data(self, file_path):
         if isinstance(file_path, str):
             file_path = Path(file_path)
-        format = file_path.extension
+        if not file_path.is_file():
+            raise Exception(f"{file_path} is not a file")
+        format = file_path.suffix
 
-        if format == "parquet":
+        if format == ".parquet":
             old_data = pq.read_table(file_path).to_pandas()
-        elif format == "h5":
+        elif format == ".h5":
             old_data = pd.read_hdf(file_path, key="data")
-        elif format == "csv":
+        elif format == ".csv":
             old_data = pd.read_csv(file_path)
-        elif format == "feather":
+        elif format == ".feather":
             old_data = pd.read_feather(file_path)
         else:
             raise Exception("Format not found")
@@ -69,9 +71,9 @@ class file_handler:
         _timestamp = timestamp
 
         if errors:
-            _fp = _dir / f'{self.mode}_errors_{_timestamp}.{format}'
+            _fp = _dir /  f'{_timestamp}_errors.{format}'
         else:
-            _fp = _dir / f'{self.mode}_data_{_timestamp}.{format}'
+            _fp = _dir /  f'{_timestamp}_data.{format}'
 
         if _fp.exists:
             data = self.__append_data(data, _fp, format)
