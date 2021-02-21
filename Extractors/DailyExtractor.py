@@ -108,17 +108,16 @@ class DailyExtractor:
         return result
 
     def __extract_intraday(self, asset, tickers, date, interval):
-        tickers = tickers[:5]
-        delta = (datetime.now() - date).days
+        now = datetime.now()
+        delta = (now - date).days
         if  delta > 30 and interval != "1d" and interval != "1h":
-            date = datetime.now() + relativedelta(days = -30)
+            date = now + relativedelta(days = -30)
         
-        intervals = [(date, datetime.now())]
+        intervals = [(date, now)]
 
         if delta > 7 and interval == "1m":
             intervals = []
             current = date 
-            now = datetime.now()
             while current < now:
                 final = current + relativedelta(days = 7)
                 if final > now:
@@ -131,7 +130,7 @@ class DailyExtractor:
         for ticker in tqdm(tickers):
             for interval in intervals:
                 try:
-                    data = self.b3_api.Extract_Data(ticker, start = interval[0].strftime("%Y-%m-%d"), end = interval[1].strftime("%Y-%m-%d"), interval = self.interval)
+                    data = self.b3_api.Extract_Data(ticker, start = interval[0].strftime("%Y-%m-%d"), end = interval[1].strftime("%Y-%m-%d"), interval = interval)
                     data = data.reset_index().rename(columns = {"symbol" : "TICKER", "date" : "DATE"})
                     all_data = all_data.append(data)
                 except Exception as e: 
