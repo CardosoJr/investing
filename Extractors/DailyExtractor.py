@@ -14,8 +14,7 @@ from tqdm import tqdm
 import json
 
 class DailyExtractor:
-    def __init__(self, project_dir, baseline = None, assets = None, interval = "1m"):
-        self.baseline = baseline
+    def __init__(self, project_dir, assets = None, interval = "1m"):
         self.path = Path(__file__).parent
         self.manager = Manager(project_dir)
         self.dir = Path(project_dir)
@@ -33,6 +32,7 @@ class DailyExtractor:
                 dates[asset] = baseline_date
 
         for asset in self.assets: 
+            print("Starting for asset", asset)
             initial = dates[asset]
             data = self.get_data(initial, asset)
             if len(data) > 0:
@@ -51,7 +51,7 @@ class DailyExtractor:
             df = df.append(data)
             df.to_csv(self.dir / asset / "cripto_history.csv", index = False)
         elif asset == "b3_funds":
-            padf = pd.read_csv(self.dir / asset / "fundos_b3_history.csv")
+            df = pd.read_csv(self.dir / asset / "fundos_b3_history.csv")
             df = df.append(data)
             df.to_csv(self.dir / asset / "fundos_b3_history.csv", index = False)
         elif asset == "funds":
@@ -67,7 +67,7 @@ class DailyExtractor:
         return config['TICKERS']
 
     def get_history(self, date, asset):
-        data = pd.DataFramee([])
+        data = pd.DataFrame([])
         if asset == "b3":
             data = self.__extract_intraday(asset, self.__get_tickers(asset), date, "1d")
         elif asset == "cripto":
@@ -81,7 +81,7 @@ class DailyExtractor:
         return data
 
     def get_data(self, date, asset):
-        data = pd.DataFramee([])
+        data = pd.DataFrame([])
         if asset == "b3":
             data = self.__extract_intraday(asset, self.__get_tickers(asset), date, self.interval)
         elif asset == "cripto":
@@ -117,10 +117,12 @@ class DailyExtractor:
         for ticker in tqdm(tickers):
             try:
                 data = self.b3_api.Extract_Data(ticker, start = date.strftime("%Y-%m-%d"), end = datetime.now().strftime("%Y-%m-%d"), interval = self.interval)
+                print(data)
                 data = data.reset_index().rename(columns = {"symbol" : "TICKER", "date" : "DATE"})
                 all_data = all_data.append(data)
-            except: 
+            except Exception as e: 
                 print("Could not load data from", ticker)
+                print(e)
                 errors.append(ticker)
             self.random_wait()
 
