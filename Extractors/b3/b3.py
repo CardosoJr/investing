@@ -2,9 +2,9 @@ import pandas as pd
 from yahooquery import Ticker
 
 class B3:
-    def Extract_Data(self, asset_id, interval = "5m"):
+    def Extract_Data(self, asset_id, start, end, interval = "5m"):
         ticker = Ticker(asset_id)
-        data = ticker.history(period='2d', interval = interval)
+        data = ticker.history(start = start, end = end, interval = interval)
         return data
 
     def Extract_History(self, asset_id):

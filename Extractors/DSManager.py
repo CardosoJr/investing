@@ -9,7 +9,7 @@ from .b3 import b3
 from .cripto import binance_api
 
 class Manager: 
-    def __init__(self, dataset_dir, date_col = 'Date', format = "parquet", resolution = "week", grouping = "month"):
+    def __init__(self, dataset_dir, date_col = 'DATE', format = "parquet", resolution = "week", grouping = "month"):
         self.dir = dataset_dir 
         self.latest_date = None
         self.format = format
@@ -41,7 +41,7 @@ class Manager:
         p = Path(self.dir) / "type"
         folders = [x.name for x in p.glob('*') if x.is_dir()]
         dates = [datetime.strptime(x, "%Y%m") for x in folders]
-        latest = Path(self.dir) / "type" / max(dates).strptime("%Y%m")
+        latest = Path(self.dir) / "type" /  max(dates).strftime("%Y%m")
         return latest
 
     def __get_latest_file(self, file_path):
@@ -49,8 +49,8 @@ class Manager:
         files = [x.name for x in p.glob('*') if x.is_file()]
         extension = files[0].split(".")[-1]
         files = [x.split(".")[0] for x in files]
-        dates = [datetime.strptime(x, "%Y%W") for x in files]
-        latest = p.parent / max(dates).strptime("%Y%W") + "." + extension
+        dates = [int(x) for x in files]
+        latest = p.parent / str(max(dates)) + "." + extension
         return latest
 
     def get_latest_files(self):
