@@ -23,7 +23,7 @@ class DailyExtractor:
         self.b3_api = b3.B3()
 
     def run(self, baseline_date = None):
-        print("Extracting Intraday data")
+        print("Extracting Intraday data\n")
         dates = {}
         if baseline_date is None:
             dates = self.manager.get_latest_dates()
@@ -32,7 +32,7 @@ class DailyExtractor:
                 dates[asset] = baseline_date
 
         for asset in self.assets: 
-            print("Starting for asset", asset)
+            print("Starting for asset", asset, "\n")
             initial = dates[asset]
             data = self.get_data(initial, asset)
             if len(data) > 0:
@@ -115,10 +115,10 @@ class DailyExtractor:
         intervals = [(date, datetime.now())]
 
         if delta > 7 and interval == "1m":
-            current = date 
             intervals = []
+            current = date 
             now = datetime.now()
-            while current < datetime.now():
+            while current < now:
                 final = current + relativedelta(days = 7)
                 if final > now:
                     final = now
@@ -134,7 +134,7 @@ class DailyExtractor:
                     data = data.reset_index().rename(columns = {"symbol" : "TICKER", "date" : "DATE"})
                     all_data = all_data.append(data)
                 except Exception as e: 
-                    print("Could not load data from", ticker)
+                    print("Could not load data from", ticker, "\n")
                     print(e)
                     errors.append(ticker)
                     break
