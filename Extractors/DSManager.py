@@ -10,7 +10,7 @@ from .cripto import binance_api
 
 class Manager: 
     def __init__(self, dataset_dir, date_col = 'DATE', format = "parquet", resolution = "week", grouping = "month"):
-        self.dir = dataset_dir 
+        self.dir = Path(dataset_dir) 
         self.latest_date = None
         self.format = format
         self.resolution = resolution
@@ -38,14 +38,14 @@ class Manager:
         return timestamp
 
     def __get_latest_folder(self, type):
-        p = Path(self.dir) / "type"
+        p = self.dir / "type"
         folders = [x.name for x in p.glob('*') if x.is_dir()]
         dates = [datetime.strptime(x, "%Y%m") for x in folders]
-        latest = Path(self.dir) / "type" /  max(dates).strftime("%Y%m")
+        latest = self.dir / "type" /  max(dates).strftime("%Y%m")
         return latest
 
     def __get_latest_file(self, file_path):
-        p = Path(file_path)
+        p = file_path
         files = [x.name for x in p.glob('*') if x.is_file()]
         extension = files[0].split(".")[-1]
         files = [x.split(".")[0] for x in files]

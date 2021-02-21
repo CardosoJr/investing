@@ -53,7 +53,7 @@ class DailyExtractor:
         elif asset == "b3_funds":
             padf = pd.read_csv(self.dir / asset / "fundos_b3_history.csv")
             df = df.append(data)
-            df.to_csv(self.dir / asset / "fundos_b3_history.csv", index = False)ss
+            df.to_csv(self.dir / asset / "fundos_b3_history.csv", index = False)
         elif asset == "funds":
             df = pd.read_csv(self.dir / asset / "fundos_history.csv")
             df = df.append(data)

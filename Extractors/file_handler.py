@@ -24,21 +24,21 @@ class file_handler:
 
     '''
     def __init__(self, project_dir, mode):
-        self.project_dir = project_dir
+        self.project_dir = Path(project_dir)
         self.mode = mode
 
     def __check_exists_or_create(self, _dir):
         """fn: to check if file/path exists"""
-        if not Path(_dir).exists():
+        if not _dir.exists():
             try:
-                Path(_dir).mkdir(parents = True)
+                _dir.mkdir(parents = True)
             except Exception as e:
                 print(e)
         return
 
     def _create_dir(self, grouping):
         """fn: create daily directory if not already created"""
-        _dir = self.project_dir+'/' + self.mode + '/' + grouping +'/'
+        _dir = self.project_dir  / self.mode / grouping
         self.__check_exists_or_create(_dir)
         return _dir
 
@@ -47,7 +47,9 @@ class file_handler:
         return data.append(old_data)
 
     def read_data(self, file_path):
-        format = Path(file_path).extension
+        if isinstance(file_path, str):
+            file_path = Path(file_path)
+        format = file_path.extension
 
         if format == "parquet":
             old_data = pq.read_table(file_path).to_pandas()
@@ -63,7 +65,7 @@ class file_handler:
         return old_data
 
     def save_data(self, data, timestamp, group, format='parquet', errors=False):
-        _dir = Path(self._create_dir(group))
+        _dir = self._create_dir(group)
         _timestamp = timestamp
 
         if errors:
