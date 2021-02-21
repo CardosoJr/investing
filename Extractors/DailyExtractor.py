@@ -23,7 +23,7 @@ class DailyExtractor:
         self.b3_api = b3.B3()
 
     def run(self, baseline_date = None):
-        print("Extracting Intraday data\n")
+        print("Extracting Intraday data \n")
         dates = {}
         if baseline_date is None:
             dates = self.manager.get_latest_dates()

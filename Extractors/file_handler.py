@@ -75,7 +75,7 @@ class file_handler:
         else:
             _fp = _dir /  f'{_timestamp}_data.{format}'
 
-        if _fp.exists:
+        if _fp.exists():
             data = self.__append_data(data, _fp, format)
 
         if format=='parquet':

@@ -90,13 +90,9 @@ class Manager:
 
     def append_data(self, df, asset):
         df["__custom_timestamp"] = self.__create_timestamp(df, self.date_col)
-        print(df["__custom_timestamp"])
-        print("\n")
         for ts, df_ts in df.groupby("__custom_timestamp"):
             df_ts = df_ts.drop(columns = "__custom_timestamp")
             folder_group = self.__get_group(df_ts[self.date_col].min())
-            print(folder_group)
-            print("\n")
             self.handlers[asset].save_data(df_ts, timestamp = ts, group = folder_group, format = self.format, errors = False)
 
     def append_errors(self, df):
