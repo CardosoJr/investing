@@ -38,7 +38,7 @@ def get_data(start_date, end_date, filter = None, min_cot = None):
   final = datetime.strptime(end_date, "%Y-%m-%d") 
   
   anomes = []
-  while initial <= final:
+  while int(initial.strftime("%Y%m")) <= int(final.strftime("%Y%m")):
       anomes.append(initial.strftime("%Y%m"))
       initial = initial + relativedelta(months = 1)
 

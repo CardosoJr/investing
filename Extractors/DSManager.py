@@ -38,13 +38,13 @@ class Manager:
             timestamp = df[date_col].dt.strftime("%Y%W")
         return timestamp
 
-    def __get_latest_folder(self, type):
-        p = self.dir / "type"
+    def __get_latest_folder(self, asset):
+        p = self.dir / asset
         folders = [x.name for x in p.glob('*') if x.is_dir()]
         if len(folders) == 0:
             return None
         dates = [datetime.strptime(x, "%Y%m") for x in folders]
-        latest = self.dir / "type" /  max(dates).strftime("%Y%m")
+        latest = self.dir / asset /  max(dates).strftime("%Y%m")
         return latest
 
     def __get_latest_file(self, file_path):
@@ -55,17 +55,20 @@ class Manager:
         if len(files) == 0:
             return None
         extension = files[0].split(".")[-1]
-        files = [x.split(".")[0] for x in files]
+        files = [x.split("_")[0] for x in files]
         dates = [int(x) for x in files]
-        file_name = str(max(dates)) + "." + extension
-        latest = p.parent / file_name
+        file_name = str(max(dates)) + "_data." + extension
+        latest = p / file_name
         return latest
 
     def get_latest_files(self):
         paths = {}
         for mod in self.modes:
-            latest = self.__get_latest_folder(mod)
-            latest_file = self.__get_latest_file(latest)
+            if mod == "funds":
+                latest_file = self.dir / mod / "fundos_history.csv"
+            else:
+                latest = self.__get_latest_folder(mod)
+                latest_file = self.__get_latest_file(latest)
             paths[mod] = latest_file
 
         return paths
