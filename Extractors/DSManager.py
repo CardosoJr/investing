@@ -40,13 +40,19 @@ class Manager:
     def __get_latest_folder(self, type):
         p = self.dir / "type"
         folders = [x.name for x in p.glob('*') if x.is_dir()]
+        if len(folders) == 0:
+            return None
         dates = [datetime.strptime(x, "%Y%m") for x in folders]
         latest = self.dir / "type" /  max(dates).strftime("%Y%m")
         return latest
 
     def __get_latest_file(self, file_path):
+        if file_path is None:
+            return None
         p = file_path
         files = [x.name for x in p.glob('*') if x.is_file()]
+        if len(files) == 0:
+            return None
         extension = files[0].split(".")[-1]
         files = [x.split(".")[0] for x in files]
         dates = [int(x) for x in files]
@@ -71,6 +77,8 @@ class Manager:
         return dates
 
     def get_baseline_date(self, asset, file):
+        if file is None:
+            return datetime.now()
         data = self.handlers[asset].read_data(file)
         latest_date = pd.to_datetime(data[self.date_col]).max()
         return latest_date
