@@ -2,7 +2,7 @@ import pandas as pd
 from yahooquery import Ticker
 
 class B3:
-    def Extract_Data(self, asset_id, start, end, interval = "5m"):
+    def Extract_Data(self, asset_id, start, end, interval):
         ticker = Ticker(asset_id)
         data = ticker.history(start = start, end = end, interval = interval)
         return data

@@ -113,24 +113,24 @@ class DailyExtractor:
         if  delta > 30 and interval != "1d" and interval != "1h":
             date = now + relativedelta(days = -30)
         
-        intervals = [(date, now)]
+        date_intervals = [(date, now)]
 
         if delta > 7 and interval == "1m":
-            intervals = []
+            date_intervals = []
             current = date 
             while current < now:
                 final = current + relativedelta(days = 7)
                 if final > now:
                     final = now
-                intervals.append((current, final))
+                date_intervals.append((current, final))
                 current = current + relativedelta(days = 8)
         
         all_data = pd.DataFrame([])
         errors = []
         for ticker in tqdm(tickers):
-            for interval in intervals:
+            for dt_interval in date_intervals:
                 try:
-                    data = self.b3_api.Extract_Data(ticker, start = interval[0].strftime("%Y-%m-%d"), end = interval[1].strftime("%Y-%m-%d"), interval = interval)
+                    data = self.b3_api.Extract_Data(ticker, start = dt_interval[0].strftime("%Y-%m-%d"), end = dt_interval[1].strftime("%Y-%m-%d"), interval = interval)
                     data = data.reset_index().rename(columns = {"symbol" : "TICKER", "date" : "DATE"})
                     all_data = all_data.append(data)
                 except Exception as e: 
