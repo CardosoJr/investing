@@ -1,4 +1,5 @@
-from datetime import date
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 import pandas as pd 
 import numpy as np
 from pandas._libs.tslibs import Timestamp
@@ -80,7 +81,10 @@ class Manager:
         if file is None:
             return datetime.now()
         data = self.handlers[asset].read_data(file)
-        latest_date = pd.to_datetime(data[self.date_col]).max()
+        latest_date = pd.to_datetime(data[self.date_col]).max() + relativedelta(days = 1)
+        now = datetime.now()
+        if latest_date > now:
+            latest_date = now
         return latest_date
 
     def append_data(self, df, asset):
