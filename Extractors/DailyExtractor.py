@@ -111,20 +111,34 @@ class DailyExtractor:
         delta = (datetime.now() - date).days
         if  delta > 30 and interval != "1d" and interval != "1h":
             date = datetime.now() + relativedelta(days = -30)
+        
+        intervals = [(date, datetime.now())]
+
+        if delta > 7 and interval == "1m":
+            current = date 
+            intervals = []
+            now = datetime.now()
+            while current < datetime.now():
+                final = current + relativedelta(days = 7)
+                if final > now:
+                    final = now
+                intervals.append((current, final))
+                current = current + relativedelta(days = 8)
 
         all_data = pd.DataFrame([])
         errors = []
         for ticker in tqdm(tickers):
-            try:
-                data = self.b3_api.Extract_Data(ticker, start = date.strftime("%Y-%m-%d"), end = datetime.now().strftime("%Y-%m-%d"), interval = self.interval)
-                print(data)
-                data = data.reset_index().rename(columns = {"symbol" : "TICKER", "date" : "DATE"})
-                all_data = all_data.append(data)
-            except Exception as e: 
-                print("Could not load data from", ticker)
-                print(e)
-                errors.append(ticker)
-            self.random_wait()
+            for interval in intervals:
+                try:
+                    data = self.b3_api.Extract_Data(ticker, start = interval[0].strftime("%Y-%m-%d"), end = interval[1].strftime("%Y-%m-%d"), interval = self.interval)
+                    data = data.reset_index().rename(columns = {"symbol" : "TICKER", "date" : "DATE"})
+                    all_data = all_data.append(data)
+                except Exception as e: 
+                    print("Could not load data from", ticker)
+                    print(e)
+                    errors.append(ticker)
+                    break
+                self.random_wait()
 
         with open(self.dir / asset / datetime.now().stftime("%Y%m%d") +"_log.txt", 'w') as f:
             f.write('\n'.join(errors))
