@@ -91,6 +91,37 @@ class Manager:
             latest_date = now
         return latest_date
 
+    def read_data(self, asset, start, end = None):
+        if end is None: 
+            end = datetime.now()
+
+        if isinstance(start, str):
+            start = datetime.strptime(start, "%Y-%m-%d")
+        if isinstance(end, str):
+            end = datetime.strptime(end, "%Y-%m-%d")
+
+        weeks = []
+        current = start
+        while current < end:
+            weeks.append(current)
+            current = current + relativedelta(days = 7)
+        
+        if current[-1].strftime("%Y%W") != end.strptime("%Y%W"):
+            weeks.append(end)
+
+        weeks = [x.strftime("%Y%W") for x in weeks]
+        weeks = list(dict.fromkeys(weeks)) # Removing duplicates
+
+        asset_dir = self.dir / asset
+        all_asset_files = [x for x in asset_dir.rglob("*") if x.is_file()]
+
+        files2read = [x for x in all_asset_files if x.name.split("_")[0] in weeks]
+        data = []
+        for file_path in files2read:
+            data.append(self.handlers[asset].read_data(file_path))
+        df = pd.concat(data, ignore_index = True)
+        return df
+
     def append_data(self, df, asset):
         df["__custom_timestamp"] = self.__create_timestamp(df, self.date_col)
         for ts, df_ts in df.groupby("__custom_timestamp"):
