@@ -22,7 +22,7 @@ class FinanceAnalysis:
 
         self.port['TICKER'] == np.where(self.port['TYPE'] == "CRIPTO", np.port['TICKER'] + "-BTC", self.port['TICKER'])
 
-
+    
     def daily_view(self):
         pass
 
