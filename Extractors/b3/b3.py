@@ -23,3 +23,11 @@ class B3:
 
     def Get_Summary(self, asset_id):
         return Ticker(asset_id).summary_detail[asset_id]
+
+    def Get_Full_Real_Time_Quote(self, asset_id):
+        ticker = Ticker(asset_id)   
+        data = ticker.quotes
+        return data
+
+    def Get_Real_Time_Quote(self, asset_id):
+        return self.Get_Full_Real_Time_Quote(asset_id)['regularMarketPrice']
