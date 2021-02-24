@@ -7,17 +7,26 @@ import pandas as pd
 import squarify # pip install squarify (algorithm for treemap)&lt;/pre&gt;
 import seaborn as sns 
 
-
-
 class FinanceAnalysis:
     def __init__(self, path_dir):
         self.path = Path(path_dir)
-        self.df = pd.read_excel(self.path / "portfolio.xlsx")
-        
+        self.port = pd.read_excel(self.path / "portfolio.xlsx")
+        self.__preprocess_portfolio()
+
+    def __preprocess_portfolio(self):
+        self.port['TICKER'] = np.where(self.port['TYPE'] == "FII" or 
+                                                        self.port['TYPE'] == "STOCK" or
+                                                        self.port['TYPE'] == "BDR" or 
+                                                        self.port['TYPE'] == "ETF", 
+                                       self.port['TICKER'] + ".SA", self.port['TICKER'])
+
+        self.port['TICKER'] == np.where(self.port['TYPE'] == "CRIPTO", np.port['TICKER'] + "-BTC", self.port['TICKER'])
+
+
     def daily_view(self):
         pass
 
-    def portfolio_treemap(self, data, performance, labels):
+    def treemap(self, data, performance, labels):
         # Create a dataset:
         my_values=[i**3 for i in range(1,100)]
         
