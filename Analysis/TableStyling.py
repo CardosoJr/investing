@@ -29,22 +29,21 @@ class Table:
         self.format()
 
     def format(self):
-        tickers_col = [x for x,t in self.params.items() if t.lower() == "ticker"]
+        tickers_col = [x for x,t in self.params if t.lower() == "ticker"]
         ticker = None
         if len(tickers_col) > 0:
             ticker = tickers_col[0]
 
-
         self.style = self.df.style.pipe(self.hide_index)\
                 .pipe(self.set_css_properties)\
-                .pipe(self.format_cols, perc_cols =       [x for x,t in self.params.items() if t.lower() == "percent"],
-                                        numerical_cols =  [x for x,t in self.params.items() if t.lower() == "numerical"],
-                                        money_cols =      [x for x,t in self.params.items() if t.lower() == "money"],
-                                        date_cols  =      [x for x,t in self.params.items() if t.lower() == "date"])\
                 .pipe(self.make_tickers_hyperlinks, ticker_col = ticker)\
-                .pipe(self.gradient_backgroud, cols = [x for x,t in self.params.items() if t.lower() == "gradient_color"])\
-                .pipe(self.double_bar, cols = [x for x,t in self.params.items() if t.lower() == "double_bar"])\
-                .pipe(self.bar, cols = [x for x,t in self.params.items() if t.lower() == "bar"])\
+                .pipe(self.gradient_backgroud, cols = [x for x,t in self.params if t.lower() == "gradient_color"])\
+                .pipe(self.double_bar, cols = [x for x,t in self.params if t.lower() == "double_bar"])\
+                .pipe(self.bar, cols = [x for x,t in self.params if t.lower() == "bar"])\
+                .pipe(self.format_cols, perc_cols =       [x for x,t in self.params if t.lower() == "percent"],
+                                        numerical_cols =  [x for x,t in self.params if t.lower() == "numerical"],
+                                        money_cols =      [x for x,t in self.params if t.lower() == "money"],
+                                        date_cols  =      [x for x,t in self.params if t.lower() == "date"])\
                 .set_caption(self.title)
 
 
@@ -84,7 +83,7 @@ class Table:
     def set_css_properties(self, style, css = None):
         if css is None:
             # Set CSS properties for th elements in dataframe
-            th_props = [('font-size', '14px'),
+            th_props = [('font-size', '16px'),
                         ('text-align', 'center'),
                         ("border-top", "1px solid #C1C3D1;"),
                         ("border-bottom-", "1px solid #C1C3D1;"),
@@ -92,16 +91,24 @@ class Table:
                         ('font-weight', 'normal'),
                         ('color', '#D5DDE5'),
                         ('background-color', '#1b1e24')]
-            # Set CSS properties for td elements in dataframe
+
+                        
             table_props = [("background-color", "#f0ebeb;")]
 
-            td_props = [('font-size', '12px'),
+            tr_hover_props = [("background-color", '#b5e3ff'), 
+                 ('color', 'white'), 
+                 ('cursor', 'pointer'),
+                 ('font-weight', "bold"),
+                #  ("border-top", "1px solid #22262e;")
+                 ]
+
+            td_props = [('font-size', '14px'),
                         # ("background", "#FFFFFF;"),
                         ("text-align", "left;"),
                         ("vertical-align", "middle;"),
-                        ("font-weight", "300;"),
+                        ("font-weight", "500;"),
                         ('color', 'black'),
-                        ("text-shadow", "-1px -1px 1px rgba(0, 0, 0, 0.1);"),
+                        # ("text-shadow", "-1px -1px 1px rgba(0, 0, 0, 0.1);"),
                         ("border-right", "1px solid #C1C3D1;")]
 
             caption_props = [
@@ -112,7 +119,9 @@ class Table:
             styles = [dict(selector="th", props=th_props),
                       dict(selector="td", props=td_props),
                       dict(selector="caption", props=caption_props),
-                      dict(selector="tr", props = table_props)]
+                      dict(selector="tr:hover", props=tr_hover_props),
+                      dict(selector="tr", props = table_props),
+                      ]
 
             return style.set_table_styles(styles)
         else:
