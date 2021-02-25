@@ -4,3 +4,11 @@ numpy
 pydrive
 tqdm
 yaml
+sparklines
+matplotlib 
+seaborn
+dash==1.0.0
+gunicorn==19.9.0
+pandas==0.23.4
+
+
