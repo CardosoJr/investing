@@ -93,7 +93,7 @@ class Table:
                         ('color', '#D5DDE5'),
                         ('background-color', '#1b1e24')]
             # Set CSS properties for td elements in dataframe
-            table_props = [("background", "#FFFFFF;")]
+            table_props = [("background-color", "#f0ebeb;")]
 
             td_props = [('font-size', '12px'),
                         # ("background", "#FFFFFF;"),
@@ -112,7 +112,7 @@ class Table:
             styles = [dict(selector="th", props=th_props),
                       dict(selector="td", props=td_props),
                       dict(selector="caption", props=caption_props),
-                      dict(selector="body", props = table_props)]
+                      dict(selector="tr", props = table_props)]
 
             return style.set_table_styles(styles)
         else:
