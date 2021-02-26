@@ -91,6 +91,13 @@ class Manager:
             latest_date = now
         return latest_date
 
+    def read_data_all(self, start, end = None):
+        result = {}
+        for asset in self.modes:
+            data = self.read_data(asset, start, end)
+            result[asset] = data
+        return result
+
     def read_data(self, asset, start, end = None):
         if end is None: 
             end = datetime.now()
