@@ -38,7 +38,10 @@ class file_handler:
 
     def _create_dir(self, grouping):
         """fn: create daily directory if not already created"""
-        _dir = self.project_dir  / self.mode / grouping
+        if grouping is None or grouping == "":
+            _dir = self.project_dir / self.mode
+        else:
+            _dir = self.project_dir  / self.mode / grouping
         self.__check_exists_or_create(_dir)
         return _dir
 
@@ -65,6 +68,20 @@ class file_handler:
             raise Exception("Format not found")
 
         return old_data
+
+    def __save_config(self, latest_date):
+        config_file = self.project_dir / self.mode / "config.json"
+
+        if config_file.exists():
+            with open(config_file, 'r') as f:
+                data = json.load(f)
+        else:
+            data = {}
+        data['LAST_DATE'] = latest_date.strftime("%Y-%m-%d")
+
+        with open(config_file, 'wr') as f:
+            json.dump(data, f)
+
 
     def save_data(self, data, timestamp, group, format='parquet', errors=False):
         _dir = self._create_dir(group)

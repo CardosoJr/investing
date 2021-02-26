@@ -19,6 +19,7 @@ class DailyExtractor:
         self.manager = Manager(project_dir)
         self.dir = Path(project_dir)
         self.assets = assets
+        self.assets.extend([x + "_history" for x in assets])
         self.interval = interval
         self.b3_api = b3.B3()
 
@@ -34,62 +35,33 @@ class DailyExtractor:
         for asset in self.assets: 
             print("Starting for asset", asset, "\n")
             initial = dates[asset]
-            data = self.get_data(initial, asset)
+            asset_name = asset.split("_history")[0]
+            if "history" in asset:
+                data = self.get_data(initial, asset_name, history = True)
+            else:
+                data = self.get_data(initial, asset_name)
             if len(data) > 0:
                 self.manager.append_data(data, asset)
-            
-            history = self.get_history(initial, asset)
-            self.save_history(history, asset)
 
-    def save_history(self, data, asset):
-        if asset == "b3":
-            df = pd.read_csv(self.dir / asset / "history.csv")
-            df = df.append(data)
-            df.to_csv(self.dir / asset / "history.csv", index = False)
-        elif asset == "cripto":
-            df = pd.read_csv(self.dir / asset / "cripto_history.csv")
-            df = df.append(data)
-            df.to_csv(self.dir / asset / "cripto_history.csv", index = False)
-        elif asset == "b3_funds":
-            df = pd.read_csv(self.dir / asset / "fundos_b3_history.csv")
-            df = df.append(data)
-            df.to_csv(self.dir / asset / "fundos_b3_history.csv", index = False)
-        elif asset == "funds":
-            df = pd.read_csv(self.dir / asset / "fundos_history.csv")
-            df = df.append(data)
-            df.to_csv(self.dir / asset / "fundos_history.csv", index = False)
-        else:
-            raise Exception(f"Asset {asset} not supported")
-    
     def __get_tickers(self, asset):
         with open(self.dir / asset / "config.json", 'r') as f:
             config = json.load(f)
         return config['TICKERS']
 
-    def get_history(self, date, asset):
+    def get_data(self, date, asset, history = False):
+        inter = self.interval
+        if history:
+            inter = '1d'
         data = pd.DataFrame([])
         if asset == "b3":
-            data = self.__extract_intraday(asset, self.__get_tickers(asset), date, "1d")
+            data = self.__extract_intraday(asset, self.__get_tickers(asset), date, inter)
         elif asset == "cripto":
-            data = self.__extract_intraday(asset, self.__get_tickers(asset), date, "1d")
+            data = self.__extract_intraday(asset, self.__get_tickers(asset), date, inter)
         elif asset == "b3_funds":
-            data = self.__extract_intraday(asset, self.__get_tickers(asset), date , "1d")
+            data = self.__extract_intraday(asset, self.__get_tickers(asset), date, inter)
         elif asset == "funds":
-            data = self.__extract_funds_history(date)
-        else:
-            raise Exception(f"Asset {asset} not supported")
-        return data
-
-    def get_data(self, date, asset):
-        data = pd.DataFrame([])
-        if asset == "b3":
-            data = self.__extract_intraday(asset, self.__get_tickers(asset), date, self.interval)
-        elif asset == "cripto":
-            data = self.__extract_intraday(asset, self.__get_tickers(asset), date, self.interval)
-        elif asset == "b3_funds":
-            data = self.__extract_intraday(asset, self.__get_tickers(asset), date, self.interval)
-        elif asset == "funds":
-            return data
+            if history:
+                data = self.__extract_funds_history(date) 
         else:
             raise Exception(f"Asset {asset} not supported")
 

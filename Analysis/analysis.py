@@ -4,7 +4,6 @@ from pathlib import Path
 import matplotlib
 import matplotlib.pyplot as plt
 import pandas as pd
-import squarify # pip install squarify (algorithm for treemap)&lt;/pre&gt;
 import seaborn as sns 
 import plotly.express as px
 from .Analysis import TableStyling
@@ -14,7 +13,11 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import plotly.graph_objects as go
 
-class FinanceAnalysis:
+class CurrentViewAnalysis:
+    """
+        Builds Current Market View with Porfolio
+    """
+
     def __init__(self, path_dir):
         self.path = Path(path_dir)
         self.port = pd.read_excel(self.path / "portfolio.xlsx")
@@ -149,3 +152,20 @@ class FinanceAnalysis:
 
         fig = go.Figure(data = [trace], layout = layout)
         fig.show()
+
+
+class PortfolioView(self):
+    def __init__(self):
+        pass
+
+class AssetsView:
+    def __init__(self):
+        pass
+    ]
+class FundsView():
+    def __init__(self):
+        pass
+
+class HistoryView:
+    def __init__(self):
+        pass
