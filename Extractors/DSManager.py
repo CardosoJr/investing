@@ -172,10 +172,38 @@ class Manager:
         with open(config_file, 'w') as f:
             json.dump(data, f)
     
-    
     def append_errors(self, df):
         pass
 
-    def update_config(self):
-        pass
+    def update_config(self, update_from_file = None):
+        for asset in self.asset_types:
+            self.__update_config(asset, update_from_file)
+
+    def __update_config(self, asset, update_from_file = None):
+        
+        p = self.dir / asset / 'config.json'
+
+        if p.exists():
+            with open(p, 'r') as f: 
+                data = json.load(f)
+        else:
+            data = {}
+
+        if "history" not in asset:
+            last_file = self.__get_latest_file(asset + "_history") # read always from history
+        else:
+            last_file = self.__get_latest_file(asset)
+            
+        df = self.handlers[asset].read_data(last_file)
+        tickers = df['TICKERS'].unique.ravel().tolist()
+
+        if update_from_file is not None:
+            new_tickers = pd.read_csv(Path(update_from_file))['TICKER'].ravel().tolist()
+            tickers = list(set(tickers) + set(new_tickers))
+
+        data['TICKERS'] = tickers
+
+        with open(p, 'w') as f:
+            json.dump(data, f)
+
 

@@ -3,10 +3,9 @@ import pandas as pd
 import numpy as np
 from datetime import datetime
 from pathlib import Path
-
+import json
 import pyarrow as pa
 import pyarrow.parquet as pq
-
 
 class file_handler:
     '''
