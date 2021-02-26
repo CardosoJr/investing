@@ -7,7 +7,7 @@ import pandas as pd
 import squarify # pip install squarify (algorithm for treemap)&lt;/pre&gt;
 import seaborn as sns 
 import plotly.express as px
-import .TableStyling
+from .Analysis import TableStyling
 from .Extracotrs.b3 import b3
 from .Extractors import DSManager
 from datetime import datetime
@@ -22,6 +22,7 @@ class FinanceAnalysis:
         self.manager = DSManager.Manager("../DATA/")
         self.now = datetime.now()
         self.b3_api = b3.B3()
+        self.daily_view()
 
     def __preprocess_portfolio(self):
         self.port['TICKER'] = np.where(self.port['TYPE'] == "FII" or 
@@ -32,8 +33,19 @@ class FinanceAnalysis:
 
         self.port['TICKER'] == np.where(self.port['TYPE'] == "CRIPTO", np.port['TICKER'] + "-BTC", self.port['TICKER'])
 
+
+    def __get_fundamentals(self):
+        self.fundamentals = {}
+        self.fundamentals['b3'] = pd.read_csv(path / "b3" / "assets.csv")
+        self.fundamentals['b3_funds'] = pd.read_csv(path / "b3_funds" / "assets_fundos_b3.csv")
+
     def __get_latest_price(self):
-        self.6month_results = self.manager.read_data_all(self.now + relativedelta(months = -6), self.now)
+        self.recent_results = self.manager.read_data_all(self.now + relativedelta(months = -6), self.now)
+        self.history = {}
+        self.history['b3'] = pd.read_csv(path / "b3" / "history.csv")
+        self.history['b3_funds'] = pd.read_csv(path / "b3_funds" / "fundos_b3_history.csv")
+        self.history['cripto'] = pd.read_csv(path / "cripto" / "cripto_history.csv")
+        self.history['funds'] = pd.read_csv(path / "funds" / "fundos_history.csv")
 
     def __get_rt_price(self):
         b3_tickers = self.port[self.port['TYPE'] != "FUNDS"]['TICKER'].ravel()
@@ -45,7 +57,7 @@ class FinanceAnalysis:
                 result[ticker] = np.nan
                 print("could not get rt price from", ticker, "\n")
         funds_tickers = self.port[self.port['TYPE'] == "FUNDS"]['TICKER'].ravel()
-        price = self.6month_results['funds'][self.6month_results['funds']['TICKER'].isin(funds_tickers)]
+        price = self.recent_results['funds'][self.recent_results['funds']['TICKER'].isin(funds_tickers)]
         max_dt = price['DATE'].max()
         latest_price = price[price['DATA'] == max_dt][['TICKER', "PRICE"]]
         latest_price = latest_price.set_index('TICKER')['PRICE'].to_dict()
@@ -53,6 +65,16 @@ class FinanceAnalysis:
         self.port['RT_PRICE'] = self.port['TICKER'].apply(lambda x: result[x])
 
     def __process_port(self):
+        # Calculating metrics per ticket
+        gpr = self.port.groupby('TICKER')
+        new_df = pd.DataFrame([])
+        new_df['TOTAL'] = gpr['TOTAL'].sum()
+        new_df['PRICE'] = gpr['PRICE'].multiply(gpr['QUANTITY'])).sum() / gpr['QUANTITY'].sum() # calculating mean price as current
+        new_df['ASSET'] = gpr['ASSET'].first()
+        new_df['TYPE'] = gpr['TYPE'].first()
+        new_df['QUANTITY'] = gpr['QUANTITY'].sum()
+        self.port = new_df.reset_index()
+
         self.port['REPRESENTATION'] = self.port['TOTAL'] / self.port['TOTAL'].sum()
         self.port['CHG'] = (self['RT_PRICE'] - self['PRICE']) / self['PRICE']
         self.port['CHG_VOL'] = self.port['RT_PRICE'] - self.port['PRICE'])
@@ -61,6 +83,7 @@ class FinanceAnalysis:
 
     def daily_view(self):
         self.__get_latest_price()
+        self.__get_fundamentals()
         self.__get_rt_price()
         self.__process_port()
 
@@ -93,8 +116,6 @@ class FinanceAnalysis:
                                 color = (df[aux_color_column].sum() - df[value_column].sum()) / df[value_column].sum() ))
         df_all_trees = df_all_trees.append(total, ignore_index=True)
         return df_all_trees
-
-
 
     def plot_treemap(self, port):
         levels = ['ASSET', 'TYPE'] # levels used for the hierarchical chart
