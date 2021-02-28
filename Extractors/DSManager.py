@@ -30,7 +30,6 @@ class Manager:
             "cripto" : file_handler(dataset_dir, "cripto"),
             "b3"  : file_handler(dataset_dir, "b3"),
             "b3_funds" : file_handler(dataset_dir, "b3_funds"),
-            "funds" : file_handler(dataset_dir, "funds"),
             "cripto_history" : file_handler(dataset_dir, "cripto_history"),
             "b3_history"  : file_handler(dataset_dir, "b3_history"),
             "b3_funds_history" : file_handler(dataset_dir, "b3_funds_history"),
@@ -55,12 +54,14 @@ class Manager:
 
     def __get_latest_file(self, asset):
         p = self.dir / asset 
-        files = [x.name for x in p.glob('*') if x.is_file()]
+        files = [x.name for x in p.rglob('*') if x.is_file()]
         if len(files) == 0:
             return None
         extension = files[0].split(".")[-1]
         files = [x.split("_")[0] for x in files]
-        dates = [int(x) for x in files]
+        dates = [int(x) for x in files if x.isdigit()]
+        if len(dates) == 0:
+            return None
         file_name = str(max(dates)) + "_data." + extension
         latest = p / file_name
         return latest
@@ -181,7 +182,6 @@ class Manager:
             self.__update_config(asset, update_from_file)
 
     def __update_config(self, asset, update_from_file = None):
-        
         p = self.dir / asset / 'config.json'
 
         if p.exists():
