@@ -5,6 +5,7 @@ import sys
 import numpy as np
 from .fundamentus import fundamentus, advfn
 from .b3 import b3
+from .indicadores import bcb
 from .fundos import fundos
 from .DSManager import Manager
 from datetime import datetime
@@ -36,12 +37,30 @@ class DailyExtractor:
             print("Starting for asset", asset, "\n")
             initial = dates[asset]
             asset_name = asset.split("_history")[0]
-            if "history" in asset:
+            if "KPI" in asset:
+                data = self.__get_kpis_data(asset, initial)
+            elif "history" in asset:
                 data = self.get_data(initial, asset_name, history = True)
             else:
                 data = self.get_data(initial, asset_name)
             if len(data) > 0:
                 self.manager.append_data(data, asset)
+
+    def __get_kpis_data(self, asset, date):
+        result = pd.DataFrame([])
+        now = datetime.now()
+        data = []
+
+        for ticker in ['selic', 'ipca', 'igpm', 'cdi', 'pnad', 'cambio', 'pib']:
+            ds = bcb.get_data_bcb(ticker, date, now)
+            ds = ds.rename(columns = {'data' : 'DATE', 'valor' : 'close'})
+            ds['TICKER'] = [ticker] * len(ds)
+            data.append(ds)
+
+        data.append(self.__extract_intraday(asset, ["^BVSP", 'IFIX.SA'], date, '1d'))
+
+        result = pd.concat(data, ignore_index = True)
+        return result
 
     def __get_tickers(self, asset):
         with open(self.dir / asset / "config.json", 'r') as f:

@@ -14,7 +14,6 @@ bcb_series = {
     'pib' : 4380
 }
 
-
 def get_data_bcb(series, start, end):
     now = datetime.now()
     if start is None:

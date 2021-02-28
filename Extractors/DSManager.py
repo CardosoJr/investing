@@ -24,6 +24,7 @@ class Manager:
             "b3_history"  : ('year', None),
             "b3_funds_history" : ('year', None),
             "funds_history" : ('year', None),
+            "KPIs_history" : ('year', None),
         }
         self.handlers = {
             "cripto" : file_handler(dataset_dir, "cripto"),
@@ -33,7 +34,8 @@ class Manager:
             "cripto_history" : file_handler(dataset_dir, "cripto_history"),
             "b3_history"  : file_handler(dataset_dir, "b3_history"),
             "b3_funds_history" : file_handler(dataset_dir, "b3_funds_history"),
-            "funds_history" : file_handler(dataset_dir, "funds_history")
+            "funds_history" : file_handler(dataset_dir, "funds_history"),
+            "KPIs_history" : file_handler(dataset_dir, "KPIs_history"),
         }
         self.asset_types = self.handlers.keys()
 
@@ -52,7 +54,6 @@ class Manager:
         return timestamp
 
     def __get_latest_file(self, asset):
-        mode = self.params[asset][0]
         p = self.dir / asset 
         files = [x.name for x in p.glob('*') if x.is_file()]
         if len(files) == 0:

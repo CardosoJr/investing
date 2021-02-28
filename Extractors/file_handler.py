@@ -78,9 +78,8 @@ class file_handler:
             data = {}
         data['LAST_DATE'] = latest_date.strftime("%Y-%m-%d")
 
-        with open(config_file, 'wr') as f:
+        with open(config_file, 'w') as f:
             json.dump(data, f)
-
 
     def save_data(self, data, timestamp, group, format='parquet', errors=False):
         _dir = self._create_dir(group)
