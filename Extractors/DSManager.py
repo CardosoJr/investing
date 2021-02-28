@@ -41,14 +41,14 @@ class Manager:
     def __get_group(self, min_date, grouping):
         if grouping is None:
             return None
-
-        if grouping == "month":
+        elif grouping == "month":
             return min_date.strftime("%Y%m")
         else:
             return min_date.strftime("%Y")
 
     def __create_timestamp(self, df, date_col, asset):
         fmt = self.__get_fmt_str(asset)
+        df[date_col] = pd.to_datetime(df[date_col])
         timestamp = df[date_col].dt.strftime(fmt)
         return timestamp
 
