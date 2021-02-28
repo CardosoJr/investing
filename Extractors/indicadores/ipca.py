@@ -1,69 +1,60 @@
-# EXTRACTED FROM https://github.com/fortinbras/python_ipca_ibge/blob/master/get_ipca_ibge.py
-
-
-import os, sys, time
-
 import requests
-import datetime
+from datetime import datetime
+from datetime import timedelta
+from dateutil.relativedelta import relativedelta
 import json
+import pandas as pd
 
-data_corrente_obj = datetime.date.today()
+import urllib.request
+import urllib.parse
+import http.cookiejar
 
-def get_range_meses():
-    """ 
-    Monta a range de meses para capturar o indice de correcao.
-    Eh passado no params do request para o IBGE.
-    """
-    
-    # Escolha o ano de inicio. 
-    # Julho de 1994 eh a adocao da moeda corrente (Real).     
-    ano_inicio = 1994
-    ano_corrente = data_corrente_obj.year
+def get_period(start, end):
+    meses = []
 
-    range_meses = ''
-    while ano_inicio <= ano_corrente:
-        mes = 1
-        while mes < 13:
-            data_loop = "%d%d" % (ano_inicio, mes)
-            data_loop_obj = datetime.datetime.strptime(data_loop, '%Y%m').date()
+    current = start 
 
-            if data_loop_obj> data_corrente_obj:
-                break
-            if mes < 10:
-                mes_str = '0' + str(mes)
-            else:
-                mes_str = mes
-            range_meses += "%s%s%s" % (str(ano_inicio), mes_str, ',')
-            mes += 1
-        ano_inicio += 1
+    end = last_day_of_month(end)
 
-    range_meses = range_meses[:-1]
-    return range_meses
+    while current <= end:
+        meses.append(current.strftime("%Y%m"))
+        current = current + relativedelta(months = 1)
 
-def get_params():
-    """ Monta a string params para passar no request para o IBGE """
-    range_meses = get_range_meses()
+    return ','.join(meses)
 
-    # Adiciona valores a string params.
-    params = 't/1737/f/c/h/n/n1/all/V/2266/P/' + range_meses + '/d/v2266 13'
-    return params
+def last_day_of_month(any_day):
+    next_month = any_day.replace(day=28) + timedelta(days=4)
+    return next_month - timedelta(days=next_month.day)
 
-def get_ipca_ibge(start, end):
+def get_sidra_ipca(start, end):
+    now = datetime.now()
+    if start is None:
+        start = now
+
+    if end is None:
+        end = now
+
     if isinstance(start, str):
-        start = datetime.datetime.strptime(start, "%Y-%m-%d")
+        start = datetime.strptime(start, "%Y-%m-%d")
 
     if isinstance(end, str):
-        end = datetime.datetime.strptime(end, "%Y-%m-%d")
+        end = datetime.strptime(end, "%Y-%m-%d")
 
-    sess = requests.Session()
-    IBGE_IPCA_AJAX_URL = 'https://sidra.ibge.gov.br/Ajax/JSon/Valores/1/1737'
+    if start > end:
+        raise Exception("Start datetime is greater than end")
 
-    data = {
-        'params': get_params(),
-        'versao': '-1',
-        'desidentifica': 'false'
-    }
+    url = "https://apisidra.ibge.gov.br/values" + "/t/1737/n1/all/v/63,69/p/" + get_period(start, end) 
 
-    # Download do arquivo
-    json_response = sess.post(IBGE_IPCA_AJAX_URL, data=data)
-    return json_response
+    cookie_jar = http.cookiejar.CookieJar()
+    opener = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cookie_jar))
+    opener.addheaders = [('User-agent', 'Mozilla/5.0 (Windows; U; Windows NT 6.1; rv:2.2) Gecko/20110201'),
+                         ('Accept', 'text/html, text/plain, text/css, text/sgml, */*;q=0.01')]
+
+    with opener.open(url) as link:
+        content = json.loads(link.read().decode('UTF-8'))
+
+    return handle_sidra_json(content)
+
+def handle_sidra_json(content):
+    return pd.DataFrame([(x['D2N'], x['V'], datetime.strptime(x['D3C'], "%Y%m")) for x in content[1:]],
+                         columns = ['KPI', 'Value', 'Date'])
