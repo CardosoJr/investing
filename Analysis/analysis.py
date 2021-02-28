@@ -42,6 +42,9 @@ class CurrentViewAnalysis:
         self.fundamentals['b3'] = pd.read_csv(path / "b3" / "assets.csv")
         self.fundamentals['b3_funds'] = pd.read_csv(path / "b3_funds" / "assets_fundos_b3.csv")
 
+    def __get_kpis(self):
+        pass
+
     def __get_latest_price(self):
         self.recent_results = self.manager.read_data_all(self.now + relativedelta(months = -6), self.now)
         self.history = {}

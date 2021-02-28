@@ -20,7 +20,6 @@ class DailyExtractor:
         self.manager = Manager(project_dir)
         self.dir = Path(project_dir)
         self.assets = assets
-        self.assets.extend([x + "_history" for x in assets])
         self.interval = interval
         self.b3_api = b3.B3()
 
@@ -58,8 +57,8 @@ class DailyExtractor:
             data.append(ds)
 
         data.append(self.__extract_intraday(asset, ["^BVSP", 'IFIX.SA'], date, '1d'))
-
         result = pd.concat(data, ignore_index = True)
+        result['DATE'] = pd.to_datetime(result['DATE'])
         return result
 
     def __get_tickers(self, asset):
