@@ -95,6 +95,13 @@ class Manager:
         else:
             return now
 
+    def read_data_assets(self, assets, start, end = None):
+        result = {}
+        for asset in assets:
+            data = self.read_data(asset, start, end)
+            result[asset] = data
+        return result
+
     def read_data_all(self, start, end = None):
         result = {}
         for asset in self.asset_types:
@@ -150,6 +157,7 @@ class Manager:
         data = []
         for file_path in files2read:
             data.append(self.handlers[asset].read_data(file_path))
+            data[-1][date_col] = pd.to_datetime(data[-1][date_col])
         df = pd.concat(data, ignore_index = True)
         return df
 

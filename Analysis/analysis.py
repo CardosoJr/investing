@@ -20,12 +20,42 @@ class CurrentViewAnalysis:
 
     def __init__(self, path_dir):
         self.path = Path(path_dir)
-        self.port = pd.read_excel(self.path / "portfolio.xlsx")
-        self.__preprocess_portfolio()
+        self.portfolio = PortfolioView(path_dir)
         self.manager = DSManager.Manager("../DATA/")
         self.now = datetime.now()
         self.b3_api = b3.B3()
         self.daily_view()
+
+    def __get_fundamentals(self):
+        self.fundamentals = {}
+        self.fundamentals['b3'] = pd.read_csv(self.path / "b3" / "assets.csv")
+        self.fundamentals['b3_funds'] = pd.read_csv(self.path / "b3_funds" / "assets_fundos_b3.csv")
+
+    def __get_latest_price(self):
+        self.recent_results = self.manager.read_data_all(self.now + relativedelta(months = -6), self.now)
+
+    def __build_summary(self, asset):
+        last_date =  self.recent_results[asset]['DATE'].max()
+        
+
+        self.recent_results[asset]
+        pass
+
+    def daily_view(self):
+        self.__get_latest_price()
+        self.__get_fundamentals()
+        self.portfolio.daily_view(self.recent_results)
+
+class PortfolioView:
+    """
+        Analyze portfolio
+    """
+    def __init__(self, path_dir):
+        self.path = Path(path_dir)
+        self.port = pd.read_excel(self.path / "portfolio.xlsx")
+        self.__preprocess_portfolio()
+        self.now = datetime.now()
+        self.b3_api = b3.B3()
 
     def __preprocess_portfolio(self):
         self.port['TICKER'] = np.where(self.port['TYPE'] == "FII" or 
@@ -36,64 +66,46 @@ class CurrentViewAnalysis:
 
         self.port['TICKER'] == np.where(self.port['TYPE'] == "CRIPTO", np.port['TICKER'] + "-BTC", self.port['TICKER'])
 
-
-    def __get_fundamentals(self):
-        self.fundamentals = {}
-        self.fundamentals['b3'] = pd.read_csv(path / "b3" / "assets.csv")
-        self.fundamentals['b3_funds'] = pd.read_csv(path / "b3_funds" / "assets_fundos_b3.csv")
-
-    def __get_kpis(self):
-        pass
-
-    def __get_latest_price(self):
-        self.recent_results = self.manager.read_data_all(self.now + relativedelta(months = -6), self.now)
-        self.history = {}
-        self.history['b3'] = pd.read_csv(path / "b3" / "history.csv")
-        self.history['b3_funds'] = pd.read_csv(path / "b3_funds" / "fundos_b3_history.csv")
-        self.history['cripto'] = pd.read_csv(path / "cripto" / "cripto_history.csv")
-        self.history['funds'] = pd.read_csv(path / "funds" / "fundos_history.csv")
-
-    def __get_rt_price(self):
+    def __get_rt_price(self, recent_results):
+        self.recent_results = recent_results
         b3_tickers = self.port[self.port['TYPE'] != "FUNDS"]['TICKER'].ravel()
         results = {}
         for ticker in b3_tickers:
             try:
-                result[ticker] = self.b3_api.Get_Real_Time_Quote(ticker)
+                results[ticker] = self.b3_api.Get_Real_Time_Quote(ticker)
             except:
-                result[ticker] = np.nan
+                results[ticker] = np.nan
                 print("could not get rt price from", ticker, "\n")
         funds_tickers = self.port[self.port['TYPE'] == "FUNDS"]['TICKER'].ravel()
         price = self.recent_results['funds'][self.recent_results['funds']['TICKER'].isin(funds_tickers)]
         max_dt = price['DATE'].max()
         latest_price = price[price['DATA'] == max_dt][['TICKER', "PRICE"]]
         latest_price = latest_price.set_index('TICKER')['PRICE'].to_dict()
-        result = dict(**result, **latest_price)
-        self.port['RT_PRICE'] = self.port['TICKER'].apply(lambda x: result[x])
+        results = dict(**results, **latest_price)
+        self.port['RT_PRICE'] = self.port['TICKER'].apply(lambda x: results[x])
 
     def __process_port(self):
         # Calculating metrics per ticket
         gpr = self.port.groupby('TICKER')
         new_df = pd.DataFrame([])
         new_df['TOTAL'] = gpr['TOTAL'].sum()
-        new_df['PRICE'] = gpr['PRICE'].multiply(gpr['QUANTITY'])).sum() / gpr['QUANTITY'].sum() # calculating mean price as current
+        new_df['PRICE'] = gpr['PRICE'].multiply(gpr['QUANTITY']).sum() / gpr['QUANTITY'].sum() # calculating mean price as current
         new_df['ASSET'] = gpr['ASSET'].first()
         new_df['TYPE'] = gpr['TYPE'].first()
         new_df['QUANTITY'] = gpr['QUANTITY'].sum()
         self.port = new_df.reset_index()
 
         self.port['REPRESENTATION'] = self.port['TOTAL'] / self.port['TOTAL'].sum()
-        self.port['CHG'] = (self['RT_PRICE'] - self['PRICE']) / self['PRICE']
-        self.port['CHG_VOL'] = self.port['RT_PRICE'] - self.port['PRICE'])
-        self.port['CURRENT_TOTAL'] = (self.['CHG'] + 1).multiply(self.port['TOTAL'])
+        self.port['CHG'] = (self.port['RT_PRICE'] - self.port['PRICE']) / self.port['PRICE']
+        self.port['CHG_VOL'] = self.port['RT_PRICE'] - self.port['PRICE']
+        self.port['CURRENT_TOTAL'] = (self.port['CHG'] + 1).multiply(self.port['TOTAL'])
         self.port['CURRENT_REPRESENTATION'] = self.port['CURRENT_TOTAL'] / self.port['CURRENT_TOTAL'].sum()
 
-    def daily_view(self):
-        self.__get_latest_price()
-        self.__get_fundamentals()
-        self.__get_rt_price()
+    def daily_view(self, recent_results):
+        self.__get_rt_price(recent_results)
         self.__process_port()
 
-    def __build_hierarchical_dataframe(df, levels, value_column, color_column, aux_color_column):
+    def __build_hierarchical_dataframe(self, df, levels, value_column, color_column, aux_color_column):
         """
         Build a hierarchy of levels for Sunburst or Treemap charts.
 
@@ -128,7 +140,7 @@ class CurrentViewAnalysis:
         color_column = 'CHG'
         aux_color_column = 'CURRENT_TOTAL'
         value_column = 'TOTAL'
-        df_all_trees = self.__build_hierarchical_dataframe(df, levels, value_column, color_column, aux_color_column)
+        df_all_trees = self.__build_hierarchical_dataframe(self.port, levels, value_column, color_column, aux_color_column)
         trace = go.Treemap(
             textinfo = "label+percent root",
             labels=df_all_trees['id'],
@@ -156,15 +168,10 @@ class CurrentViewAnalysis:
         fig = go.Figure(data = [trace], layout = layout)
         fig.show()
 
-
-class PortfolioView(self):
-    def __init__(self):
-        pass
-
 class AssetsView:
     def __init__(self):
         pass
-    ]
+
 class FundsView():
     def __init__(self):
         pass
@@ -172,3 +179,41 @@ class FundsView():
 class HistoryView:
     def __init__(self):
         pass
+
+
+"""
+TODO: 
+
+Overview (value, change, risk - std, )
+    - Renda fixa 
+    - Regions (usa, eu, emerging mkts)
+    - Indices
+    - Commodities
+    - Industries / segments
+
+Portfolio: 
+    - % in port / ticker / name / industry 
+    - mkt cap / price / ch / 6 month insiders and value
+    - % to 52 week high / % to 52 week low
+    - fundamentals 
+
+- insider trading
+
+Pulse:
+    - largest companies (mkt cap, daily change )
+
+Biggest Movers
+    - list of assets with biggest change day / week
+
+Business (per year)
+    - DRE data
+    - cash flow / ... several years
+    - fundamentals kpis 
+    
+Universe of Assets:
+    - Portfolio
+    - Tags 
+    - Monitored / watchlist
+
+
+"""
