@@ -93,6 +93,9 @@ class DailyExtractor:
 
     def __extract_funds_history(self, date):
         result = fundos.get_data(date.strftime("%Y-%m-%d"), datetime.now().strftime("%Y-%m-%d"), min_cot = 100)
+        if len(result) == 0:
+            return result
+            
         result = result.rename(columns = {'DT_COMPTC' : 'DATE', 'CNPJ_FUNDO': "TICKER"})
         result = result[pd.to_datetime(result['DATE']) >= date]
         return result

@@ -58,6 +58,9 @@ def get_data(start_date, end_date, filter = None, min_cot = None):
     except:
       print('Could not get data for', am, "\n")
 
+  if result is None or len(result) == 0:
+    return pd.DataFrame([])
+
   info = get_info_cadastral()
   info = info[['CNPJ_FUNDO', 'DENOM_SOCIAL', 'SIT', "CLASSE", "FUNDO_EXCLUSIVO", "TAXA_PERFM", "TAXA_ADM", "INF_TAXA_PERFM", "INVEST_QUALIF"]]
   result = pd.merge(left = result, right = info, how = 'left', on = "CNPJ_FUNDO")
