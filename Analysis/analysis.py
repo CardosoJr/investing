@@ -1,14 +1,19 @@
+
+import sys 
+from pathlib import Path
+sys.path.append(Path(__file__).parent)
+
+
 import pandas as pd 
 import numpy as np
-from pathlib import Path
 import matplotlib
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns 
 import plotly.express as px
-from .Analysis import TableStyling
-from .Extracotrs.b3 import b3
-from .Extractors import DSManager
+from . import TableStyling
+from Extractors.b3 import b3
+from Extractors import DSManager
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import plotly.graph_objects as go
