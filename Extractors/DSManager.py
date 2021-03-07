@@ -157,7 +157,7 @@ class Manager:
         data = []
         for file_path in files2read:
             data.append(self.handlers[asset].read_data(file_path))
-            data[-1][date_col] = pd.to_datetime(data[-1][date_col])
+            data[-1][self.date_col] = pd.to_datetime(data[-1][self.date_col])
         df = pd.concat(data, ignore_index = True)
         return df
 
