@@ -22,11 +22,10 @@ class CurrentViewAnalysis:
     """
         Builds Current Market View with Porfolio
     """
-
     def __init__(self, path_dir):
         self.path = Path(path_dir)
         self.portfolio = PortfolioView(path_dir)
-        self.manager = DSManager.Manager("../DATA/")
+        self.manager = DSManager.Manager(path_dir)
         self.now = datetime.now()
         self.b3_api = b3.B3()
         self.daily_view()
@@ -41,10 +40,42 @@ class CurrentViewAnalysis:
 
     def __build_summary(self, asset):
         last_date =  self.recent_results[asset]['DATE'].max()
-        
-
         self.recent_results[asset]
         pass
+
+    def __build_features(self, data):
+        data['DATE'] = pd.to_datetime(data['DATE'])
+        last_date = data['DATE'].max()
+        data = data.sort_values(by = ['TICKER', 'DATE'])
+       
+        data['previous_close'] = data.groupby('TICKER')['close'].shift(1)
+        summary = data.groupby('TICKER').last().reset_index()
+        summary['ch'] = summary['close'] - summary['previous_close']
+        summary['%ch'] = summary['ch'] / summary['previous_close']
+       
+        ygroup = data[data['DATE'] >= last_date - relativedelta(weeks = 52)].groupby(['TICKER', pd.Grouper(key = 'DATE', freq ='52W')])
+        maxClose = ygroup['close'].max().reset_index().drop(columns = ['DATE']).rename(columns = {'close' : '52w high'})
+        minClose = ygroup['close'].min().reset_index().drop(columns = ['DATE']).rename(columns = {'close' : '52w low'})
+        summary = pd.merge(left = summary, right = maxClose, on = 'TICKER', how = 'left')
+        summary = pd.merge(left = summary, right = minClose, on = 'TICKER', how = 'left')
+        summary['%52w high'] = summary['close'] / summary['52w high']
+        summary['%52w low'] = summary['close'] / summary['52w low']
+
+        return summary
+
+    def __process_kpis(self, kpi):
+        now  = datetime.now()
+        kpi = kpi[kpi['DATE'] <= now]
+        daily_rates = ['cdi', 'selic']
+        monthly_rates = ['igpm', 'ipca']
+        summary_kpis = kpi[kpi['TICKER'].isin(monthly_rates)].groupby(['TICKER', pd.Grouper(key = 'DATE', freq = 'M')])['close'].last().reset_index()
+        daily = kpi[kpi['TICKER'].isin(daily_rates)].groupby(['TICKER', pd.Grouper(key = 'DATE', freq = 'M')])['close'].sum().reset_index()
+        summary_kpis = summary_kpis.append(daily, ignore_index = True)
+        summary_kpis['close'] = summary_kpis['close'] / 100.0   
+        ibov = '^BVSP'
+        igroup = kpi[kpi['TICKER'] == ibov].groupby(['TICKER', pd.Grouper(key = 'DATE', freq = 'M')])
+        summary_kpis = summary_kpis.append(((igroup['close'].last() - igroup['close'].first()) / igroup['close'].first()).reset_index())
+        return summary_kpis
 
     def daily_view(self):
         self.__get_latest_price()
