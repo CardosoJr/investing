@@ -1,8 +1,6 @@
-
 import sys 
 from pathlib import Path
 sys.path.append(Path(__file__).parent)
-
 
 import pandas as pd 
 import numpy as np
@@ -136,6 +134,14 @@ class PortfolioView:
         self.port['CHG_VOL'] = self.port['RT_PRICE'] - self.port['PRICE']
         self.port['CURRENT_TOTAL'] = (self.port['CHG'] + 1).multiply(self.port['TOTAL'])
         self.port['CURRENT_REPRESENTATION'] = self.port['CURRENT_TOTAL'] / self.port['CURRENT_TOTAL'].sum()
+
+
+    def __process_port_evolution(self, prices):
+        prices = prices[prices['TICKER'].isin(self.port['TICKER'].unique())]
+
+    def __merge_port_summary(self, summary):
+        summary = summary[summary['TICKER'].isin(self.port['TICKER'].unique())]
+        self.port = pd.merge(left = self.port, right = summary, on = 'TICKER', how = 'left')
 
     def daily_view(self, recent_results):
         self.__get_rt_price(recent_results)
