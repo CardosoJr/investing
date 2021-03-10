@@ -48,7 +48,7 @@ class file_handler:
 
     def __append_data(self, data, file_path, format):
         old_data = self.read_data(file_path)
-        new_data = data.append(old_data).remove_duplicates(subset = [self.date_col, self.ticker_col], keep = 'last')
+        new_data = data.append(old_data).drop_duplicates(subset = [self.date_col, self.ticker_col], keep = 'last')
         return new_data
 
     def read_data(self, file_path):
