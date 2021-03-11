@@ -54,6 +54,8 @@ class DailyExtractor:
             ds = bcb.get_data_bcb(ticker, date, now)
             ds = ds.rename(columns = {'data' : 'DATE', 'valor' : 'close'})
             ds['TICKER'] = [ticker] * len(ds)
+            ds['DATE'] = pd.to_datetime(ds['DATE'])
+            ds = ds[ds['DATE'] <= now]
             data.append(ds)
 
         data.append(self.__extract_intraday(asset, ["^BVSP", 'IFIX.SA'], date, '1d'))
