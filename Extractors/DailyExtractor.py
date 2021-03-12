@@ -28,6 +28,8 @@ class DailyExtractor:
         dates = {}
         if baseline_date is None:
             dates = self.manager.get_latest_dates()
+            if "cripto" in dates.keys():
+                dates['cripto'] = dates['cripto'] + relativedelta(days = -1)
         else:
             for asset in self.assets:
                 dates[asset] = baseline_date
