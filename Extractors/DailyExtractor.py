@@ -129,6 +129,8 @@ class DailyExtractor:
             for dt_interval in date_intervals:
                 try:
                     data = self.b3_api.Extract_Data(ticker, start = dt_interval[0].strftime("%Y-%m-%d"), end = dt_interval[1].strftime("%Y-%m-%d"), interval = interval)
+                    if type(data) is dict:
+                        raise Exception("Error: " + json.dumps(data))
                     data = data.reset_index().rename(columns = {"symbol" : "TICKER", "date" : "DATE"})
                     all_data = all_data.append(data)
                 except Exception as e: 
