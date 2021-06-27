@@ -109,7 +109,7 @@ class DailyExtractor:
         now = datetime.now()
         delta = (now - date).days
         if  delta > 30 and interval != "1d" and interval != "1h":
-            date = now + relativedelta(days = -30)
+            date = now + relativedelta(days = -29)
         
         date_intervals = [(date, now)]
 
