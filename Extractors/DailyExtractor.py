@@ -23,8 +23,14 @@ class DailyExtractor:
         self.interval = interval
         self.b3_api = b3.B3()
 
-    def run(self, baseline_date = None):
+    def run(self, baseline_date = None, max_date = None):
         print("Extracting Intraday data \n")
+
+        if max_date is None:
+            self.now = datetime.now()
+        else:
+            self.now = max_date
+
         dates = {}
         if baseline_date is None:
             dates = self.manager.get_latest_dates()
@@ -49,15 +55,14 @@ class DailyExtractor:
 
     def __get_kpis_data(self, asset, date):
         result = pd.DataFrame([])
-        now = datetime.now()
         data = []
 
         for ticker in ['selic', 'ipca', 'igpm', 'cdi', 'pnad', 'cambio', 'pib']:
-            ds = bcb.get_data_bcb(ticker, date, now)
+            ds = bcb.get_data_bcb(ticker, date, self.now)
             ds = ds.rename(columns = {'data' : 'DATE', 'valor' : 'close'})
             ds['TICKER'] = [ticker] * len(ds)
             ds['DATE'] = pd.to_datetime(ds['DATE'])
-            ds = ds[ds['DATE'] <= now]
+            ds = ds[ds['DATE'] <= self.now]
             data.append(ds)
 
         data.append(self.__extract_intraday(asset, ["^BVSP", 'IFIX.SA'], date, '1d'))
@@ -96,7 +101,7 @@ class DailyExtractor:
         sleep(choice[0])
 
     def __extract_funds_history(self, date):
-        result = fundos.get_data(date.strftime("%Y-%m-%d"), datetime.now().strftime("%Y-%m-%d"), min_cot = 100)
+        result = fundos.get_data(date.strftime("%Y-%m-%d"), self.now.strftime("%Y-%m-%d"), min_cot = 100)
         if len(result) == 0:
             return result
 
@@ -106,20 +111,19 @@ class DailyExtractor:
         return result
 
     def __extract_intraday(self, asset, tickers, date, interval):
-        now = datetime.now()
-        delta = (now - date).days
+        delta = (self.now - date).days
         if  delta > 30 and interval != "1d" and interval != "1h":
-            date = now + relativedelta(days = -29)
+            date = self.now + relativedelta(days = -29)
         
-        date_intervals = [(date, now)]
+        date_intervals = [(date, self.now)]
 
         if delta > 7 and interval == "1m":
             date_intervals = []
             current = date 
-            while current < now:
+            while current < self.now:
                 final = current + relativedelta(days = 7)
-                if final > now:
-                    final = now
+                if final > self.now:
+                    final = self.now
                 date_intervals.append((current, final))
                 current = current + relativedelta(days = 8)
         
