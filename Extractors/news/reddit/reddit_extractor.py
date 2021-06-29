@@ -11,7 +11,7 @@ import re
 class Reddit:
     def __init__(self, config_path):
         with open(Path(config_path), 'r') as f: 
-            config = yaml.load(f) 
+            config = yaml.safe_load(f) 
 
         self.reddit = praw.Reddit(client_id = config['client_id'],
                     client_secret = config['secret'],
