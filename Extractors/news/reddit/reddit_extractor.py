@@ -17,13 +17,11 @@ class Reddit:
                     client_secret = config['secret'],
                     user_agent = config['user_agent'])
 
-
     def __extract_post_info(self):
         pass
 
     def read_all_recent(self, baseline_date):
         pass
-
 
     def find_tickers(self, submission):
         ls_text = list()

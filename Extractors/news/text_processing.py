@@ -6,7 +6,14 @@ import yaml
 import re
 import nltk
 from sklearn.feature_extraction.text import CountVectorizer
-
+from transformers import AutoTokenizer
+from transformers import AutoModelForSequenceClassification
+from transformers import MarianTokenizer, MarianMTModel
+import numpy as np
+from scipy.special import softmax
+import csv
+import urllib.request
+from nltk.tokenize import word_tokenize
 
 """
 Check this out: 
@@ -51,9 +58,39 @@ def Preprocessing(instancia):
     palavras = [i for i in instancia.split() if not i in stopwords]
     return (" ".join(palavras))
 
-
-from nltk.tokenize import word_tokenize
-
 def tokenize(frase):
     return word_tokenize(frase)
 
+def TranslatePt2En(text):
+    translation_model_name = f'Helsinki-NLP/opus-mt-roa-en'
+    model = MarianMTModel.from_pretrained(translation_model_name)
+    tokenizer = MarianTokenizer.from_pretrained(translation_model_name)
+    # Translate the text
+    inputs = tokenizer(text, return_tensors="pt", padding=True)
+    gen = model.generate(**inputs)
+    return tokenizer.batch_decode(gen, skip_special_tokens=True)
+
+def preprocess(text):
+    new_text = []
+    for t in text.split(" "):
+        t = '@user' if t.startswith('@') and len(t) > 1 else t
+        t = 'http' if t.startswith('http') else t
+        new_text.append(t)
+    return " ".join(new_text)
+
+def PredictSentimentScores(text):
+    task='sentiment'
+    MODEL = f"cardiffnlp/twitter-roberta-base-{task}"
+    tokenizer = AutoTokenizer.from_pretrained(MODEL)
+    model = AutoModelForSequenceClassification.from_pretrained(MODEL)
+    text = [preprocess(x) for x in text]
+    encoded_input = tokenizer(text, return_tensors='pt')
+    output = model(**encoded_input)
+    scores = output[0].detach().numpy()
+    scores = softmax(scores, axis = 1)
+    return scores # Negative, neutral, positive
+    
+def ProcessTextPipeline(text):
+    translations = TranslatePt2En(text)
+    scores = PredictSentimentScores(translations)
+    return scores
