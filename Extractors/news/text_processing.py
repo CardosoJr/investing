@@ -70,6 +70,36 @@ def TranslatePt2En(text):
     gen = model.generate(**inputs)
     return tokenizer.batch_decode(gen, skip_special_tokens=True)
 
+
+def cleaning_tweets(tweet, s_ticker):
+    whitespace = re.compile(r"\s+")
+    web_address = re.compile(r"(?i)http(s):\/\/[a-z0-9.~_\-\/]+")
+    ticker = re.compile(fr"(?i)@{s_ticker}(?=\b)")
+    user = re.compile(r"(?i)@[a-z0-9_]+")
+
+    tweet = whitespace.sub(" ", tweet)
+    tweet = web_address.sub("", tweet)
+    tweet = ticker.sub(s_ticker, tweet)
+    tweet = user.sub("", tweet)
+    return tweet
+
+def clean_text(text):
+    # clean up text
+    text = text.replace("\n", " ")
+    text = re.sub(r"https?\S+", "", text)
+    text = re.sub(r"&.*?;", "", text)
+    text = re.sub(r"<.*?>", "", text)
+    text = text.replace("RT", "")
+    text = text.replace(u"…", "")
+    text = text.strip()
+    return text
+
+def clean_text_sentiment(text):
+    # clean up text for sentiment analysis
+    text = re.sub(r"[#|@]\S+", "", text)
+    text = text.strip()
+    return text
+
 def preprocess(text):
     new_text = []
     for t in text.split(" "):
