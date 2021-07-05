@@ -178,3 +178,40 @@ def compound_average():
         compiled_sentiment[coin] = compiled_sentiment[coin].item()
 
     return compiled_sentiment, headlines_analysed
+    
+def sanitise_tweet(some_string):
+    """
+    Removes links and special characters
+    from a given string
+    """
+    return ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])| (\w +: /  / \S +)", " ", some_string).split())
+
+
+def strip_punctuation(some_string):
+    """
+    Removes punctuation from a given string
+    """
+    some_string = some_string.replace("'", " '")
+    translator = str.maketrans('', '', string.punctuation)
+    return some_string.translate(translator)
+
+    ## TODO:
+    ## Using text blob to separate sentences (??)
+    """ 
+    https://github.com/alvarobartt/twitter-stock-recommendation/blob/master/main.py
+    blob = TextBlob(tw)
+        polarity = 0
+        for sentence in blob.sentences:
+            polarity += sentence.sentiment.polarity
+            global_polarity += sentence.sentiment.polarity
+
+
+    Some filters and clean method
+    https://github.com/shirosaidev/stocksight/blob/master/sentiment.py
+
+
+
+
+
+    """
+    
