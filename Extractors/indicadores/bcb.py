@@ -41,5 +41,11 @@ def get_data_bcb(series, start, end):
 
     url = f"http://api.bcb.gov.br/dados/serie/bcdata.sgs.{codigo_serie}/dados?formato=json&dataInicial={dataInicial}&dataFinal={dataFinal}"
 
-    return pd.read_json(url)
+    df = pd.DataFrame([])
+    try:
+        df = pd.read_json(url)
+    except:
+        print("Could not load data from bcb. Query string:", url)
+
+    return df
     
