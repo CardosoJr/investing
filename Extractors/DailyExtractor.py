@@ -59,6 +59,8 @@ class DailyExtractor:
 
         for ticker in ['selic', 'ipca', 'igpm', 'cdi', 'pnad', 'cambio', 'pib']:
             ds = bcb.get_data_bcb(ticker, date, self.now)
+            if len(ds) == 0:
+                continue
             ds = ds.rename(columns = {'data' : 'DATE', 'valor' : 'close'})
             ds['TICKER'] = [ticker] * len(ds)
             ds['DATE'] = pd.to_datetime(ds['DATE'])
