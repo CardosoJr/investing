@@ -40,13 +40,13 @@ def update_ticker_list(path):
     __update_files(files_to_update, valid_tickers)
 
 def __update_files(files, valid_ticker_list):
-    for f in files:
-        with open(f, "r") as f:
+    for file in files:
+        with open(file, "r") as f:
             data = json.load(f)
         
         data['TICKERS'] = valid_ticker_list
 
-        with open(f, "w") as f: 
+        with open(file, "w") as f: 
             json.dump(data, f)
 
 
