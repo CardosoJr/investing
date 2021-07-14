@@ -2,10 +2,21 @@ import re
 import urllib.request
 import urllib.parse
 import http.cookiejar
-
 from lxml.html import fragment_fromstring
 from collections import OrderedDict
 from decimal import Decimal
+import requests
+import xlrd
+import pandas as pd
+import io
+import os
+import string
+import random
+from zipfile import ZipFile
+from .utils import convert_type, DataNotFound
+from datetime import datetime
+from tqdm import tqdm
+
 
 def get_data(*args, **kwargs):
     url = 'http://www.fundamentus.com.br/resultado.php'
@@ -100,19 +111,26 @@ def todecimal(string):
   else:
     return Decimal(string)
 
+def get_ticker_data(ticker):
+    url = "http://www.fundamentus.com.br/detalhes.php?papel={}".format(ticker)
 
-import requests
-import xlrd
-import pandas as pd
-import io
-import os
-import string
-import random
-from zipfile import ZipFile
-from .utils import convert_type, DataNotFound
+    headers = {
+        'User-Agent': ''.join(
+            random.choices(string.ascii_letters, k=10)
+        )
+    }
+    html_src = requests.get(url, headers=headers).text
+    return html_src
 
+def get_date_from_ticker_data(html):
+    data = html.split('<span class="txt">Data últ cot</span></td>\n<td class="data"><span class="txt">')[-1].split("</span>")[0]
+    try:
+        date = datetime.strptime(data, "%d/%m/%Y")
+    except:
+        date = datetime.min
+    return date
 
-def get_tickers():
+def get_tickers(validate_tickers = False):
     '''Downloads tickers' codes from fundamentus website
     :Returns:
     A pandas DataFrame with three columns:
@@ -127,7 +145,21 @@ def get_tickers():
     }
     html_src = requests.get(
         'http://fundamentus.com.br/detalhes.php', headers=headers).text
-    return pd.read_html(html_src)[0]
+
+    df = pd.read_html(html_src)[0]
+    if validate_tickers:
+        valid = []
+        now = datetime.now()
+        for papel in tqdm(df['Papel'].unique()):
+            date = get_date_from_ticker_data(get_ticker_data(papel))
+            delta = (now - date).days
+            if (delta <= 30):
+                valid.append(papel)
+
+        print("Tickers not valid")
+        print(df[~df['Papel'].isin(valid)]['Papel'].unique().ravel())
+        df = df[df['Papel'].isin(valid)]
+    return df
 
 
 def _get_sheets(ticker, quarterly, ascending):

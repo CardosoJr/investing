@@ -29,7 +29,7 @@ class DailyExtractor:
         if max_date is None:
             self.now = datetime.now()
         else:
-            self.now = max_date
+            self.now = max_date + relativedelta(days = 1)
 
         dates = {}
         if baseline_date is None:

@@ -24,6 +24,9 @@ def main():
     if max_date is not None: 
         max_date = datetime.strptime(max_date, "%Y-%m-%d")
 
+    print("Starting extractor...")
+    print(args)
+
     assets = ["b3", "b3_funds", "cripto"]
     extractor = daily.DailyExtractor(data_path, assets = assets, interval = interval)
     extractor.run(baseline_date = date, max_date = max_date)
