@@ -17,16 +17,17 @@ def get_info_cadastral():
   df = pd.read_csv(base_url, sep = ';', encoding = "ISO-8859-1")
   return df
 
-def get_b3_fundos_tickers():
-  fiis = pd.read_csv(Path(__file__).parent / "fiis.csv", sep = ";", header = None)
-  etfs = pd.read_csv(Path(__file__).parent / "etfs.csv", sep = ";", header = None)
-  bdrs = pd.read_csv(Path(__file__).parent / "bdrs.csv", sep = ",", encoding = "ISO-8859-1")
+def get_b3_fundos_tickers(path):
+  path = Path(path)
+  fiis = pd.read_csv(path / "fiis.csv", sep = ";", header = None)
+  etfs = pd.read_csv(path / "etfs.csv", sep = ";", header = None)
+  # bdrs = pd.read_csv(path / "bdrs.csv", sep = ",", encoding = "ISO-8859-1")
 
   tickers = []
 
   tickers.extend((fiis[3] + "11").ravel())
   tickers.extend((etfs[3] + "11").ravel())
-  tickers.extend(bdrs['CODIGO'].ravel())
+  # tickers.extend(bdrs['CODIGO'].ravel())
 
   return tickers
 

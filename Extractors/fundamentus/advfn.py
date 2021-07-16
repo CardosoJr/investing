@@ -4,6 +4,7 @@ from .utils import convert_type, DataNotFound
 from concurrent import futures
 from datetime import date
 from calendar import monthrange
+from datetime import datetime
 
 schema = {
     'Quantidade de Ações ON': 'Quantidade de Ações ON',
@@ -70,6 +71,8 @@ schema = {
     'Dividend Payout': 'Payout'
 }
 
+def get_quarter_from_date(date):
+    return (date.month-1)//3 + 1
 
 def get_schema():
     '''Get the schema used to abbreviate columns names on get_fundamentos DataFrame
@@ -152,8 +155,10 @@ def get_fundamentos(ticker, year=None, quarter=None,
             raise DataNotFound(f'Couldn\'t find any data for \'{ticker}\'')
 
         df = pd.concat(annual_dfs)
-
-        return df.sort_index(ascending=ascending)
+        result = df.sort_index(ascending=ascending)
+        result['Ticker'] = [ticker] * len(result)
+        result = result.reset_index()
+        return result
 
     if year > int(date.today().year):
         raise ValueError(
@@ -212,3 +217,32 @@ def get_fundamentos(ticker, year=None, quarter=None,
     result['Ticker'] = [ticker] * len(result)
     result = result.reset_index()
     return result 
+
+def get_all_data(ticker, get_all = True):
+    data = []
+    if get_all:
+        df = get_fundamentos(ticker)
+        data.append(df)
+        years = df['Data'].unique()
+        for y in years:
+            for q in range(1, 5):
+                try:
+                    df = get_fundamentos(ticker, year = int(y), quarter = q)
+                    data.append(df)
+                except Exception as e:
+                    print("Could not load data from {}, year {}, quarter {}".format(ticker, int(y), q))
+
+    now = datetime.now()
+    quarter = get_quarter_from_date(now)
+
+    for q in range(1, quarter + 1):
+        try:
+            df = get_fundamentos(ticker, year = now.year, quarter = q)
+            data.append(df)
+        except:
+            print("Could not load data from {}, year {}, quarter {}".format(ticker, now.year, q))
+
+    result = pd.concat(data, ignore_index = True)
+    new_columns = [x[-1] if x[-1] != "" else x[0] for x in result.columns.ravel()]
+    result.columns = new_columns
+    return result
