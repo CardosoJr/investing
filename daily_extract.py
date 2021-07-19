@@ -1,4 +1,5 @@
 import Extractors.DailyExtractor as daily
+import Extractors.NewsDailyExtractor as news_daily
 from pathlib import Path
 import pandas as pd 
 from datetime import datetime
@@ -33,6 +34,10 @@ def main():
 
     assets = ["b3_history", "b3_funds_history", "cripto_history", "funds_history", "KPIs_history"]
     extractor = daily.DailyExtractor(data_path, assets = assets, interval = interval)
+    extractor.run(baseline_date = date, max_date = max_date)
+
+    assets = ['news']
+    extractor = news_daily.NLPDailyExtractor(data_path, assets = assets)
     extractor.run(baseline_date = date, max_date = max_date)
 
 if __name__ == "__main__":

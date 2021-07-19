@@ -1,8 +1,8 @@
 
-import news.gnews.gnews_api as gnews
-import news.reddit.reddit_extractor as reddit
-import news.twitter.twitter_extractor as twitter
-import news.text_processing as tp 
+import Extractors.news.gnews.gnews_api as gnews
+import Extractors.news.reddit.reddit_extractor as reddit
+import Extractors.news.twitter.twitter_extractor as twitter
+import Extractors.news.text_processing as tp 
 import pandas as pd
 import numpy as np 
 from tqdm import tqdm 
@@ -19,15 +19,15 @@ class NLPDailyExtractor(DailyExtractor):
         self.dir = Path(project_dir)
         self.assets_types = assets
         self.news_api = gnews.NewsExtractor()
-        self.reddit_api = reddit.RedditExtractor()
-        self.twitter_api = twitter.TwitterExtractor()
+        self.reddit_api = reddit.RedditExtractor("./config.yaml")
+        self.twitter_api = twitter.TwitterExtractor("./config.yaml")
 
         with open(self.dir / "b3/config.json", 'r') as f:
             config = json.load(f)
         ticker_list = config["TICKERS"]
         assets_df = pd.read_csv(self.dir / "b3_history/assets.csv")
         assets_df = assets_df[assets_df['TICKER'].isin(ticker_list)]
-        self.tickers = dict(zip(self.assets['TICKER'].ravel(), self.assets["ShortName"].ravel()))
+        self.tickers = dict(zip(assets_df['TICKER'].ravel(), assets_df["ShortName"].ravel()))
 
         asset_config = {
             "news" : ('week', 'month'),
@@ -66,6 +66,7 @@ class NLPDailyExtractor(DailyExtractor):
             if asset == "news": 
                 df = self.news_api.extract_daily(date, name)
                 df = df.rename(columns = {"published date" : "DATE"})
+                df['DATE'] = pd.to_datetime(df['DATE'])
             elif asset == "twitter":
                 pass
             elif asset == "reddit":
@@ -76,7 +77,6 @@ class NLPDailyExtractor(DailyExtractor):
             if len(df) > 0:
                 df['TICKER'] = [ticker] * len(df)
                 data.append(df)
-
         return self.process(asset, pd.concat(data, ignore_index = True))
 
     def process(self, asset, df):
@@ -89,7 +89,7 @@ class NLPDailyExtractor(DailyExtractor):
             df['description'] = df['description'].apply(func)
             if "full_text" in df.columns:
                 df['full_text'] = df['full_text'].apply(func)
-            full_text = df['title'] + ". " + df['description']
+            full_text = (df['title'] + ". " + df['description']).ravel().tolist()
         elif asset == "twitter":
             pass
         elif asset == "reddit":
@@ -102,12 +102,3 @@ class NLPDailyExtractor(DailyExtractor):
     def __preprocess_text(self, text):
         text = tp.clean_text(text)
         return text
-
-    def __calculate_polarity(self, text):
-        scores = tp.PredictSentimentScores(text)
-        return dict(zip(["Negative", "Neutral", "Positive"], scores))
-
-    def __translate_text(self, text):
-        return tp.TranslatePt2En(text)
-
-
