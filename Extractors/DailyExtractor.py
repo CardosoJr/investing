@@ -17,11 +17,22 @@ import json
 class DailyExtractor:
     def __init__(self, project_dir, assets = None, interval = "1m"):
         self.path = Path(__file__).parent
-        self.manager = Manager(project_dir)
         self.dir = Path(project_dir)
         self.assets = assets
         self.interval = interval
         self.b3_api = b3.B3()
+
+        asset_config = {
+            "cripto" : ('week', 'month'),
+            "b3"  : ('week', 'month'),
+            "b3_funds" :('week', 'month'),
+            "cripto_history" :('year', None),
+            "b3_history"  : ('year', None),
+            "b3_funds_history" : ('year', None),
+            "funds_history" : ('year', None),
+            "KPIs_history" : ('year', None),
+        }
+        self.manager = Manager(project_dir, asset_config)
 
     def run(self, baseline_date = None, max_date = None):
         print("Extracting Intraday data \n")

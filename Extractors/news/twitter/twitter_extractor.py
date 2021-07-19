@@ -15,7 +15,7 @@ tweet[0] -> Tweet message
 
 """
 
-class Twitter: 
+class TwitterExtractor: 
     def __init__(self):
         pass
 

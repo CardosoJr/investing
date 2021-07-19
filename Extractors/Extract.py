@@ -25,8 +25,7 @@ def build_price_history(path_dir, tickers):
         try:
             df = api.Extract_History(ticker + ".SA")
             df = df.reset_index()
-            sleep_time = random_wait()
-            sleep(sleep_time)
+            sleep(random_wait())
             history = history.append(df)
 
         except:

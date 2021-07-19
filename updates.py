@@ -1,3 +1,4 @@
+from Extractors.b3.b3 import B3
 from pandas.core.frame import DataFrame
 import Extractors.DailyExtractor as daily
 from pathlib import Path
@@ -10,6 +11,10 @@ import Extractors.fundos.fundos as fundos
 import json
 from tqdm import tqdm
 import yfinance as yf
+import numpy as np
+from time import sleep
+
+import Extractors.b3 as b3 
 
 """
 Updating company fundamental data, ticker list and so on
@@ -43,10 +48,13 @@ def update_fundamental_data(path):
     data = []
 
     for t in tqdm(tickers):
-        if False and sum(fundamental_df['TICKER'] == t) > 0:
+        sleep(random_wait())
+        if sum(fundamental_df['TICKER'] == t) > 0:
             df = advfn.get_all_data(t, get_all = False)
         else:
             df = advfn.get_all_data(t, get_all = True)
+        if len(df) == 0:
+            continue
         df = df.rename(columns = {'Ticker' : 'TICKER', 'Data' : 'DATE'})
         data.append(df)
     data.append(fundamental_df)
@@ -58,7 +66,40 @@ def update_fundamental_data(path):
 def update_fundos(path, csv_file):
     if csv_file is None:
         raise Exception("argument fundos_csv must not be null")
-    pass
+
+    fii = Path(csv_file) / "fii.csv"
+    etf = Path(csv_file) / "eft.csv"
+
+    fii_df = pd.read_csv(fii)
+    etf_df = pd.read_csv(etf)
+
+    all_tickers = fii_df['Código'].ravel() + etf_df['Codigo'].ravel()
+    all_tickers = [x + "11" for x in all_tickers]
+
+    __update_files([path / "b3_fundos/config.json", path / "b3_fundos_history/config.json"], all_tickers)
+
+    fii_df = fii_df.rename(columns = {"Razão Social" :  "LongName", "Fundo" : "ShortName", "Segment" : "Sector", "Código" : "TICKER"})
+    etf_df = etf_df.rename(columns = {"Razão Social" :  "LongName", "Fundo" : "ShortName", "Segment" : "Sector", "Código" : "TICKER"})
+    
+    fii_df['TICKER'] = fii_df["TICKER"] + "11"
+    etf_df['TICKER'] = etf_df["TICKER"] + "11"
+
+    fii_df['Type'] = ["FII"] * len(fii_df)
+    etf_df['Type'] = ["ETF"] * len(etf_df)
+
+    assets = pd.read_csv(path / "b3_fundos_history/assets.csv")
+    assets = pd.concat([assets, fii_df, etf_df], ignore_index = True)
+    assets = assets.drop_duplicates(subset = ["TICKER"])
+    assets.to_csv(path / "b3_fundos_history/assets.csv")
+
+    ## TODO: Updating fundamentals (develop FII fundamental extractor)
+    b3 = B3()
+    for t in tqdm(all_tickers):
+        try:
+            data = b3.Get_Summary(t + ".SA")
+        except: 
+            print("Could not load fundamentals from", t)
+
 
 def update_ticker_list(path):
     df = fundamentus.get_tickers(validate_tickers = True)
@@ -69,6 +110,9 @@ def update_ticker_list(path):
 
     __update_files(files_to_update, valid_tickers)
 
+    # with open(path / "b3/config.json", "r") as f:
+    #     valid_tickers = json.load(f)['TICKERS']
+
     ## Update assets file / with sector info
     file = path / "b3_history/assets.csv"
 
@@ -78,17 +122,18 @@ def update_ticker_list(path):
         assets = pd.DataFrame([])
     
     new_assets = {"TICKER" : [], "Sector" : [], "Industry" : [], "ShortName" : [], "LongName" : []}
-    for t in valid_tickers:
+    for t in tqdm(valid_tickers):
         if len(assets) > 0 and t in assets['TICKER'].ravel():
             continue
         try:
-            ticker_info = __get_ticker_info(t)
+            ticker_info = __get_ticker_info(t + ".SA")
             new_assets['TICKER'].append(t)
             new_assets['Sector'].append(ticker_info[0])
             new_assets['Industry'].append(ticker_info[1])
             new_assets['ShortName'].append(ticker_info[2])
             new_assets['LongName'].append(ticker_info[3])
-        except:
+        except Exception as e:
+            print(str(e))
             print("Could not get ticker info from", t)
 
     new_assets = pd.DataFrame(new_assets)
@@ -108,6 +153,11 @@ def __update_files(files, valid_ticker_list):
         with open(file, "w") as f: 
             json.dump(data, f)
 
+def random_wait():
+    wait_times = [0.2, 0.5, 1, 2, 4]
+    probs = [0.3, 0.4, 0.2, 0.08, 0.02]
+    choice = np.random.choice(wait_times, size=1, p=probs)
+    return choice[0]
 
 if __name__ == "__main__":
     main()

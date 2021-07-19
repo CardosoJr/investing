@@ -11,31 +11,17 @@ from .cripto import binance_api
 import json
 
 class Manager: 
-    def __init__(self, dataset_dir, date_col = 'DATE', format = "parquet"):
+    def __init__(self, dataset_dir, asset_config, date_col = 'DATE', format = "parquet"):
         self.dir = Path(dataset_dir) 
         self.latest_date = None
         self.format = format
         self.date_col = date_col
-        self.params = {
-            "cripto" : ('week', 'month'),
-            "b3"  : ('week', 'month'),
-            "b3_funds" :('week', 'month'),
-            "cripto_history" :('year', None),
-            "b3_history"  : ('year', None),
-            "b3_funds_history" : ('year', None),
-            "funds_history" : ('year', None),
-            "KPIs_history" : ('year', None),
-        }
-        self.handlers = {
-            "cripto" : file_handler(dataset_dir, "cripto"),
-            "b3"  : file_handler(dataset_dir, "b3"),
-            "b3_funds" : file_handler(dataset_dir, "b3_funds"),
-            "cripto_history" : file_handler(dataset_dir, "cripto_history"),
-            "b3_history"  : file_handler(dataset_dir, "b3_history"),
-            "b3_funds_history" : file_handler(dataset_dir, "b3_funds_history"),
-            "funds_history" : file_handler(dataset_dir, "funds_history"),
-            "KPIs_history" : file_handler(dataset_dir, "KPIs_history"),
-        }
+        self.params = asset_config
+        self.handlers = {}
+
+        for asset in asset_config.keys():
+            self.handlers[asset] = file_handler(dataset_dir, asset)
+
         self.asset_types = self.handlers.keys()
 
     def __get_group(self, min_date, grouping):
@@ -85,7 +71,7 @@ class Manager:
         now = datetime.now()
 
         if not config_file.exists():
-            now
+            return now
 
         with open(config_file) as f:
             data = json.load(f)

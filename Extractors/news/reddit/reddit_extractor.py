@@ -86,7 +86,7 @@ def get_post():
                                   }
     return posts
 
-class Reddit:
+class RedditExtractor:
     def __init__(self, config_path):
         with open(Path(config_path), 'r') as f: 
             config = yaml.safe_load(f) 

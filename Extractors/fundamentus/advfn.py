@@ -5,6 +5,8 @@ from concurrent import futures
 from datetime import date
 from calendar import monthrange
 from datetime import datetime
+import string
+import random
 
 schema = {
     'Quantidade de Ações ON': 'Quantidade de Ações ON',
@@ -170,9 +172,15 @@ def get_fundamentos(ticker, year=None, quarter=None,
         None: None
     }
 
+    headers = {
+        'User-Agent': ''.join(
+            random.choices(string.ascii_letters, k=10)
+        )
+    }
+
     baseurl = 'https://br.advfn.com/bolsa-de-valores/bovespa/{0}/fundamentos/individualizado/{1}/{2}'
     html_src = requests.get(baseurl.format(
-        ticker, year, str_tri[quarter])).text
+        ticker, year, str_tri[quarter]), headers = headers).text
 
     _dfs = pd.read_html(html_src, index_col=0, decimal=',', thousands='.')
 
@@ -221,7 +229,11 @@ def get_fundamentos(ticker, year=None, quarter=None,
 def get_all_data(ticker, get_all = True):
     data = []
     if get_all:
-        df = get_fundamentos(ticker)
+        try:
+            df = get_fundamentos(ticker)
+        except:
+            return pd.DataFrame([])
+
         data.append(df)
         years = df['Data'].unique()
         for y in years:
@@ -230,7 +242,8 @@ def get_all_data(ticker, get_all = True):
                     df = get_fundamentos(ticker, year = int(y), quarter = q)
                     data.append(df)
                 except Exception as e:
-                    print("Could not load data from {}, year {}, quarter {}".format(ticker, int(y), q))
+                    print("Could not load data from {}, year {}, quarter {}".format(ticker, y, q))
+                    break
 
     now = datetime.now()
     quarter = get_quarter_from_date(now)
@@ -241,6 +254,7 @@ def get_all_data(ticker, get_all = True):
             data.append(df)
         except:
             print("Could not load data from {}, year {}, quarter {}".format(ticker, now.year, q))
+            break
 
     result = pd.concat(data, ignore_index = True)
     new_columns = [x[-1] if x[-1] != "" else x[0] for x in result.columns.ravel()]

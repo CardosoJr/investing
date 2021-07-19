@@ -14,6 +14,7 @@ from scipy.special import softmax
 import csv
 import urllib.request
 from nltk.tokenize import word_tokenize
+import string
 
 """
 Check this out: 
@@ -84,11 +85,20 @@ def cleaning_tweets(tweet, s_ticker):
     return tweet
 
 def clean_text(text):
-    # clean up text
+    whitespace = re.compile(r"\s+")
+    user = re.compile(r"(?i)@[a-z0-9_]+")
+    user_reddit = re.compile(r"(?i)u/[a-z0-9_]+")
+
+    text = whitespace.sub(" ", text)
+    text = user.sub("", text)
+    text = user_reddit.sub("", text)
     text = text.replace("\n", " ")
+    # text = re.sub('\[.*?\]', '', text)
+    # text = re.sub('<.*?>+', '', text)
     text = re.sub(r"https?\S+", "", text)
     text = re.sub(r"&.*?;", "", text)
     text = re.sub(r"<.*?>", "", text)
+    # text = re.sub('[%s]' % re.escape(string.punctuation), '', text)
     text = text.replace("RT", "")
     text = text.replace(u"…", "")
     text = text.strip()
@@ -113,7 +123,6 @@ def PredictSentimentScores(text):
     MODEL = f"cardiffnlp/twitter-roberta-base-{task}"
     tokenizer = AutoTokenizer.from_pretrained(MODEL)
     model = AutoModelForSequenceClassification.from_pretrained(MODEL)
-    text = [preprocess(x) for x in text]
     encoded_input = tokenizer(text, return_tensors='pt')
     output = model(**encoded_input)
     scores = output[0].detach().numpy()
@@ -124,3 +133,31 @@ def ProcessTextPipeline(text):
     translations = TranslatePt2En(text)
     scores = PredictSentimentScores(translations)
     return scores
+
+
+class SentimentPipeline:
+    def __init__(self):
+        translation_model_name = f'Helsinki-NLP/opus-mt-roa-en'
+        self.trl_model = MarianMTModel.from_pretrained(translation_model_name)
+        self.trl_tokenizer = MarianTokenizer.from_pretrained(translation_model_name)
+
+        task='sentiment'
+        MODEL = f"cardiffnlp/twitter-roberta-base-{task}"
+        self.sent_tokenizer = AutoTokenizer.from_pretrained(MODEL)
+        self.sent_model = AutoModelForSequenceClassification.from_pretrained(MODEL)
+
+    def translate(self, text):
+        inputs = self.trl_tokenizer(text, return_tensors="pt", padding=True)
+        gen = self.trl_model.generate(**inputs)
+        return self.trl_tokenizer.batch_decode(gen, skip_special_tokens=True)
+
+    def calculate_sentiments(self, text):
+        encoded_input = self.sent_tokenizer(text, return_tensors='pt', padding = True)
+        output = self.sent_model(**encoded_input)
+        scores = output[0].detach().numpy()
+        scores = softmax(scores, axis = 1)
+        return scores
+
+    def process(self, text):
+        return self.calculate_sentiments(self.translate(text))
+
