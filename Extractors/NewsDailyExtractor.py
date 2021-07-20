@@ -66,7 +66,7 @@ class NLPDailyExtractor(DailyExtractor):
             df = pd.DataFrame([])
             if asset == "news": 
                 df = self.news_api.extract_daily(date, name)
-                df2 = self.news_api.extract_daily(date, ticker)
+                df2 = self.news_api.extract_daily(date, ticker.replace(".SA", ""))
                 if len(df) > 0 and len(df2) > 0:
                     df = pd.concat([df, df2], ignore_index = True)
                 elif len(df2) > 0:

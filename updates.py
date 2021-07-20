@@ -50,9 +50,9 @@ def update_fundamental_data(path):
     for t in tqdm(tickers):
         sleep(random_wait())
         if sum(fundamental_df['TICKER'] == t) > 0:
-            df = advfn.get_all_data(t, get_all = False)
+            df = advfn.get_all_data(t.replace(".SA", ""), get_all = False)
         else:
-            df = advfn.get_all_data(t, get_all = True)
+            df = advfn.get_all_data(t.replace(".SA", ""), get_all = True)
         if len(df) == 0:
             continue
         df = df.rename(columns = {'Ticker' : 'TICKER', 'Data' : 'DATE'})
@@ -74,7 +74,7 @@ def update_fundos(path, csv_file):
     etf_df = pd.read_csv(etf)
 
     all_tickers = fii_df['Código'].ravel() + etf_df['Codigo'].ravel()
-    all_tickers = [x + "11" for x in all_tickers]
+    all_tickers = [x + "11.SA" for x in all_tickers]
 
     __update_files([path / "b3_fundos/config.json", path / "b3_fundos_history/config.json"], all_tickers)
 
@@ -96,14 +96,15 @@ def update_fundos(path, csv_file):
     b3 = B3()
     for t in tqdm(all_tickers):
         try:
-            data = b3.Get_Summary(t + ".SA")
+            data = b3.Get_Summary(t)
         except: 
             print("Could not load fundamentals from", t)
 
 
 def update_ticker_list(path):
     df = fundamentus.get_tickers(validate_tickers = True)
-    valid_tickers = df['Papel'].unique().tolist()
+    ticker_series = df['Papel'] + ".SA"
+    valid_tickers = ticker_series.unique().tolist()
     
     files_to_update = [path / "b3/config.json", 
                        path / "b3_history/config.json"]
@@ -126,7 +127,7 @@ def update_ticker_list(path):
         if len(assets) > 0 and t in assets['TICKER'].ravel():
             continue
         try:
-            ticker_info = __get_ticker_info(t + ".SA")
+            ticker_info = __get_ticker_info(t)
             new_assets['TICKER'].append(t)
             new_assets['Sector'].append(ticker_info[0])
             new_assets['Industry'].append(ticker_info[1])
