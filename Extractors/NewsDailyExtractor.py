@@ -14,7 +14,8 @@ from .DailyExtractor import DailyExtractor
 import json
 
 class NLPDailyExtractor(DailyExtractor): 
-    def __init__(self, project_dir, assets):
+    def __init__(self, project_dir, assets, batch_size = 64):
+        self.batch_size = batch_size
         self.path = Path(__file__).parent
         self.dir = Path(project_dir)
         self.assets_types = assets
@@ -35,7 +36,7 @@ class NLPDailyExtractor(DailyExtractor):
             "reddit" :('week', 'month'),
         }
 
-        self.manager = Manager(project_dir, asset_config) ## TODO: develop text manager (saving text to better storage system)
+        self.manager = Manager(project_dir, asset_config, id_col = "ID") ## TODO: develop text manager (saving text to better storage system)
         self.model = tp.SentimentPipeline()
 
     def run(self, baseline_date = None, max_date = None):
@@ -60,13 +61,24 @@ class NLPDailyExtractor(DailyExtractor):
                 self.manager.append_data(data, asset)
 
     def extract_daily_data(self, asset, date):
+        data = []
+        i = 0
         for ticker, name in tqdm(self.tickers.items()):
-            data = []
             df = pd.DataFrame([])
             if asset == "news": 
                 df = self.news_api.extract_daily(date, name)
-                df = df.rename(columns = {"published date" : "DATE"})
-                df['DATE'] = pd.to_datetime(df['DATE'])
+                df2 = self.news_api.extract_daily(date, ticker)
+                if len(df) > 0 and len(df2) > 0:
+                    df = pd.concat([df, df2], ignore_index = True)
+                elif len(df2) > 0:
+                    df = df2
+
+                if len(df) > 0:
+                    df = df.rename(columns = {"published date" : "DATE"})
+                    df['DATE'] = pd.to_datetime(df['DATE'])
+                    df['ID'] = df["title"] + df["publisher"]
+                    df['ID'] = df["ID"].str.replace(" ", "")
+                    df = df.drop_duplicates(subset = ['ID', 'DATE'])
             elif asset == "twitter":
                 pass
             elif asset == "reddit":
@@ -77,6 +89,10 @@ class NLPDailyExtractor(DailyExtractor):
             if len(df) > 0:
                 df['TICKER'] = [ticker] * len(df)
                 data.append(df)
+            
+            i += 1
+            if i == 11:
+                break
         return self.process(asset, pd.concat(data, ignore_index = True))
 
     def process(self, asset, df):
@@ -96,7 +112,20 @@ class NLPDailyExtractor(DailyExtractor):
             pass
         else:
             raise Exception("Asset not implemented: " + asset)
-        df[['Negative', "Neutral", "Positive"]] = self.model.process(full_text)
+
+        result = None 
+        num_groups = len(full_text) // self.batch_size         
+
+        for group in np.array_split(full_text, num_groups):
+            predictions = self.model.process(group.tolist())
+
+            if result is None:
+                result = predictions
+            else: 
+                result = np.append(result, predictions, axis = 0)                
+
+
+        df[['Negative', "Neutral", "Positive"]] = result
         return df
 
     def __preprocess_text(self, text):

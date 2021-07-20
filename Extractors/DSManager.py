@@ -11,7 +11,7 @@ from .cripto import binance_api
 import json
 
 class Manager: 
-    def __init__(self, dataset_dir, asset_config, date_col = 'DATE', format = "parquet"):
+    def __init__(self, dataset_dir, asset_config, date_col = 'DATE', format = "parquet", id_col = None):
         self.dir = Path(dataset_dir) 
         self.latest_date = None
         self.format = format
@@ -20,7 +20,7 @@ class Manager:
         self.handlers = {}
 
         for asset in asset_config.keys():
-            self.handlers[asset] = file_handler(dataset_dir, asset)
+            self.handlers[asset] = file_handler(dataset_dir, asset, id_col = id_col)
 
         self.asset_types = self.handlers.keys()
 

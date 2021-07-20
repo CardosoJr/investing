@@ -22,11 +22,12 @@ class file_handler:
             |__> __create_timestamp_str : private fn to create timestamp str
 
     '''
-    def __init__(self, project_dir, mode, date_col = 'DATE', ticker_col = 'TICKER'):
+    def __init__(self, project_dir, mode, date_col = 'DATE', ticker_col = 'TICKER', id_col = None):
         self.project_dir = Path(project_dir)
         self.mode = mode
         self.date_col = date_col
         self.ticker_col = ticker_col
+        self.id_col = id_col
 
     def __check_exists_or_create(self, _dir):
         """fn: to check if file/path exists"""
@@ -48,7 +49,10 @@ class file_handler:
 
     def __append_data(self, data, file_path, format):
         old_data = self.read_data(file_path)
-        new_data = data.append(old_data).drop_duplicates(subset = [self.date_col, self.ticker_col], keep = 'last')
+        if self.id_col is None:
+            new_data = data.append(old_data).drop_duplicates(subset = [self.date_col, self.ticker_col], keep = 'last')
+        else:
+            new_data = data.append(old_data).drop_duplicates(subset = [self.date_col, self.ticker_col, self.id_col], keep = 'last')
         return new_data
 
     def read_data(self, file_path):
