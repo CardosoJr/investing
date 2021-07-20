@@ -65,7 +65,9 @@ class NewsExtractor:
 
         if delta > 30:
             raise Exception("Period too large. Use Method extract_history instead")
-
+        if delta <= 0:
+            delta = 1
+            
         period = str(delta) + "d"
         gnews = GNews(language = language, country = country, period = period)
         

@@ -44,7 +44,7 @@ class NLPDailyExtractor(DailyExtractor):
         if max_date is None:
             self.now = datetime.now()
         else:
-            self.now = max_date + relativedelta(days = 1)
+            self.now = max_date
 
         dates = {}
         if baseline_date is None:
@@ -62,7 +62,6 @@ class NLPDailyExtractor(DailyExtractor):
 
     def extract_daily_data(self, asset, date):
         data = []
-        i = 0
         for ticker, name in tqdm(self.tickers.items()):
             df = pd.DataFrame([])
             if asset == "news": 
@@ -89,11 +88,10 @@ class NLPDailyExtractor(DailyExtractor):
             if len(df) > 0:
                 df['TICKER'] = [ticker] * len(df)
                 data.append(df)
-            
-            i += 1
-            if i == 11:
-                break
-        return self.process(asset, pd.concat(data, ignore_index = True))
+        if len(data) > 0:
+            return self.process(asset, pd.concat(data, ignore_index = True))
+        else:
+            return pd.DataFrame([])
 
     def process(self, asset, df):
         def clean_text(text):
@@ -123,7 +121,6 @@ class NLPDailyExtractor(DailyExtractor):
                 result = predictions
             else: 
                 result = np.append(result, predictions, axis = 0)                
-
 
         df[['Negative', "Neutral", "Positive"]] = result
         return df
