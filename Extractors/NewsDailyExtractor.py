@@ -14,7 +14,7 @@ from .DailyExtractor import DailyExtractor
 import json
 
 class NLPDailyExtractor(DailyExtractor): 
-    def __init__(self, project_dir, assets, batch_size = 64):
+    def __init__(self, project_dir, assets, batch_size = 32):
         self.batch_size = batch_size
         self.path = Path(__file__).parent
         self.dir = Path(project_dir)
@@ -88,8 +88,11 @@ class NLPDailyExtractor(DailyExtractor):
             if len(df) > 0:
                 df['TICKER'] = [ticker] * len(df)
                 data.append(df)
+
         if len(data) > 0:
-            return self.process(asset, pd.concat(data, ignore_index = True))
+            result = pd.concat(data, ignore_index = True)
+            # result.to_csv(self.dir / "b3_history/teste_news.csv", index = False)
+            return self.process(asset, result)
         else:
             return pd.DataFrame([])
 
@@ -103,7 +106,8 @@ class NLPDailyExtractor(DailyExtractor):
             df['description'] = df['description'].apply(func)
             if "full_text" in df.columns:
                 df['full_text'] = df['full_text'].apply(func)
-            full_text = (df['title'] + ". " + df['description']).ravel().tolist()
+            full_text_series = df['title'] + ". " + df['description']
+            full_text = full_text_series.ravel().tolist()
         elif asset == "twitter":
             pass
         elif asset == "reddit":
@@ -113,8 +117,7 @@ class NLPDailyExtractor(DailyExtractor):
 
         result = None 
         num_groups = len(full_text) // self.batch_size         
-
-        for group in np.array_split(full_text, num_groups):
+        for group in tqdm(np.array_split(full_text, num_groups)):
             predictions = self.model.process(group.tolist())
 
             if result is None:
