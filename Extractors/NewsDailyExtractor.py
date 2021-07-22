@@ -79,7 +79,15 @@ class NLPDailyExtractor(DailyExtractor):
                     df['ID'] = df["ID"].str.replace(" ", "")
                     df = df.drop_duplicates(subset = ['ID', 'DATE'])
             elif asset == "twitter":
-                pass
+                df = self.twitter_api.extract_twint(from_date = date, to_date = self.now, filters = name) 
+                df2 = self.twitter_api.extract_twint(from_date = date, to_date = self.now, filters = name) 
+                if len(df) > 0 and len(df2) > 0:
+                    df = pd.concat([df, df2], ignore_index = True)
+                elif len(df2) > 0:
+                    df = df2
+                if len(df) > 0:
+                    df = df.rename(columns = {'date' : 'DATE', 'id' : "ID"})
+                    df = df.drop_duplicates(subset = ['ID', 'DATE'])
             elif asset == "reddit":
                 pass
             else:

@@ -12,7 +12,7 @@ import twint
 
 class TwitterExtractor: 
     def __init__(self, config_path):
-        with open(Path("config.yaml"), 'r') as f: 
+        with open(Path(config_path), 'r') as f: 
             config = yaml.safe_load(f)
 
         self.bearer_token = config['twitter_token']
@@ -87,7 +87,7 @@ class TwitterExtractor:
 
         twint.run.Search(config)
         df = twint.storage.panda.Tweets_df
-        df = df[df['lang'].isin(['pt', 'en', 'es', 'it'])]
+        df = df[df['language'].isin(['pt', 'en', 'es', 'it'])]
         df = df[['id', 'date', 'timezone', 'tweet', 'language', 'hashtags', 'cashtags', 'nlikes', 'nreplies', 'nretweets', 'translate']]
         df['date'] = pd.to_datetime(df['date'])
         return df           
