@@ -8,6 +8,7 @@ from pathlib import Path
 import requests
 import json 
 from datetime import datetime
+import twint
 
 class TwitterExtractor: 
     def __init__(self, config_path):
@@ -65,4 +66,28 @@ class TwitterExtractor:
         df['created_at'] = pd.to_datetime(df['created_at'].apply(func))
 
         return df
-        
+
+    def extract_twint(self, from_date, to_date, filters, max_count = None):
+        config = twint.Config()
+        config.Search = filters
+        config.Pandas = True
+        config.Lang = "pt"
+        config.Hide_output = True
+
+        if max_count:
+            config.Limit = 100
+        if from_date:
+            if type(from_date) == str:
+                from_date = datetime.strptime(from_date, "%Y-%m-%d")
+            config.Since = from_date.strftime('%Y-%m-%d %H:%M:%S')
+        if to_date:
+            if type(to_date) == str:
+                to_date = datetime.strptime(to_date, "%Y-%m-%d")
+            config.Since = to_date.strftime('%Y-%m-%d %H:%M:%S')
+
+        twint.run.Search(config)
+        df = twint.storage.panda.Tweets_df
+        df = df[df['lang'].isin(['pt', 'en', 'es', 'it'])]
+        df = df[['id', 'date', 'timezone', 'tweet', 'language', 'hashtags', 'cashtags', 'nlikes', 'nreplies', 'nretweets', 'translate']]
+        df['date'] = pd.to_datetime(df['date'])
+        return df           
