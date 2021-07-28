@@ -91,9 +91,9 @@ class RedditExtractor:
         with open(Path(config_path), 'r') as f: 
             config = yaml.safe_load(f) 
 
-        self.reddit = praw.Reddit(client_id = config['client_id'],
-                    client_secret = config['secret'],
-                    user_agent = config['user_agent'])
+        self.reddit = praw.Reddit(client_id = config['reddit_client_id'],
+                    client_secret = config['reddit_secret'],
+                    user_agent = config['reddit_user_agent'])
 
     def __extract_post_info(self):
         pass
