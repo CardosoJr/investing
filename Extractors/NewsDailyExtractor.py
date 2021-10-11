@@ -12,9 +12,11 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from .DailyExtractor import DailyExtractor
 import json
+import os
 
 class NLPDailyExtractor(DailyExtractor): 
     def __init__(self, project_dir, assets, batch_size = 32):
+        self.num_iterations_save = 10
         self.batch_size = batch_size
         self.path = Path(__file__).parent
         self.dir = Path(project_dir)
@@ -99,14 +101,19 @@ class NLPDailyExtractor(DailyExtractor):
 
         if len(data) > 0:
             result = pd.concat(data, ignore_index = True)
-            # result.to_csv(self.dir / "b3_history/teste_news.csv", index = False)
             return self.process(asset, result)
         else:
             return pd.DataFrame([])
 
     def process(self, asset, df):
+        tmp_file = self.dir / f"temp_nlp/{asset}.csv"
+        if tmp_file.exists():
+            df = pd.concat([df, pd.read_csv(tmp_file)], ignore_index = True)
+        df.to_csv(tmp_file, index = False)
+
         def clean_text(text):
             return self.__preprocess_text(text)
+
         func = np.vectorize(clean_text)
         full_text = []
         if asset == "news":
@@ -114,8 +121,7 @@ class NLPDailyExtractor(DailyExtractor):
             df['description'] = df['description'].apply(func)
             if "full_text" in df.columns:
                 df['full_text'] = df['full_text'].apply(func)
-            full_text_series = df['title'] + ". " + df['description']
-            full_text = full_text_series.ravel().tolist()
+            df['text_2_predict'] = df['title'] + ". " + df['description'] 
         elif asset == "twitter":
             pass
         elif asset == "reddit":
@@ -123,17 +129,34 @@ class NLPDailyExtractor(DailyExtractor):
         else:
             raise Exception("Asset not implemented: " + asset)
 
+        if "Negative" in df.columns:
+            df2process = df[df['Negative'].isna()]
+        else:
+            df2process = df
+
         result = None 
         num_groups = len(full_text) // self.batch_size         
+
+        it = 0
+        for g, df_g in df2process.groupby(np.arange(len(df2process)) // num_groups):
+            full_text = df_g['text_2_predict'].ravel().tolist()
+            predictions = self.model.process(full_text)
+            df_g[['Negative', "Neutral", "Positive"]] = predictions
+
+            it += 1
+            if it % self.num_iterations_save == 0:
+                pass
+
         for group in tqdm(np.array_split(full_text, num_groups)):
             predictions = self.model.process(group.tolist())
-
             if result is None:
                 result = predictions
             else: 
                 result = np.append(result, predictions, axis = 0)                
 
         df[['Negative', "Neutral", "Positive"]] = result
+        os.remove(tmp_file)
+
         return df
 
     def __preprocess_text(self, text):
