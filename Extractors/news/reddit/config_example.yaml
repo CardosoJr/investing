@@ -1,0 +1,15 @@
+client_id: 123123123123123
+secret: 12312312323123123
+user_agent: scrapping
+br_subreddits:
+    - aa
+    - aa
+    
+us_subreddits:
+    - aa
+    - aa
+   
+crypto_subreddits:
+    - aa
+    - aa
+
